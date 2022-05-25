@@ -1,10 +1,11 @@
 {
   "pages": [
     //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-    // {
-    //   "path": "pages/goods/filter/index",
-    //   "style": { "navigationBarTitleText": "筛选" }
-    // },
+    {
+      "path": "pages/login/phone",
+      "style": { "navigationBarTitleText": "绑定手机号" }
+    },
+
     {
       "path": "pages/index/index",
       "style": {
@@ -43,6 +44,14 @@
     },
     {
       "path": "pages/goods/list"
+    },
+    {
+      "path": "pages/goods/filter/index",
+      "style": { "navigationBarTitleText": "筛选" }
+    },
+    {
+      "path": "pages/login/index",
+      "style": { "navigationBarTitleText": "登录" }
     }
   ],
   "globalStyle": {
