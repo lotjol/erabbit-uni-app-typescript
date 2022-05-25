@@ -71,6 +71,8 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 
+import result from "@/components/result/index.vue";
+
 interface suggestType {
   match: string;
   related: string[];
