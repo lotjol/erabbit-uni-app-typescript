@@ -248,7 +248,9 @@ const bannerData = reactive([
 ]);
 
 // 跳转到搜索页面
-const goSearch = () => {};
+const goSearch = () => {
+  uni.navigateTo({ url: "/pages/search/index" });
+};
 
 // 扫描二维码
 const scanCode = () => {

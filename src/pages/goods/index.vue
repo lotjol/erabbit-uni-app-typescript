@@ -492,7 +492,7 @@ export default defineComponent({
   methods: {
     // 跳转到搜索页面
     goSearch() {
-      uni.navigateTo({ url: "/pages/goods/search" });
+      uni.navigateTo({ url: "/pages/search/index" });
     },
 
     // 返回上一页
