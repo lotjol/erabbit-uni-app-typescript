@@ -1,11 +1,13 @@
 {
   "pages": [
     //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-    {
-      "path": "pages/login/phone",
-      "style": { "navigationBarTitleText": "绑定手机号" }
-    },
 
+    {
+      "path": "pages/my/interest",
+      "style": {
+        "navigationBarTitleText": "兴趣分类"
+      }
+    },
     {
       "path": "pages/index/index",
       "style": {
@@ -52,6 +54,36 @@
     {
       "path": "pages/login/index",
       "style": { "navigationBarTitleText": "登录" }
+    },
+    {
+      "path": "pages/login/phone",
+      "style": { "navigationBarTitleText": "绑定手机号" }
+    },
+    {
+      "path": "pages/my/account",
+      "style": { "navigationBarTitleText": "账户与安全" }
+    },
+    {
+      "path": "pages/my/address/index",
+      "style": { "navigationBarTitleText": "地址管理" }
+    },
+    {
+      "path": "pages/my/address/form",
+      "style": { "navigationBarTitleText": "新建地址" }
+    },
+    {
+      "path": "pages/my/profile",
+      "style": {
+        "navigationBarTitleText": "个人资料",
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/my/settings",
+      "style": {
+        "navigationBarTitleText": "账户管理"
+      }
     }
   ],
   "globalStyle": {
