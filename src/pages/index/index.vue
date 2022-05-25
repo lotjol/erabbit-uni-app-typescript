@@ -26,7 +26,7 @@
     <!-- 焦点图 -->
     <carousel style="height: 280rpx" :source="bannerData"></carousel>
     <!-- 前台类目 -->
-    <entries></entries>
+    <entries :source="[]"></entries>
     <!-- 推荐专区 -->
     <view class="panel recommend">
       <view class="item">
@@ -216,60 +216,49 @@
   </scroll-view>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-import { mapGetters } from "vuex";
+<script setup lang="ts">
+import { ref, reactive, computed } from "vue";
+import { useStore } from "vuex";
 
 import carousel from "@/components/carousel/index.vue";
 import guess from "@/components/guess/index.vue";
 import entries from "./components/entries/index.vue";
+// vuex
+const store = useStore();
+const safeArea = computed(() => store.getters.safeArea);
 
-export default defineComponent({
-  data() {
-    return {
-      bannerData: [
-        {
-          path: "/static/uploads/slider_1.jpg",
-        },
-        {
-          path: "/static/uploads/slider_2.jpg",
-        },
-        {
-          path: "/static/uploads/slider_3.jpg",
-        },
-        {
-          path: "/static/uploads/slider_4.jpg",
-        },
-        {
-          path: "/static/uploads/slider_5.jpg",
-        },
-      ],
-      hasMore: true,
-    };
+// 初始数据
+let hasMore = ref(true);
+const bannerData = reactive([
+  {
+    path: "/static/uploads/slider_1.jpg",
   },
+  {
+    path: "/static/uploads/slider_2.jpg",
+  },
+  {
+    path: "/static/uploads/slider_3.jpg",
+  },
+  {
+    path: "/static/uploads/slider_4.jpg",
+  },
+  {
+    path: "/static/uploads/slider_5.jpg",
+  },
+]);
 
-  components: {
-    carousel,
-    entries,
-    guess,
-  },
+// 跳转到搜索页面
+const goSearch = () => {};
 
-  computed: {
-    ...mapGetters(["safeArea"]),
-  },
+// 扫描二维码
+const scanCode = () => {
+  uni.scanCode({ scanType: ["qrCode"] });
+};
 
-  methods: {
-    goSearch() {},
-    // 扫描二维码
-    scanCode() {
-      uni.scanCode({ scanType: ["qrCode"] });
-    },
-    // 消息提示
-    nextVersion() {
-      uni.showToast({ title: "等待下一个版本哦~", icon: "none" });
-    },
-  },
-});
+// 消息提示
+const nextVersion = () => {
+  uni.showToast({ title: "等待下一个版本哦~", icon: "none" });
+};
 </script>
 
 <style>

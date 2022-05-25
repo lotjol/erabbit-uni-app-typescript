@@ -186,33 +186,21 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export default defineComponent({
-  data() {
-    return {
-      cursorLeft: "0%",
-    };
-  },
-  options: {
-    virtualHost: true,
-  },
-  // 外部传入的数据
-  props: {
-    source: {
-      type: Array,
-      default: () => [],
-    },
-  },
+// 响应数据
+let cursorLeft = ref("0%");
 
-  methods: {
-    scrolled(ev: Event) {
-      this.cursorLeft =
-        (ev.detail.scrollLeft / ev.detail.scrollWidth) * 100 + "%";
-    },
-  },
-});
+// 组件属性
+const props = defineProps<{
+  source: [];
+}>();
+
+// 滚动事件
+const scrolled = (ev: Event) => {
+  cursorLeft.value = (ev.detail.scrollLeft / ev.detail.scrollWidth) * 100 + "%";
+};
 </script>
 
 <style>
