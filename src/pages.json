@@ -3,9 +3,9 @@
     //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 
     {
-      "path": "pages/search/index",
+      "path": "pages/recommend/index",
       "style": {
-        "navigationBarTitleText": "搜索商品"
+        "navigationBarTitleText": "特惠推荐"
       }
     },
     {
@@ -89,6 +89,12 @@
       "path": "pages/my/interest",
       "style": {
         "navigationBarTitleText": "兴趣分类"
+      }
+    },
+    {
+      "path": "pages/search/index",
+      "style": {
+        "navigationBarTitleText": "搜索商品"
       }
     }
   ],

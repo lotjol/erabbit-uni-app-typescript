@@ -1,7 +1,6 @@
 <template>
   <!-- 导航条 -->
   <view class="navbar" :style="{ paddingTop: safeArea.top + 'px' }">
-    <mp-toptips msg="测试" show></mp-toptips>
     <!-- 文字logo -->
     <view class="logo">
       <image src="/static/images/logo.png"></image>
