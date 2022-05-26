@@ -1,0 +1,149 @@
+<template>
+  <view class="navbar" :style="{ paddingTop: safeArea.top + 'px' }">
+    <view class="wrap">
+      <navigator class="back icon-left" @click="goBack"></navigator>
+      <view :class="['title', platform]" :style="{ opacity: titleOpacity }"
+        >支付成功</view
+      >
+    </view>
+  </view>
+
+  <scroll-view
+    class="viewport"
+    enhanced
+    scroll-y
+    @scroll="scrolled"
+    :show-scrollbar="false"
+  >
+    <!-- 订单状态 -->
+    <view class="overview" :style="{ paddingTop: safeArea.top + 40 + 'px' }">
+      <view class="status icon-checked">支付成功</view>
+      <view class="buttons">
+        <navigator hover-class="none" class="button" url="/pages/index/index"
+          >返回首页</navigator
+        >
+        <navigator hover-class="none" url="/pages/order/detail/index"
+          >查看订单</navigator
+        >
+      </view>
+    </view>
+
+    <!-- 猜你喜欢 -->
+    <guess></guess>
+  </scroll-view>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { useStore } from "vuex";
+
+import guess from "@/components/guess/index.vue";
+
+const store = useStore();
+const { safeArea, platform } = store.getters;
+
+const titleOpacity = ref(0);
+
+const goBack = () => {
+  uni.navigateBack({});
+};
+
+const scrolled = (ev: any) => {
+  let opacity = ev.detail.scrollTop / 200;
+  if (opacity < 0.2) opacity = 0;
+  if (opacity > 0.8) opacity = 1;
+  titleOpacity.value = opacity;
+};
+</script>
+
+<style lang="scss">
+page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.navbar {
+  width: 750rpx;
+  color: #fff;
+  background-color: #27ba9b;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+}
+
+.navbar .title {
+  height: 40px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 500;
+  opacity: 0;
+}
+
+.navbar .android {
+  text-align: left;
+  padding-left: 42px;
+}
+
+.navbar .wrap {
+  position: relative;
+}
+
+.navbar .back {
+  position: absolute;
+  left: 10px;
+  top: 4px;
+  line-height: 1;
+  font-size: 23px;
+  z-index: 9;
+}
+
+.viewport {
+  background-color: #f7f7f8;
+}
+
+.overview {
+  line-height: 1;
+  padding-bottom: 70rpx;
+  color: #fff;
+  background-color: #27ba9b;
+}
+
+.overview .status {
+  font-size: 36rpx;
+  font-weight: 500;
+  text-align: center;
+}
+
+.overview .status::before {
+  display: block;
+  font-size: 110rpx;
+  margin-bottom: 20rpx;
+}
+
+.overview .buttons {
+  height: 60rpx;
+  line-height: 60rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60rpx;
+}
+
+.overview navigator {
+  text-align: center;
+  margin: 0 10rpx;
+  font-size: 28rpx;
+  color: #fff;
+
+  &:first-child {
+    width: 200rpx;
+    border-radius: 64rpx;
+    border: 1rpx solid #fff;
+  }
+}
+</style>
