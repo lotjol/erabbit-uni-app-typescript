@@ -1,20 +1,17 @@
-type RequestOptions = Omit<
-  UniApp.RequestOptions,
-  "success" | "fail" | "complete"
->;
-
-export default async function http(options: RequestOptions) {
-  const { data } = await (function () {
-    return new Promise((resolve, reject) => {
+export default async function http<T>(options: http.RequestOptions) {
+  const { data } = await new Promise<http.ResponseResult<T>>(
+    (resolve, reject) => {
       uni.request({
         ...options,
-        success: resolve,
+        success: (result: any) => {
+          resolve(result);
+        },
         fail: reject,
       });
-    });
-  })();
+    }
+  );
 
-  return data;
+  return data.result;
 }
 
 // 记录请求队列
@@ -22,7 +19,7 @@ let queue: string[] = [];
 
 // 添加拦截器
 uni.addInterceptor("request", {
-  invoke(options: RequestOptions) {
+  invoke(options: http.RequestOptions) {
     // 处理接口路径
     if (!options.url.startsWith("http"))
       options.url =
