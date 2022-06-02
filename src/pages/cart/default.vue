@@ -85,78 +85,68 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
+<script setup lang="ts">
+import { ref } from "vue";
 import guess from "@/components/guess/index.vue";
 
-export default defineComponent({
+const slideButtons = [
+  {
+    text: "移入收藏",
+    extClass: "slideview-collect-button",
+  },
+  {
+    text: "删除",
+    extClass: "slideview-delete-button",
+  },
+];
+
+const carts = ref([
+  {
+    thumb: "/static/uploads/goods_big_5.jpg",
+    name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
+    type: "粉色 红外体温计",
+    price: 266,
+    quantity: 1,
+    checked: true,
+  },
+  {
+    thumb: "/static/uploads/goods_big_6.jpg",
+    name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
+    type: "粉色 红外体温计",
+    price: 266,
+    quantity: 1,
+    checked: false,
+  },
+  {
+    thumb: "/static/uploads/goods_big_7.jpg",
+    name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
+    type: "粉色 红外体温计",
+    price: 266,
+    quantity: 1,
+    checked: true,
+  },
+]);
+
+const goPay = () => {
+  uni.navigateTo({
+    url: "/pages/order/index",
+  });
+};
+
+const checkToggle = (index: number) => {
+  carts.value[index].checked = !carts.value[index].checked;
+};
+
+const checkAll = () => {};
+</script>
+
+<script lang="ts">
+export default {
   options: {
     // virtualHost: true,
     styleIsolation: "shared",
   },
-
-  components: {
-    guess,
-  },
-
-  data() {
-    return {
-      slideButtons: [
-        {
-          text: "移入收藏",
-          extClass: "slideview-collect-button",
-        },
-        {
-          text: "删除",
-          extClass: "slideview-delete-button",
-        },
-      ],
-      carts: [
-        {
-          thumb: "/static/uploads/goods_big_5.jpg",
-          name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
-          type: "粉色 红外体温计",
-          price: 266,
-          quantity: 1,
-          checked: true,
-        },
-        {
-          thumb: "/static/uploads/goods_big_6.jpg",
-          name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
-          type: "粉色 红外体温计",
-          price: 266,
-          quantity: 1,
-          checked: false,
-        },
-        {
-          thumb: "/static/uploads/goods_big_7.jpg",
-          name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
-          type: "粉色 红外体温计",
-          price: 266,
-          quantity: 1,
-          checked: true,
-        },
-      ],
-    };
-  },
-
-  /**
-   * 组件的方法列表
-   */
-  methods: {
-    goPay() {
-      uni.navigateTo({
-        url: "/pages/order/index",
-      });
-    },
-    checkToggle(index: number) {
-      this.carts[index].checked = !this.carts[index].checked;
-    },
-
-    checkAll() {},
-  },
-});
+};
 </script>
 
 <style>

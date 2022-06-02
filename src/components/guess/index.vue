@@ -37,8 +37,8 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { defineProps } from "vue";
 
 interface Goods {
   name: string;
@@ -46,14 +46,9 @@ interface Goods {
   price: number;
 }
 
-export default defineComponent({
-  props: {
-    source: {
-      type: Array as PropType<Goods[]>,
-      default: () => [],
-    },
-  },
-});
+defineProps<{
+  source: Goods[];
+}>();
 </script>
 
 <style>

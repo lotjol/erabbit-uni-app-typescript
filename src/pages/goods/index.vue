@@ -1,7 +1,7 @@
 <template>
   <view
     class="navbar"
-    :style="{ paddingTop: safeArea.top + 5 + 'px', opacity: navbarOpacity }"
+    :style="{ paddingTop: safeArea!.top + 5 + 'px', opacity: navbarOpacity }"
   >
     <div class="wrap">
       <!-- 返回按钮 -->
@@ -414,173 +414,158 @@
   </mp-half-screen-dialog>
 </template>
 
-<script lang="ts">
-import { isLet } from "@babel/types";
-import { defineComponent } from "vue";
-import { mapGetters } from "vuex";
+<script setup lang="ts">
+import { ref } from "vue";
+import { onReady, onUnload } from "@dcloudio/uni-app";
 
 import clause from "./components/clause/index.vue";
 import help from "./components/help/index.vue";
 import shipment from "./components/shipment/index.vue";
 import sku from "./components/sku/index.vue";
 
+import { useAppStore } from "@/store";
+const appStore = useAppStore();
+const safeArea = appStore.safeArea;
+
 let observer: UniApp.IntersectionObserver;
 let query: UniApp.SelectorQuery;
 let navBarHeight: number;
 
-export default defineComponent({
-  data() {
-    return {
-      tabs: [
-        { text: "商品", offset: 0 },
-        { text: "评价", offset: 0 },
-        { text: "详情", offset: 0 },
-        { text: "推荐", offset: 0 },
-      ],
-      anchorIndex: 0,
-      scrollTop: 0,
-      layer: "",
-      halfDialogVisible: false,
-      swiperCurrentIndex: 0,
-      buttonType: "",
-      navbarOpacity: 0,
-    };
-  },
+const tabs = ref([
+  { text: "商品", offset: 0 },
+  { text: "评价", offset: 0 },
+  { text: "详情", offset: 0 },
+  { text: "推荐", offset: 0 },
+]);
 
-  components: {
-    clause,
-    help,
-    shipment,
-    sku,
-  },
+const anchorIndex = ref(0);
+const scrollTop = ref(0);
+const layer = ref("");
+const halfDialogVisible = ref(false);
+const swiperCurrentIndex = ref(0);
+const buttonType = ref("");
+const navbarOpacity = ref(0);
 
-  computed: {
-    ...mapGetters(["safeArea"]),
-  },
+// 跳转到搜索页面
+const goSearch = () => {
+  uni.navigateTo({ url: "/pages/search/index" });
+};
 
-  onReady() {
-    // 页面相交状态监听器
-    observer = uni.createIntersectionObserver(this, {
-      observeAll: true,
-    });
+// 返回上一页
+const goBack = () => {
+  uni.navigateBack({});
+};
 
-    // 页面节点查询器
-    query = uni.createSelectorQuery();
+// 跳转到购物车页面
+const goCart = () => {
+  uni.navigateTo({ url: "/pages/cart/default" });
+};
 
-    // 监听元素间相关状态
-    this.intersectionObserver();
+// 消息提示
+const nextVersion = () => {
+  uni.showToast({ title: "等待下一个版本哦", icon: "none" });
+};
 
-    // 计算节点相对于窗口的位置
-    query
-      .selectAll(".anchor")
-      .boundingClientRect((rects) => {
-        (rects as { top: number }[]).forEach((rect, index) => {
-          this.tabs[index].offset = rect.top;
-        });
-      })
-      .exec();
+const swiperChanged = (ev: WechatMiniprogram.SwiperChange) => {
+  swiperCurrentIndex.value = ev.detail.current;
+};
 
-    // 计算自定义导航栏的高度
-    query
-      .select(".navbar")
-      .boundingClientRect((rect) => {
-        if (rect.height) navBarHeight = rect.height;
-      })
-      .exec();
-  },
+// 快速返回顶部更新状态
+const scrollToUpper = () => {
+  anchorIndex.value = 0;
+};
 
-  methods: {
-    // 跳转到搜索页面
-    goSearch() {
-      uni.navigateTo({ url: "/pages/search/index" });
-    },
+// 点击 Tab 切换实现页内跳转
+const scrollTo = (ev: any) => {
+  // 停止监听相交状态
+  observer.disconnect();
 
-    // 返回上一页
-    goBack() {
-      uni.navigateBack({});
-    },
+  // // 获取滚动位置及索引值
+  let { anchorOffset: offset, anchorIndex: index } = ev.target.dataset;
 
-    // 跳转到购物车页面
-    goCart() {
-      uni.navigateTo({ url: "/pages/cart/default" });
-    },
+  // 调整滚动距离
+  scrollTop.value = offset - navBarHeight;
+  // 更新 Tab 的状态
+  anchorIndex.value = index;
+};
 
-    // 消息提示
-    nextVersion() {
-      uni.showToast({ title: "等待下一个版本哦", icon: "none" });
-    },
+// 监测元素相交状态
+const intersectionObserver = () => {
+  observer
+    .relativeTo(".navbar")
+    .observe(
+      ".anchor",
+      ({ dataset: { anchorIndex: index }, boundingClientRect: { top } }) => {
+        if (top < 0) return;
+        if (index) anchorIndex.value = parseInt(index);
+      }
+    );
+};
 
-    swiperChanged(ev: any) {
-      this.swiperCurrentIndex = ev.detail.current;
-    },
+// 用户滑动手势
+const dragEnd = () => {
+  observer.disconnect();
+  intersectionObserver();
+};
 
-    // 快速返回顶部更新状态
-    scrollToUpper() {
-      this.anchorIndex = 0;
-    },
+// 显示弹层
+const showHalfDialog = (name: string, type?: string) => {
+  // 动态获取 halfDialog 展示的内容
+  layer.value = name;
+  halfDialogVisible.value = true;
+  buttonType.value = type || "";
+};
 
-    // 点击 Tab 切换实现页内跳转
-    scrollTo(ev: any) {
-      // 停止监听相交状态
-      observer.disconnect();
+// 关闭弹层
+const hideHalfDialog = () => {
+  halfDialogVisible.value = false;
+};
 
-      // // 获取滚动位置及索引值
-      let { anchorOffset: scrollTop, anchorIndex } = ev.target.dataset;
+// 基于滚动的动画
+const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
+  if (ev.detail.scrollTop >= 100) return;
 
-      // 调整滚动距离
-      this.scrollTop = scrollTop - navBarHeight;
-      // 更新 Tab 的状态
-      this.anchorIndex = anchorIndex;
-    },
+  // 导航栏动画
+  let opacity = ev.detail.scrollTop / 85;
+  if (opacity < 0.1) opacity = 0;
+  if (opacity > 0.9) opacity = 1;
+  navbarOpacity.value = opacity;
+};
 
-    // 监测元素相交状态
-    intersectionObserver() {
-      observer
-        .relativeTo(".navbar")
-        .observe(
-          ".anchor",
-          ({ dataset: { anchorIndex }, boundingClientRect: { top } }) => {
-            if (top < 0) return;
-            if (anchorIndex) this.anchorIndex = parseInt(anchorIndex);
-          }
-        );
-    },
+onReady(() => {
+  // 页面相交状态监听器
+  observer = uni.createIntersectionObserver(this, {
+    observeAll: true,
+  });
 
-    // 用户滑动手势
-    dragEnd() {
-      observer.disconnect();
-      this.intersectionObserver();
-    },
+  // 页面节点查询器
+  query = uni.createSelectorQuery();
 
-    // 显示弹层
-    showHalfDialog(layer: string, buttonType?: string) {
-      // 动态获取 halfDialog 展示的内容
-      this.layer = layer;
-      this.halfDialogVisible = true;
-      this.buttonType = buttonType || "";
-    },
+  // 监听元素间相关状态
+  intersectionObserver();
 
-    // 关闭弹层
-    hideHalfDialog() {
-      this.halfDialogVisible = false;
-    },
+  // 计算节点相对于窗口的位置
+  query
+    .selectAll(".anchor")
+    .boundingClientRect((rects) => {
+      (rects as { top: number }[]).forEach((rect, index) => {
+        tabs.value[index].offset = rect.top;
+      });
+    })
+    .exec();
 
-    // 基于滚动的动画
-    scrolled(ev: any) {
-      if (ev.detail.scrollTop >= 100) return;
+  // 计算自定义导航栏的高度
+  query
+    .select(".navbar")
+    .boundingClientRect((rect) => {
+      if (rect.height) navBarHeight = rect.height;
+    })
+    .exec();
+});
 
-      // 导航栏动画
-      let navbarOpacity = ev.detail.scrollTop / 85;
-      if (navbarOpacity < 0.1) navbarOpacity = 0;
-      if (navbarOpacity > 0.9) navbarOpacity = 1;
-      this.navbarOpacity = navbarOpacity;
-    },
-  },
-
-  // 页面卸载停止相交状态监听
-  onUnload() {
-    observer.disconnect();
-  },
+// 页面卸载停止相交状态监听
+onUnload(() => {
+  observer.disconnect();
 });
 </script>
 

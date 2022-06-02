@@ -175,35 +175,36 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
+<script setup lang="ts">
 import carousel from "@/components/carousel/index.vue";
 
-export default defineComponent({
-  data() {
-    return {
-      bannerData: [
-        {
-          path: "/static/uploads/banner_1.jpg",
-        },
-        {
-          path: "/static/uploads/banner_1.jpg",
-        },
-        {
-          path: "/static/uploads/banner_1.jpg",
-        },
-        {
-          path: "/static/uploads/banner_1.jpg",
-        },
-      ],
-    };
+const bannerData = [
+  {
+    id: "227415",
+    type: "1",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_1.jpg",
   },
-
-  components: {
-    carousel,
+  {
+    id: "326416",
+    type: "4",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_2.jpg",
   },
-});
+  {
+    id: "163424",
+    type: "2",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_3.jpg",
+  },
+  {
+    id: "223413",
+    type: "1",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_4.jpg",
+  },
+  {
+    id: "423426",
+    type: "3",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_5.jpg",
+  },
+];
 </script>
 
 <style>

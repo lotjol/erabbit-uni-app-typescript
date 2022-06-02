@@ -54,31 +54,29 @@
     <view v-else @click="goOrder" class="button primary">立即购买</view>
   </view>
 </template>
+<script setup lang="ts">
+import { defineProps } from "vue";
 
+defineProps<{ buttonType: string }>();
+
+const goCart = () => {
+  uni.navigateTo({
+    url: "/pages/cart/default/index",
+  });
+};
+
+const goOrder = () => {
+  uni.navigateTo({
+    url: "/pages/order/create/index",
+  });
+};
+</script>
 <script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
+export default {
   options: {
     styleIsolation: "apply-shared",
   },
-  props: {
-    buttonType: String,
-  },
-
-  methods: {
-    goCart() {
-      uni.navigateTo({
-        url: "/pages/cart/default/index",
-      });
-    },
-
-    goOrder() {
-      uni.navigateTo({
-        url: "/pages/order/create/index",
-      });
-    },
-  },
-});
+};
 </script>
 
 <style>

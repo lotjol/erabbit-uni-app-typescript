@@ -1,6 +1,6 @@
 <template>
   <scroll-view @scroll="scrolled" scroll-y enhanced :show-scrollbar="false">
-    <view class="viewport" :style="{ paddingTop: safeArea.top + 40 + 'px' }">
+    <view class="viewport" :style="{ paddingTop: safeArea!.top + 40 + 'px' }">
       <!-- 个人资料 -->
       <view class="profile" :style="{ opacity: profileOpacity }">
         <view class="overview">
@@ -19,7 +19,7 @@
         </navigator>
       </view>
       <!-- 订单 -->
-      <view class="orders" :style="{ top: safeArea.top + 48 + 'px' }">
+      <view class="orders" :style="{ top: safeArea!.top + 48 + 'px' }">
         <view class="title">
           我的订单
           <navigator url="/pages/order/index?type=0" hover-class="none">
@@ -410,7 +410,7 @@
       </view>
       <view
         class="navbar"
-        :style="{ paddingTop: safeArea.top + 30 + 'px', top: navbarTop + 'px' }"
+        :style="{ paddingTop: safeArea!.top + 30 + 'px', top: navbarTop + 'px' }"
       >
         <view class="title" :style="{ opacity: titleOpacity }">我的</view>
       </view>
@@ -418,63 +418,51 @@
   </scroll-view>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-import { mapGetters } from "vuex";
+import { useAppStore } from "@/store";
+const appStore = useAppStore();
+const safeArea = appStore.safeArea;
 
-export default defineComponent({
-  data() {
-    return {
-      profileOpacity: 1,
-      navbarTop: 0,
-      titleOpacity: 0,
-      tabs: ["我的收藏", "猜你喜欢", "我的足迹"],
-      orderTypes: [
-        { text: "待付款", icon: "icon-currency", type: 1 },
-        { text: "待发货", icon: "icon-gift", type: 2 },
-        { text: "待收货", icon: "icon-check", type: 3 },
-        { text: "待评价", icon: "icon-comment", type: 4 },
-      ],
-      tabIndex: 0,
-    };
-  },
+const profileOpacity = ref(1);
+const navbarTop = ref(0);
+const titleOpacity = ref(0);
+const tabs = ["我的收藏", "猜你喜欢", "我的足迹"];
+const orderTypes = [
+  { text: "待付款", icon: "icon-currency", type: 1 },
+  { text: "待发货", icon: "icon-gift", type: 2 },
+  { text: "待收货", icon: "icon-check", type: 3 },
+  { text: "待评价", icon: "icon-comment", type: 4 },
+];
+const tabIndex = ref(0);
 
-  computed: {
-    ...mapGetters(["safeArea"]),
-  },
+const changeTab = (index: number) => {
+  tabIndex.value = index;
+};
 
-  onLoad() {},
+// 滚动动画
+const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
+  if (ev.detail.scrollTop >= 200) return;
 
-  methods: {
-    changeTab(index: number) {
-      this.tabIndex = index;
-    },
+  // 用户头像动画
+  let opacity1 = 1 - ev.detail.scrollTop / 85;
+  if (opacity1 < 0.1) opacity1 = 0;
+  if (opacity1 > 0.9) opacity1 = 1;
+  profileOpacity.value = opacity1;
 
-    // 滚动动画
-    scrolled(ev: Event) {
-      if (ev.detail.scrollTop >= 200) return;
+  // 导航栏动画
+  let top = ev.detail.scrollTop * (30 / 85);
+  top = Math.max(0, top);
+  top = Math.min(30, top);
+  navbarTop.value = -top;
 
-      // 用户头像动画
-      var profileOpacity = 1 - ev.detail.scrollTop / 85;
-      if (profileOpacity < 0.1) profileOpacity = 0;
-      if (profileOpacity > 0.9) profileOpacity = 1;
-      this.profileOpacity = profileOpacity;
-
-      // 导航栏动画
-      var navbarTop = ev.detail.scrollTop * (30 / 85);
-      navbarTop = Math.max(0, navbarTop);
-      navbarTop = Math.min(30, navbarTop);
-      this.navbarTop = -navbarTop;
-
-      // 导航栏标题
-      var titleOpacity = (ev.detail.scrollTop - 85) * (1 / 15);
-      if (titleOpacity < 0.1) titleOpacity = 0;
-      if (titleOpacity > 0.9) titleOpacity = 1;
-      this.titleOpacity = titleOpacity;
-    },
-  },
-});
+  // 导航栏标题
+  var opacity = (ev.detail.scrollTop - 85) * (1 / 15);
+  if (opacity < 0.1) opacity = 0;
+  if (opacity > 0.9) opacity = 1;
+  titleOpacity.value = opacity;
+};
 </script>
 
 <style>

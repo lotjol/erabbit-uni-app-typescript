@@ -1,6 +1,65 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { useAppStore } from "@/store/index";
+
+import carousel from "@/components/carousel/index.vue";
+import guess from "@/components/guess/index.vue";
+import entries from "./components/entries/index.vue";
+
+// pinia
+const appStore = useAppStore();
+const safeArea = appStore.safeArea;
+
+// 初始数据
+let hasMore = ref(true);
+
+const bannerData = [
+  {
+    id: "227415",
+    type: "1",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_1.jpg",
+  },
+  {
+    id: "326416",
+    type: "4",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_2.jpg",
+  },
+  {
+    id: "163424",
+    type: "2",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_3.jpg",
+  },
+  {
+    id: "223413",
+    type: "1",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_4.jpg",
+  },
+  {
+    id: "423426",
+    type: "3",
+    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_5.jpg",
+  },
+];
+
+// 跳转到搜索页面
+const goSearch = () => {
+  uni.navigateTo({ url: "/pages/search/index" });
+};
+
+// 扫描二维码
+const scanCode = () => {
+  uni.scanCode({ scanType: ["qrCode"] });
+};
+
+// 消息提示
+const nextVersion = () => {
+  uni.showToast({ title: "等待下一个版本哦~", icon: "none" });
+};
+</script>
+
 <template>
   <!-- 导航条 -->
-  <view class="navbar" :style="{ paddingTop: safeArea.top + 'px' }">
+  <view class="navbar" :style="{ paddingTop: safeArea?.top + 'px' }">
     <!-- 文字logo -->
     <view class="logo">
       <image src="/static/images/logo.png"></image>
@@ -214,53 +273,6 @@
     <view class="loading" v-if="hasMore">正在加载...</view>
   </scroll-view>
 </template>
-
-<script setup lang="ts">
-import { ref, reactive, computed } from "vue";
-import { useStore } from "vuex";
-
-import carousel from "@/components/carousel/index.vue";
-import guess from "@/components/guess/index.vue";
-import entries from "./components/entries/index.vue";
-// vuex
-const store = useStore();
-const safeArea = computed(() => store.getters.safeArea);
-
-// 初始数据
-let hasMore = ref(true);
-const bannerData = reactive([
-  {
-    path: "/static/uploads/slider_1.jpg",
-  },
-  {
-    path: "/static/uploads/slider_2.jpg",
-  },
-  {
-    path: "/static/uploads/slider_3.jpg",
-  },
-  {
-    path: "/static/uploads/slider_4.jpg",
-  },
-  {
-    path: "/static/uploads/slider_5.jpg",
-  },
-]);
-
-// 跳转到搜索页面
-const goSearch = () => {
-  uni.navigateTo({ url: "/pages/search/index" });
-};
-
-// 扫描二维码
-const scanCode = () => {
-  uni.scanCode({ scanType: ["qrCode"] });
-};
-
-// 消息提示
-const nextVersion = () => {
-  uni.showToast({ title: "等待下一个版本哦~", icon: "none" });
-};
-</script>
 
 <style>
 page {

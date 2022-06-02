@@ -676,13 +676,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import { useStore } from "vuex";
+import { useAppStore } from "@/store";
+
+const appStore = useAppStore();
+const safeArea = appStore.safeArea;
 
 const swiperIndex = ref<string | number>(0);
 const adjustIndex = ref<string | number>(0);
 const cursorLeft = ref<string>("0%");
-
-const safeArea = useStore().getters.safeArea;
 
 const changeTab = (ev: any) => {
   // 获取当前 swiperItem 的索引值值
@@ -697,12 +698,12 @@ const onFinish = () => {
   adjustIndex.value = swiperIndex.value;
 };
 
-const onTransition = (ev: any) => {
+const onTransition = (ev: WechatMiniprogram.SwiperTransition) => {
   // 获取动画相关参数
   const current = parseInt(ev.target.dataset.current);
   const dx = ev.detail.dx;
 
-  cursorLeft.value = (current + dx / safeArea.width) * 20 + "%";
+  cursorLeft.value = (current + dx / safeArea!.width) * 20 + "%";
 };
 </script>
 

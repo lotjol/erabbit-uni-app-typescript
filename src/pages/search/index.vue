@@ -7,7 +7,6 @@
         @input="getSuggestion"
         @click="startInput"
         @confirm="execQuery"
-        model:value="{{currentKey}}"
         :focus="focused"
       />
       <text
@@ -115,10 +114,8 @@ const clearInput = () => {
   currentKey.value = "";
   suggestions.value = [];
   entering.value = true;
-
-  // 光标聚焦
-  // wx.nextTick(() => this.setData({ focused: true }));
 };
+
 // 获得搜索建议
 const getSuggestion = (ev: any) => {
   if (!ev.detail.value) {

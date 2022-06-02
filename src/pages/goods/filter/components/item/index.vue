@@ -4,26 +4,25 @@
   </view>
 </template>
 
+<script setup lang="ts">
+import { defineProps, ref } from "vue";
+
+defineProps<{
+  text: string;
+}>();
+
+const checked = ref(false);
+
+const toggleChecked = () => {
+  checked.value = !checked.value;
+};
+</script>
 <script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
+export default {
   options: {
     virtualHost: true,
   },
-  props: {
-    text: String,
-  },
-  data() {
-    return {
-      checked: false,
-    };
-  },
-  methods: {
-    toggleChecked() {
-      this.checked = !this.checked;
-    },
-  },
-});
+};
 </script>
 
 <style>

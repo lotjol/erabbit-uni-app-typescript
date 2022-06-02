@@ -198,7 +198,7 @@ const props = defineProps<{
 }>();
 
 // 滚动事件
-const scrolled = (ev: Event) => {
+const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
   cursorLeft.value = (ev.detail.scrollLeft / ev.detail.scrollWidth) * 100 + "%";
 };
 </script>

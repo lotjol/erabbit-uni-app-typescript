@@ -27,12 +27,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
+export default {
   options: {
     styleIsolation: "apply-shared",
   },
-});
+};
 </script>
 
 <style>

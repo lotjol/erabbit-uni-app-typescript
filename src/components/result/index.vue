@@ -84,113 +84,110 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 
-export default defineComponent({
+const selecting = ref(false);
+const optionIndex = ref(0);
+const optionValue = ref("综合");
+const tabIndex = ref(0);
+const sortIcon = ref("icon-sort");
+
+const goods = [
+  {
+    id: 1,
+    path: "/static/uploads/goods_big_2.jpg",
+    name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
+    wish: 2146,
+    present: 899,
+    original: 999,
+  },
+  {
+    id: 2,
+    path: "/static/uploads/goods_big_2.jpg",
+    name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
+    wish: 2146,
+    present: 899,
+    original: 999,
+  },
+  {
+    id: 3,
+    path: "/static/uploads/goods_big_3.jpg",
+    name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
+    wish: 2146,
+    present: 899,
+    original: 999,
+  },
+  {
+    id: 4,
+    path: "/static/uploads/goods_big_4.jpg",
+    name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
+    wish: 2146,
+    present: 899,
+    original: 999,
+  },
+  {
+    id: 5,
+    path: "/static/uploads/goods_big_2.jpg",
+    name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
+    wish: 2146,
+    present: 899,
+    original: 999,
+  },
+  {
+    id: 6,
+    path: "/static/uploads/goods_big_2.jpg",
+    name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
+    wish: 2146,
+    present: 899,
+    original: 999,
+  },
+];
+
+const goFilter = () => {
+  uni.navigateTo({
+    url: "/pages/goods/filter/index",
+  });
+};
+
+// 综合筛选
+const changeOption = (ev: MouseEvent) => {
+  const { index = "0", option = "" } = (ev.target as HTMLElement).dataset;
+
+  selecting.value = false;
+  optionValue.value = option;
+  optionIndex.value = parseInt(index);
+};
+
+// 综合下拉选择
+const doSelect = () => {
+  selecting.value = !selecting.value;
+  tabIndex.value = 0;
+  sortIcon.value = "icon-sort";
+};
+
+// 按价格
+const byPrice = () => {
+  tabIndex.value = 1;
+  selecting.value = false;
+  // 字体图标
+  sortIcon.value = sortIcon.value === "icon-up" ? "icon-down" : "icon-up";
+};
+
+// 按销量
+const bySales = () => {
+  tabIndex.value = 2;
+  selecting.value = false;
+  sortIcon.value = "icon-sort";
+};
+</script>
+
+<script lang="ts">
+export default {
   options: {
     addGlobalClass: true,
   },
-
-  data() {
-    return {
-      goods: [
-        {
-          id: 1,
-          path: "/static/uploads/goods_big_2.jpg",
-          name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
-          wish: 2146,
-          present: 899,
-          original: 999,
-        },
-        {
-          id: 2,
-          path: "/static/uploads/goods_big_2.jpg",
-          name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
-          wish: 2146,
-          present: 899,
-          original: 999,
-        },
-        {
-          id: 3,
-          path: "/static/uploads/goods_big_3.jpg",
-          name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
-          wish: 2146,
-          present: 899,
-          original: 999,
-        },
-        {
-          id: 4,
-          path: "/static/uploads/goods_big_4.jpg",
-          name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
-          wish: 2146,
-          present: 899,
-          original: 999,
-        },
-        {
-          id: 5,
-          path: "/static/uploads/goods_big_2.jpg",
-          name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
-          wish: 2146,
-          present: 899,
-          original: 999,
-        },
-        {
-          id: 6,
-          path: "/static/uploads/goods_big_2.jpg",
-          name: "荣耀Play3 6.39英寸魅眼全视屏 4000mAh大电池 全新机型",
-          wish: 2146,
-          present: 899,
-          original: 999,
-        },
-      ],
-      selecting: false,
-      optionIndex: 0,
-      optionValue: "综合",
-      tabIndex: 0,
-      sortIcon: "icon-sort",
-    };
-  },
-
-  methods: {
-    goFilter() {
-      uni.navigateTo({
-        url: "/pages/goods/filter/index",
-      });
-    },
-
-    // 综合筛选
-    changeOption(ev: MouseEvent) {
-      const { index = "0", option = "" } = (ev.target as HTMLElement).dataset;
-
-      this.selecting = false;
-      this.optionValue = option;
-      this.optionIndex = parseInt(index);
-    },
-
-    // 综合下拉选择
-    doSelect() {
-      this.selecting = !this.selecting;
-      this.tabIndex = 0;
-      this.sortIcon = "icon-sort";
-    },
-
-    // 按价格
-    byPrice() {
-      this.tabIndex = 1;
-      this.selecting = false;
-      // 字体图标
-      this.sortIcon = this.sortIcon === "icon-up" ? "icon-down" : "icon-up";
-    },
-
-    // 按销量
-    bySales() {
-      this.tabIndex = 2;
-      this.selecting = false;
-      this.sortIcon = "icon-sort";
-    },
-  },
-});
+};
 </script>
 
 <style>

@@ -3,7 +3,7 @@
     <swiper circular autoplay interval="3000" @change="swiperChanged">
       <swiper-item v-for="(item, index) in source" :key="index">
         <navigator hover-class="none" class="navigator">
-          <image class="image" :src="item.path"></image>
+          <image class="image" :src="item.imgUrl"></image>
         </navigator>
       </swiper-item>
     </swiper>
@@ -18,35 +18,23 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { defineProps, ref } from "vue";
 
-interface Banner {
-  path: string;
+interface bannerType {
+  [index: number]: { id: string; type: string; imgUrl: string };
 }
 
-export default defineComponent({
-  props: {
-    source: {
-      type: Array as PropType<Array<Banner>>,
-      default: () => [],
-      required: true,
-    },
-  },
+defineProps<{
+  source: bannerType;
+}>();
 
-  data() {
-    return {
-      activeIndex: 0,
-    };
-  },
+const activeIndex = ref(0);
 
-  methods: {
-    // 更新指示器状态
-    swiperChanged(ev: Event) {
-      this.activeIndex = ev.detail.current;
-    },
-  },
-});
+// 更新指示器状态
+const swiperChanged = (ev: WechatMiniprogram.SwiperChange) => {
+  activeIndex.value = ev.detail.current;
+};
 </script>
 
 <style>

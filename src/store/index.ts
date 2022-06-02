@@ -1,16 +1,13 @@
-import { createStore } from "vuex";
+import { defineStore } from "pinia";
 
-// Create a new store instance.
-export default createStore({
-  state: {
-    systemInfo: uni.getSystemInfoSync(),
+export const useAppStore = defineStore("app", {
+  state: () => {
+    return {
+      systemInfo: uni.getSystemInfoSync() as UniApp.GetSystemInfoResult,
+    };
   },
   getters: {
-    safeArea: (state) => {
-      return state.systemInfo.safeArea;
-    },
-    platform: (state) => {
-      return state.systemInfo.platform;
-    },
+    safeArea: (state) => state.systemInfo.safeArea,
+    platform: (state) => state.systemInfo.platform,
   },
 });

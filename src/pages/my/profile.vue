@@ -1,6 +1,6 @@
 <template>
   <view class="viewport">
-    <view class="navbar" :style="{ paddingTop: safeArea.top + 'px' }">
+    <view class="navbar" :style="{ paddingTop: safeArea?.top + 'px' }">
       <view class="back icon-left" @click="goBack"></view>
       <view class="title">个人信息</view>
     </view>
@@ -55,10 +55,10 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from "vuex";
+import { useAppStore } from "@/store";
 
-const store = useStore();
-const safeArea = store.getters.safeArea;
+const appStore = useAppStore();
+const safeArea = appStore.safeArea;
 
 const goBack = () => {
   uni.navigateBack({});

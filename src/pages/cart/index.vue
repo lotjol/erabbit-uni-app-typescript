@@ -2,16 +2,8 @@
   <cart></cart>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
+<script setup lang="ts">
 import cart from "./default.vue";
-
-export default defineComponent({
-  components: {
-    cart,
-  },
-});
 </script>
 
 <style>

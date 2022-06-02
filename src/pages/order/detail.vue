@@ -1,5 +1,5 @@
 <template>
-  <view class="navbar" :style="{ paddingTop: safeArea.top + 'px' }">
+  <view class="navbar" :style="{ paddingTop: safeArea?.top + 'px' }">
     <view class="wrap">
       <view class="back icon-left" @click="goBack"></view>
       <view :style="{ opacity: titleOpacity }" :class="['title', platform]"
@@ -16,7 +16,7 @@
     :show-scrollbar="false"
   >
     <!-- 订单状态 -->
-    <view class="overview" :style="{ paddingTop: safeArea.top + 40 + 'px' }">
+    <view class="overview" :style="{ paddingTop: safeArea!.top + 40 + 'px' }">
       <view class="status icon-clock">等待付款</view>
       <view class="tips">
         <text>应付金额: ¥90:00</text>
@@ -169,7 +169,7 @@
     </view>
 
     <!-- 猜你喜欢 -->
-    <guess></guess>
+    <guess :source="[]"></guess>
   </scroll-view>
 
   <div class="buttons">
@@ -225,12 +225,14 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useStore } from "vuex";
+
+import { useAppStore } from "@/store";
 
 import guess from "@/components/guess/index.vue";
 
-const store = useStore();
-const { safeArea, platform } = store.getters;
+const appStore = useAppStore();
+// 不需要响应式变化
+const { safeArea, platform } = appStore;
 
 const showHalfDialog = ref(false);
 const titleOpacity = ref(0);
@@ -247,7 +249,7 @@ const goBack = () => {
   uni.navigateBack({});
 };
 
-const scrolled = (ev: any) => {
+const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
   let opacity = ev.detail.scrollTop / 200;
   if (opacity < 0.2) opacity = 0;
   if (opacity > 0.8) opacity = 1;

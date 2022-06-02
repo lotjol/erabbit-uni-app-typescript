@@ -7,15 +7,6 @@ declare module "*.vue" {
   export default component;
 }
 
-interface Event {
-  detail: {
-    scrollLeft: number;
-    scrollTop: number;
-    scrollWidth: number;
-    current: number;
-  };
-}
-
 declare namespace UniApp {
   interface ObserveResult {
     dataset: {

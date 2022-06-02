@@ -12,40 +12,33 @@
   </view>
 </template>
 
-<script lang="ts">
-import { defineComponent, PropType } from "vue";
+<script setup lang="ts">
+import { defineProps, ref } from "vue";
 
 import item from "../item/index.vue";
 
-export default defineComponent({
+defineProps<{
+  source: string[];
+  collapsed: boolean;
+  title: string;
+}>();
+
+const collapsed = ref(false);
+
+const toggleMore = () => {
+  collapsed.value = !collapsed.value;
+};
+const selected = () => {};
+</script>
+
+<script lang="ts">
+export default {
   options: {
     addGlobalClass: true,
     virtualHost: true,
   },
   externalClasses: ["class"],
-  props: {
-    source: Array as PropType<string[]>,
-    collapsed: {
-      type: Boolean,
-      default: false,
-    },
-    title: String,
-  },
-  data() {
-    return {
-      collapsed: false,
-    };
-  },
-  components: {
-    item,
-  },
-  methods: {
-    toggleMore() {
-      this.collapsed = !this.collapsed;
-    },
-    selected() {},
-  },
-});
+};
 </script>
 
 <style>
