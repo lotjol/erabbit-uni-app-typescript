@@ -1,3 +1,51 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { onLoad } from "@dcloudio/uni-app";
+
+import { getBanner } from "@/api/banner";
+import { getEntry, getSubCatetory } from "@/api/category";
+
+import type { BannerType } from "@/api/banner";
+import type { EntryType, subCategoryType } from "@/api/category";
+
+import carousel from "@/components/carousel/index.vue";
+
+// 初始数据
+const bannerData = ref<BannerType>([]);
+const entryData = ref<EntryType>([]);
+const activeId = ref("");
+const subCategoryData = ref<subCategoryType>({} as subCategoryType);
+
+onLoad(async () => {
+  // 商品分类入口数据
+  entryData.value = await getEntry();
+
+  // 子分类数据
+  subCategoryData.value = await getSubCatetory(entryData.value[0].id);
+
+  // 获取广告位数据
+  bannerData.value = await getBanner(2);
+});
+
+// 缓存二级分类
+const cacheData: {
+  [key: string]: subCategoryType;
+} = {};
+// 获取子分类数据
+const getSubCategory = async (id: string) => {
+  activeId.value = id;
+
+  if (cacheData[id]) {
+    return (subCategoryData.value = cacheData[id]);
+  }
+
+  // 子分类数据
+  subCategoryData.value = await getSubCatetory(id);
+  // 将请求来的数缓存到本地
+  cacheData[id] = subCategoryData.value;
+};
+</script>
+
 <template>
   <view class="viewport">
     <!-- 搜索框 -->
@@ -15,30 +63,27 @@
         scroll-y="true"
         :show-scrollbar="false"
       >
-        <view class="item active">精选推荐</view>
-        <view class="item">女装</view>
-        <view class="item">男装</view>
-        <view class="item">箱包皮具</view>
-        <view class="item">手表配饰</view>
-        <view class="item">男鞋</view>
-        <view class="item">女鞋</view>
-        <view class="item">护肤彩妆</view>
-        <view class="item">个人护理</view>
-        <view class="item">母婴</view>
-        <view class="item">运动户外</view>
-        <view class="item">手机数码</view>
-        <view class="item">家用电器</view>
-        <view class="item">家居家纺</view>
-        <view class="item">生活超市</view>
+        <view
+          class="item"
+          :class="{ active: item.id === activeId }"
+          v-for="item in entryData"
+          :key="item.id"
+          @click="getSubCategory(item.id)"
+          >{{ item.name }}</view
+        >
       </scroll-view>
       <!-- 次分类（二级类目） -->
       <scroll-view class="secondary" enhanced scroll-y :show-scrollbar="false">
         <!-- 焦点图 -->
         <carousel class="banner" :source="bannerData"></carousel>
         <!-- 区块 -->
-        <view class="panel">
+        <view
+          class="panel"
+          v-for="item in subCategoryData.children"
+          :key="item.id"
+        >
           <view class="title">
-            水果
+            {{ item.name }}
             <navigator
               class="more"
               hover-class="none"
@@ -47,124 +92,17 @@
             >
           </view>
           <view class="section">
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_1.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_2.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_3.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_4.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_5.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_6.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-          </view>
-        </view>
-        <view class="panel">
-          <view class="title">
-            零食
             <navigator
-              class="more"
               hover-class="none"
-              url="/pages/goods/list/index"
-              >全部</navigator
+              :url="`/pages/goods/index?id=${goods.id}`"
+              v-for="goods in item.goods"
+              :key="goods.id"
             >
-          </view>
-          <view class="section">
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_1.jpg"></image>
-              <view class="name ellipsis">石榴</view>
+              <image :src="goods.picture"></image>
+              <view class="name ellipsis">{{ goods.name }}</view>
               <view class="price">
                 <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_2.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_3.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_4.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_5.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
-                <text class="decimal">.00</text>
-              </view>
-            </navigator>
-            <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_6.jpg"></image>
-              <view class="name ellipsis">石榴</view>
-              <view class="price">
-                <text class="symbol">¥</text>
-                <text class="number">899</text>
+                <text class="number">{{ goods.price }}</text>
                 <text class="decimal">.00</text>
               </view>
             </navigator>
@@ -174,38 +112,6 @@
     </view>
   </view>
 </template>
-
-<script setup lang="ts">
-import carousel from "@/components/carousel/index.vue";
-
-const bannerData = [
-  {
-    id: "227415",
-    type: "1",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_1.jpg",
-  },
-  {
-    id: "326416",
-    type: "4",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_2.jpg",
-  },
-  {
-    id: "163424",
-    type: "2",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_3.jpg",
-  },
-  {
-    id: "223413",
-    type: "1",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_4.jpg",
-  },
-  {
-    id: "423426",
-    type: "3",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_5.jpg",
-  },
-];
-</script>
 
 <style>
 page {
