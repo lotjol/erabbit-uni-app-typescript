@@ -4,34 +4,17 @@
     <text class="text">猜你喜欢</text>
   </view>
   <view class="guess">
-    <navigator url="/pages/goods/index" class="navigator">
-      <image class="image" src="/static/uploads/goods_big_1.jpg"></image>
-      <view class="name"
-        >肖勒超薄防水手表精钢材质放水水功能肖勒超薄防水手表精钢材质放水水功能肖勒超薄防水手表精钢材质放水水功能</view
-      >
+    <navigator
+      class="navigator"
+      v-for="item in source"
+      :key="item.id"
+      :url="`/pages/goods/index?id=${item.id}`"
+    >
+      <image class="image" :src="item.picture"></image>
+      <view class="name">{{ item.name }}</view>
       <view class="price">
-        <text class="small">¥</text>899<text class="small">.00</text>
-      </view>
-    </navigator>
-    <navigator url="/pages/goods/index" class="navigator">
-      <image class="image" src="/static/uploads/goods_big_2.jpg"></image>
-      <view class="name">肖勒超薄防水手表精钢材质放水水功能</view>
-      <view class="price">
-        <text class="small">¥</text>899<text class="small">.00</text>
-      </view>
-    </navigator>
-    <navigator url="/pages/goods/index" class="navigator">
-      <image class="image" src="/static/uploads/goods_big_3.jpg"></image>
-      <view class="name">肖勒超薄防水手表精钢材质放水水功能</view>
-      <view class="price">
-        <text class="small">¥</text>899<text class="small">.00</text>
-      </view>
-    </navigator>
-    <navigator url="/pages/goods/index" class="navigator">
-      <image class="image" src="/static/uploads/goods_big_4.jpg"></image>
-      <view class="name">肖勒超薄防水手表精钢材质放水水功能</view>
-      <view class="price">
-        <text class="small">¥</text>899<text class="small">.00</text>
+        <text class="small">¥</text>{{ item.price }}
+        <!-- <text class="small">.00</text> -->
       </view>
     </navigator>
   </view>
@@ -40,11 +23,7 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 
-interface Goods {
-  name: string;
-  path: string;
-  price: number;
-}
+import type { Goods } from "@/api/goods";
 
 defineProps<{
   source: Goods[];
@@ -79,7 +58,7 @@ defineProps<{
   top: 6rpx;
   width: 20rpx;
   height: 20rpx;
-  background-image: url(http://static.botue.com/erabbit/static/images/bubble.png);
+  background-image: url(/static/images/bubble.png);
   background-size: contain;
 }
 

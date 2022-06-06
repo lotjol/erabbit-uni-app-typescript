@@ -25,6 +25,12 @@ uni.addInterceptor("request", {
       options.url =
         "https://pcapi-xiaotuxian-front-devtest.itheima.net" + options.url;
 
+    // 添加头信息
+    options.header = {
+      "source-client": "miniapp",
+      ...options.header,
+    };
+
     // 开启加载提示
     !queue.length &&
       uni.showLoading({

@@ -45,6 +45,7 @@
     "@dcloudio/uni-mp-toutiao": "3.0.0-alpha-3041320220531002",
     "@dcloudio/uni-mp-weixin": "3.0.0-alpha-3041320220531002",
     "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-3041320220531002",
+    "lodash": "^4.17.21",
     "pinia": "^2.0.14",
     "vue": "^3.2.33",
     "vue-i18n": "^9.1.9"
@@ -54,6 +55,7 @@
     "@dcloudio/uni-automator": "3.0.0-alpha-3041320220531002",
     "@dcloudio/uni-cli-shared": "3.0.0-alpha-3041320220531002",
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-3041320220531002",
+    "@types/lodash": "^4.14.182",
     "@types/wechat-miniprogram": "^3.4.1",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",

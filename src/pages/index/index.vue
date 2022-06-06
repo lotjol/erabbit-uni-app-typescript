@@ -1,45 +1,91 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useAppStore } from "@/store/index";
+import { onLoad } from "@dcloudio/uni-app";
+
+import { debounce } from "lodash";
+
+import { getBanner } from "@/api/banner";
+import { getEntry } from "@/api/category";
+import { getFresh, getGuess, getRecommend } from "@/api/goods";
+
+import type { BannerType } from "@/api/banner";
+import type { EntryType } from "@/api/category";
+import type { FreshType, GuessType, RecommendType } from "@/api/goods";
 
 import carousel from "@/components/carousel/index.vue";
 import guess from "@/components/guess/index.vue";
 import entries from "./components/entries/index.vue";
 
-// pinia
+// Pinia
 const appStore = useAppStore();
 const safeArea = appStore.safeArea;
 
 // 初始数据
-let hasMore = ref(true);
+const hasMore = ref(true);
+const triggered = ref(false);
+const bannerData = ref<BannerType>([]);
+const entryData = ref<EntryType>([]);
+const recommendData = ref<RecommendType>([]);
+const freshData = ref<FreshType>([]);
+const guessData = ref<GuessType>({} as GuessType);
 
-const bannerData = [
-  {
-    id: "227415",
-    type: "1",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_1.jpg",
-  },
-  {
-    id: "326416",
-    type: "4",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_2.jpg",
-  },
-  {
-    id: "163424",
-    type: "2",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_3.jpg",
-  },
-  {
-    id: "223413",
-    type: "1",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_4.jpg",
-  },
-  {
-    id: "423426",
-    type: "3",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_5.jpg",
-  },
-];
+// 调用首页面所需要的数据接口
+const getAll = async () => {
+  // 并发调用接口
+  const [banner, entry, recommend, fresh] = await Promise.all([
+    getBanner(),
+    getEntry(),
+    getRecommend(),
+    getFresh(),
+  ]);
+
+  // 获取广告数据
+  bannerData.value = banner;
+
+  // 获取前台类目数据
+  entryData.value = entry;
+
+  // 获取人气推幕数据
+  recommendData.value = recommend;
+
+  // 获取新鲜好物数据
+  freshData.value = fresh;
+};
+
+// 获取首页数据
+onLoad(async () => {
+  // 获取除猜你喜欢外的接品数据
+  getAll();
+  // 获取猜你喜欢数据
+  guessData.value = await getGuess();
+});
+
+// 下拉刷新
+const refresh = debounce(async () => {
+  // 开户下拉状态
+  triggered.value = true;
+  await getAll();
+  // 关闭下拉状态
+  triggered.value = false;
+}, 300);
+
+// 滚动分页
+let page = 1;
+let pageSize = 10;
+const getMore = async () => {
+  // 检测是否还有更多的数据
+  hasMore.value = page++ < guessData.value.pages;
+  // 没有更多数据时不再发起请求
+  if (!hasMore.value) return;
+
+  // 缓存上一页的商品数据
+  const { items } = guessData.value;
+  const nextPageData = await getGuess(page, pageSize);
+  // 将上一页获取的商品数据与下一页商品数据进行合并并
+  nextPageData.items = items.concat(nextPageData.items);
+  guessData.value = nextPageData;
+};
 
 // 跳转到搜索页面
 const goSearch = () => {
@@ -62,7 +108,9 @@ const nextVersion = () => {
   <view class="navbar" :style="{ paddingTop: safeArea?.top + 'px' }">
     <!-- 文字logo -->
     <view class="logo">
-      <image src="/static/images/logo.png"></image>
+      <image
+        src="https://static.botue.com/erabbit/static/images/logo.png"
+      ></image>
       <text>新鲜 · 亲民 · 快捷</text>
     </view>
     <!-- 搜索条 -->
@@ -80,77 +128,48 @@ const nextVersion = () => {
     enhanced
     refresher-background="#f7f7f8"
     :show-scrollbar="false"
+    :refresher-triggered="triggered"
+    @refresherrefresh="refresh"
+    @scrolltolower="getMore"
   >
     <!-- 焦点图 -->
     <carousel style="height: 280rpx" :source="bannerData"></carousel>
     <!-- 前台类目 -->
-    <entries :source="[]"></entries>
+    <entries :source="entryData"></entries>
     <!-- 推荐专区 -->
     <view class="panel recommend">
-      <view class="item">
-        <view class="title">特惠推荐<text>精选全攻略</text></view>
-        <navigator
-          hover-class="none"
-          url="/pages/recommend/index?type=1"
-          class="cards"
-        >
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_1.jpg"
-          ></image>
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_2.jpg"
-          ></image>
-        </navigator>
-      </view>
-      <view class="item">
-        <view class="title">爆款推荐<text>最受欢迎</text></view>
-        <navigator
-          hover-class="none"
-          url="/pages/recommend/index?type=2"
-          class="cards"
-        >
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_3.jpg"
-          ></image>
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_4.jpg"
-          ></image>
-        </navigator>
-      </view>
-      <view class="item">
-        <view class="title">一站买全 <text>精选优选</text></view>
-        <navigator
-          hover-class="none"
-          url="/pages/recommend/index?type=1"
-          class="cards"
-        >
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_5.jpg"
-          ></image>
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_6.jpg"
-          ></image>
-        </navigator>
-      </view>
-      <view class="item" @click="nextVersion">
-        <view class="title"> 领券中心 <text>超值优惠券</text> </view>
-        <navigator hover-class="none" class="cards">
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_7.jpg"
-          ></image>
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_8.jpg"
-          ></image>
-        </navigator>
-      </view>
+      <template v-for="item in recommendData" :key="item.id">
+        <view class="item" v-if="item.type !== 4">
+          <view class="title"
+            >{{ item.title }}<text>{{ item.alt }}</text></view
+          >
+          <navigator
+            hover-class="none"
+            :url="`/pages/recommend/index?type=${item.type}`"
+            class="cards"
+          >
+            <image
+              mode="aspectFit"
+              v-for="picture in item.pictures"
+              :key="picture"
+              :src="picture"
+            ></image>
+          </navigator>
+        </view>
+        <view class="item" v-else @click="nextVersion">
+          <view class="title"
+            >{{ item.title }}<text>{{ item.alt }}</text></view
+          >
+          <navigator hover-class="none" url=" " class="cards">
+            <image
+              mode="aspectFit"
+              v-for="picture in item.pictures"
+              :key="picture"
+              :src="picture"
+            ></image>
+          </navigator>
+        </view>
+      </template>
     </view>
     <!-- 新鲜好物 -->
     <view class="panel fresh">
@@ -164,37 +183,17 @@ const nextVersion = () => {
         >
       </view>
       <view class="cards">
-        <navigator hover-class="none" url="/pages/goods/index">
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_9.jpg"
-          ></image>
-          <view class="name">香水小样</view>
-          <view class="price"> <text class="small">¥</text>299 </view>
-        </navigator>
-        <navigator hover-class="none" url="/pages/goods/index">
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_10.jpg"
-          ></image>
-          <view class="name">红外体温仪</view>
-          <view class="price"> <text class="small">¥</text>266 </view>
-        </navigator>
-        <navigator hover-class="none" url="/pages/goods/index">
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_11.jpg"
-          ></image>
-          <view class="name">美的电饭煲美的电饭煲</view>
-          <view class="price"> <text class="small">¥</text>199 </view>
-        </navigator>
-        <navigator hover-class="none" url="/pages/goods/index">
-          <image
-            mode="aspectFit"
-            src="/static/uploads/goods_small_12.jpg"
-          ></image>
-          <view class="name">过滤水壶</view>
-          <view class="price"> <text class="small">¥</text>99 </view>
+        <navigator
+          hover-class="none"
+          v-for="item in freshData"
+          :key="item.id"
+          :url="`/pages/goods/index?id=${item.id}`"
+        >
+          <image mode="aspectFit" :src="item.picture"></image>
+          <view class="name">{{ item.name }}</view>
+          <view class="price">
+            <text class="small">¥</text>{{ item.price }}</view
+          >
         </navigator>
       </view>
     </view>
@@ -202,12 +201,10 @@ const nextVersion = () => {
     <view class="panel brands">
       <view class="title">
         热门品牌
-        <navigator hover-class="none" class="more" url="/pages/list/index"
-          >更多</navigator
-        >
+        <navigator hover-class="none" class="more" url=" ">更多</navigator>
       </view>
       <view class="cards">
-        <navigator hover-class="none" url="/pages/goods/index">
+        <navigator hover-class="none" url=" ">
           <image
             mode="aspectFit"
             src="/static/uploads/brand_logo_1.jpg"
@@ -215,7 +212,7 @@ const nextVersion = () => {
           <view class="name">小米</view>
           <view class="price">99元起</view>
         </navigator>
-        <navigator hover-class="none" url="/pages/goods/index">
+        <navigator hover-class="none" url=" ">
           <image
             mode="aspectFit"
             src="/static/uploads/brand_logo_2.jpg"
@@ -223,7 +220,7 @@ const nextVersion = () => {
           <view class="name">TCL</view>
           <view class="price">199起</view>
         </navigator>
-        <navigator hover-class="none" url="/pages/goods/index">
+        <navigator hover-class="none" url=" ">
           <image
             mode="aspectFit"
             src="/static/uploads/brand_logo_3.jpg"
@@ -231,7 +228,7 @@ const nextVersion = () => {
           <view class="name">饭小宝</view>
           <view class="price">9.9起</view>
         </navigator>
-        <navigator hover-class="none" url="/pages/goods/index">
+        <navigator hover-class="none" url=" ">
           <image
             mode="aspectFit"
             src="/static/uploads/brand_logo_4.jpg"
@@ -245,10 +242,10 @@ const nextVersion = () => {
     <view class="panel topic">
       <view class="title">
         专题
-        <navigator hover-class="none" class="more" url="">更多</navigator>
+        <navigator hover-class="none" class="more" url=" ">更多</navigator>
       </view>
       <div class="cards">
-        <navigator hover-class="none" url="">
+        <navigator hover-class="none" url=" ">
           <image src="/static/uploads/topic_1.jpg"></image>
           <view class="name">忙里忙外，回家吃饭忙里忙外，回家吃饭</view>
           <view class="price"> <text>19.9元</text>起 </view>
@@ -257,7 +254,7 @@ const nextVersion = () => {
             <text space="ensp" class="icon-preview">1000</text>
           </view>
         </navigator>
-        <navigator hover-class="none" url="">
+        <navigator hover-class="none" url=" ">
           <image src="/static/uploads/topic_2.jpg"></image>
           <view class="name">忙里忙外，回家吃饭</view>
           <view class="price"> <text>19.9元</text>起 </view>
@@ -269,7 +266,7 @@ const nextVersion = () => {
       </div>
     </view>
     <!-- 猜你喜欢 -->
-    <guess :source="[]"></guess>
+    <guess :source="guessData.items"></guess>
     <view class="loading" v-if="hasMore">正在加载...</view>
   </scroll-view>
 </template>
@@ -284,7 +281,7 @@ page {
 
 /* 自定义导航条 */
 .navbar {
-  background-image: url(/static/images/navigator_bg.png);
+  background-image: url(https://static.botue.com/erabbit/static/images/navigator_bg.png);
   background-size: cover;
   position: relative;
 }
