@@ -12,71 +12,71 @@
         class="dot"
         :class="{ active: index === activeIndex }"
         v-for="(item, index) in source"
-        :key="index"
+        :key="item.id"
       ></text>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+  import { defineProps, ref } from "vue";
 
-interface bannerType {
-  [index: number]: { id: string; type: string; imgUrl: string };
-}
+  interface bannerType {
+    [index: number]: { id: string; type: string; imgUrl: string };
+  }
 
-defineProps<{
-  source: bannerType;
-}>();
+  defineProps<{
+    source: bannerType;
+  }>();
 
-const activeIndex = ref(0);
+  const activeIndex = ref(0);
 
-// 更新指示器状态
-const swiperChanged = (ev: WechatMiniprogram.SwiperChange) => {
-  activeIndex.value = ev.detail.current;
-};
+  // 更新指示器状态
+  const swiperChanged = (ev: WechatMiniprogram.SwiperChange) => {
+    activeIndex.value = ev.detail.current;
+  };
 </script>
 
 <style>
-:host {
-  display: block;
-}
+  :host {
+    display: block;
+  }
 
-/* 焦点图 */
-.carousel {
-  height: 100%;
-  position: relative;
+  /* 焦点图 */
+  .carousel {
+    height: 100%;
+    position: relative;
 
-  border-radius: 10rpx;
-  overflow: hidden;
-  transform: translateY(0);
-}
+    border-radius: 10rpx;
+    overflow: hidden;
+    transform: translateY(0);
+  }
 
-.carousel .navigator,
-.carousel .image {
-  width: 100%;
-  height: 100%;
-}
+  .carousel .navigator,
+  .carousel .image {
+    width: 100%;
+    height: 100%;
+  }
 
-.carousel .indicator {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 16rpx;
+  .carousel .indicator {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 16rpx;
 
-  display: flex;
-  justify-content: center;
-}
+    display: flex;
+    justify-content: center;
+  }
 
-.carousel .indicator .dot {
-  width: 30rpx;
-  height: 6rpx;
-  margin: 0 8rpx;
-  border-radius: 6rpx;
-  background-color: rgba(255, 255, 255, 0.4);
-}
+  .carousel .indicator .dot {
+    width: 30rpx;
+    height: 6rpx;
+    margin: 0 8rpx;
+    border-radius: 6rpx;
+    background-color: rgba(255, 255, 255, 0.4);
+  }
 
-.carousel .indicator .active {
-  background-color: #fff;
-}
+  .carousel .indicator .active {
+    background-color: #fff;
+  }
 </style>

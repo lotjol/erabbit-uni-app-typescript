@@ -41,70 +41,70 @@
 <script setup lang="ts"></script>
 
 <style>
-page {
-  height: 100%;
-  overflow: hidden;
-  background-color: #f4f4f4;
-}
+  page {
+    height: 100%;
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
 
-.viewport {
-  padding: 20rpx 0;
-}
+  .viewport {
+    padding: 20rpx 0;
+  }
 
-.timeline {
-  padding: 60rpx 20rpx 50rpx 70rpx;
-  margin: 0 20rpx;
-  border-radius: 10rpx;
-  background-color: #fff;
-  position: relative;
-}
+  .timeline {
+    padding: 60rpx 20rpx 50rpx 70rpx;
+    margin: 0 20rpx;
+    border-radius: 10rpx;
+    background-color: #fff;
+    position: relative;
+  }
 
-.timeline::before {
-  content: "";
-  display: block;
-  width: 2rpx;
-  background-color: #eaeaea;
+  .timeline::before {
+    content: "";
+    display: block;
+    width: 2rpx;
+    background-color: #eaeaea;
 
-  position: absolute;
-  top: 60rpx;
-  bottom: 50rpx;
-  left: 40rpx;
-}
+    position: absolute;
+    top: 60rpx;
+    bottom: 50rpx;
+    left: 40rpx;
+  }
 
-.timeline .item {
-  margin-top: 30rpx;
-  color: #666;
-  font-size: 26rpx;
-  position: relative;
-}
+  .timeline .item {
+    margin-top: 30rpx;
+    color: #666;
+    font-size: 26rpx;
+    position: relative;
+  }
 
-.timeline .item:first-child {
-  color: #333;
-  margin-top: 0;
-}
+  .timeline .item:first-child {
+    color: #333;
+    margin-top: 0;
+  }
 
-.timeline .item .label {
-  font-weight: 600;
-}
+  .timeline .item .label {
+    font-weight: 600;
+  }
 
-.timeline .dotted::before {
-  content: "";
-  display: block;
-  width: 14rpx;
-  height: 14rpx;
-  border-radius: 50%;
-  background-color: #eaeaea;
+  .timeline .dotted::before {
+    content: "";
+    display: block;
+    width: 14rpx;
+    height: 14rpx;
+    border-radius: 50%;
+    background-color: #eaeaea;
 
-  position: absolute;
-  left: -37rpx;
-  top: 12rpx;
-}
+    position: absolute;
+    left: -37rpx;
+    top: 12rpx;
+  }
 
-.timeline .icon-checked::before {
-  font-size: 30rpx;
-  color: #27ba9b;
-  position: absolute;
-  left: -44rpx;
-  top: -4rpx;
-}
+  .timeline .icon-checked::before {
+    font-size: 30rpx;
+    color: #27ba9b;
+    position: absolute;
+    left: -44rpx;
+    top: -4rpx;
+  }
 </style>

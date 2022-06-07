@@ -35,79 +35,79 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad } from "@dcloudio/uni-app";
+  import { onLoad } from "@dcloudio/uni-app";
 
-onLoad(({ id }) => {
-  uni.setNavigationBarTitle({
-    title: id ? "修改地址" : "新建地址",
+  onLoad(({ id }) => {
+    uni.setNavigationBarTitle({
+      title: id ? "修改地址" : "新建地址",
+    });
   });
-});
 </script>
 
 <style>
-page {
-  background-color: #f4f4f4;
-}
+  page {
+    background-color: #f4f4f4;
+  }
 
-.form {
-  margin: 20rpx 20rpx 0;
-  padding: 0 20rpx;
-  border-radius: 10rpx;
-  background-color: #fff;
-}
+  .form {
+    margin: 20rpx 20rpx 0;
+    padding: 0 20rpx;
+    border-radius: 10rpx;
+    background-color: #fff;
+  }
 
-.form .form-item {
-  display: flex;
-  min-height: 96rpx;
-  line-height: 46rpx;
-  padding: 25rpx 10rpx;
-  background-color: #fff;
-  font-size: 28rpx;
-  border-bottom: 1rpx solid #ddd;
-  position: relative;
-}
+  .form .form-item {
+    display: flex;
+    min-height: 96rpx;
+    line-height: 46rpx;
+    padding: 25rpx 10rpx;
+    background-color: #fff;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #ddd;
+    position: relative;
+  }
 
-.form .form-item:last-child {
-  border: none;
-}
+  .form .form-item:last-child {
+    border: none;
+  }
 
-.form .form-item .label {
-  width: 200rpx;
-  color: #333;
-}
+  .form .form-item .label {
+    width: 200rpx;
+    color: #333;
+  }
 
-.form .form-item input {
-  flex: 1;
-  display: block;
-  height: 46rpx;
-}
+  .form .form-item input {
+    flex: 1;
+    display: block;
+    height: 46rpx;
+  }
 
-.form .form-item switch {
-  position: absolute;
-  right: -10rpx;
-  transform: scale(0.7) translateY(-8px);
-}
+  .form .form-item switch {
+    position: absolute;
+    right: -10rpx;
+    transform: scale(0.7) translateY(-8px);
+  }
 
-.form .form-item picker {
-  flex: 1;
-}
+  .form .form-item picker {
+    flex: 1;
+  }
 
-.form .form-item .region {
-  color: #333;
-}
+  .form .form-item .region {
+    color: #333;
+  }
 
-.form .form-item .placeholder {
-  color: #888;
-}
+  .form .form-item .placeholder {
+    color: #888;
+  }
 
-.button {
-  height: 80rpx;
-  text-align: center;
-  line-height: 80rpx;
-  margin: 30rpx 20rpx;
-  color: #fff;
-  border-radius: 80rpx;
-  font-size: 30rpx;
-  background-color: #27ba9b;
-}
+  .button {
+    height: 80rpx;
+    text-align: center;
+    line-height: 80rpx;
+    margin: 30rpx 20rpx;
+    color: #fff;
+    border-radius: 80rpx;
+    font-size: 30rpx;
+    background-color: #27ba9b;
+  }
 </style>

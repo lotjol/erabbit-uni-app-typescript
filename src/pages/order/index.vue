@@ -30,7 +30,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -62,15 +64,21 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="more">查看更多</view>
@@ -96,7 +104,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -126,7 +136,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -157,11 +169,15 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
                 <text class="quantity">x2</text>
               </view>
             </navigator>
@@ -190,7 +206,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -221,7 +239,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -253,15 +273,21 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="more">查看更多</view>
@@ -287,7 +313,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -321,7 +349,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -351,15 +381,21 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="more">查看更多</view>
@@ -384,7 +420,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -418,7 +456,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -449,7 +489,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -481,15 +523,21 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="more">查看更多</view>
@@ -515,7 +563,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -549,7 +599,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -580,7 +632,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -612,15 +666,21 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_6.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="cover">
-                <image src="/static/uploads/goods_big_7.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
+                ></image>
                 <text class="quantity">x1</text>
               </view>
               <view class="more">查看更多</view>
@@ -646,7 +706,9 @@
             <!-- 商品信息 -->
             <navigator class="goods" url="./detail/index" hover-class="none">
               <view class="cover">
-                <image src="/static/uploads/goods_big_5.jpg"></image>
+                <image
+                  src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
+                ></image>
               </view>
               <view class="meta">
                 <view class="name ellipsis"
@@ -674,242 +736,242 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+  import { ref } from "vue";
 
-import { useAppStore } from "@/store";
+  import { useAppStore } from "@/store";
 
-const appStore = useAppStore();
-const safeArea = appStore.safeArea;
+  const appStore = useAppStore();
+  const safeArea = appStore.safeArea;
 
-const swiperIndex = ref<string | number>(0);
-const adjustIndex = ref<string | number>(0);
-const cursorLeft = ref<string>("0%");
+  const swiperIndex = ref<string | number>(0);
+  const adjustIndex = ref<string | number>(0);
+  const cursorLeft = ref<string>("0%");
 
-const changeTab = (ev: any) => {
-  // 获取当前 swiperItem 的索引值值
-  let { index } = ev.target.dataset;
-  if (ev.detail.currentItemId) index = ev.detail.currentItemId;
-  // 切换不同的 swiperItem
-  swiperIndex.value = index;
-};
+  const changeTab = (ev: any) => {
+    // 获取当前 swiperItem 的索引值值
+    let { index } = ev.target.dataset;
+    if (ev.detail.currentItemId) index = ev.detail.currentItemId;
+    // 切换不同的 swiperItem
+    swiperIndex.value = index;
+  };
 
-const onFinish = () => {
-  // 控制索引值改变的顺序
-  adjustIndex.value = swiperIndex.value;
-};
+  const onFinish = () => {
+    // 控制索引值改变的顺序
+    adjustIndex.value = swiperIndex.value;
+  };
 
-const onTransition = (ev: WechatMiniprogram.SwiperTransition) => {
-  // 获取动画相关参数
-  const current = parseInt(ev.target.dataset.current);
-  const dx = ev.detail.dx;
+  const onTransition = (ev: WechatMiniprogram.SwiperTransition) => {
+    // 获取动画相关参数
+    const current = parseInt(ev.target.dataset.current);
+    const dx = ev.detail.dx;
 
-  cursorLeft.value = (current + dx / safeArea!.width) * 20 + "%";
-};
+    cursorLeft.value = (current + dx / safeArea!.width) * 20 + "%";
+  };
 </script>
 
 <style>
-page {
-  height: 100%;
-  overflow: hidden;
-}
+  page {
+    height: 100%;
+    overflow: hidden;
+  }
 
-.viewport {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-}
+  .viewport {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+  }
 
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  line-height: 60rpx;
-  margin: 0 10rpx;
-  background-color: #fff;
-  box-shadow: 0 4rpx 6rpx rgba(240, 240, 240, 0.6);
-  position: relative;
-  z-index: 9;
-}
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    line-height: 60rpx;
+    margin: 0 10rpx;
+    background-color: #fff;
+    box-shadow: 0 4rpx 6rpx rgba(240, 240, 240, 0.6);
+    position: relative;
+    z-index: 9;
+  }
 
-.tabs text {
-  flex: 1;
-  text-align: center;
-  padding: 20rpx;
-  font-size: 28rpx;
-  color: #262626;
-}
+  .tabs text {
+    flex: 1;
+    text-align: center;
+    padding: 20rpx;
+    font-size: 28rpx;
+    color: #262626;
+  }
 
-.tabs .cursor {
-  position: absolute;
-  left: 0;
-  bottom: 20rpx;
+  .tabs .cursor {
+    position: absolute;
+    left: 0;
+    bottom: 20rpx;
 
-  display: block;
-  content: "";
-  width: 20%;
-  height: 4rpx;
-  padding: 0 50rpx;
-  background-clip: content-box;
-  background-color: #27ba9b;
-}
+    display: block;
+    content: "";
+    width: 20%;
+    height: 4rpx;
+    padding: 0 50rpx;
+    background-clip: content-box;
+    background-color: #27ba9b;
+  }
 
-.orders {
-  background-color: #f7f7f8;
-}
+  .orders {
+    background-color: #f7f7f8;
+  }
 
-.orders .card {
-  min-height: 100rpx;
-  padding: 20rpx;
-  margin: 20rpx 20rpx 0;
-  border-radius: 10rpx;
-  background-color: #fff;
-}
+  .orders .card {
+    min-height: 100rpx;
+    padding: 20rpx;
+    margin: 20rpx 20rpx 0;
+    border-radius: 10rpx;
+    background-color: #fff;
+  }
 
-.orders .card:last-child {
-  padding-bottom: 40rpx;
-}
+  .orders .card:last-child {
+    padding-bottom: 40rpx;
+  }
 
-.orders .status {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 28rpx;
-  color: #999;
-  margin-bottom: 15rpx;
-}
+  .orders .status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 28rpx;
+    color: #999;
+    margin-bottom: 15rpx;
+  }
 
-.orders .status .date {
-  color: #666;
-  flex: 1;
-}
+  .orders .status .date {
+    color: #666;
+    flex: 1;
+  }
 
-.orders .status .primary {
-  color: #ff9240;
-}
+  .orders .status .primary {
+    color: #ff9240;
+  }
 
-.orders .status .icon-delete {
-  line-height: 1;
-  margin-left: 10rpx;
-  padding-left: 10rpx;
-  border-left: 1rpx solid #e3e3e3;
-}
+  .orders .status .icon-delete {
+    line-height: 1;
+    margin-left: 10rpx;
+    padding-left: 10rpx;
+    border-left: 1rpx solid #e3e3e3;
+  }
 
-.orders .goods {
-  display: flex;
-  margin-bottom: 20rpx;
-}
+  .orders .goods {
+    display: flex;
+    margin-bottom: 20rpx;
+  }
 
-.orders .goods .cover {
-  width: 170rpx;
-  height: 170rpx;
-  margin-right: 20rpx;
-  border-radius: 10rpx;
-  overflow: hidden;
-  position: relative;
-}
+  .orders .goods .cover {
+    width: 170rpx;
+    height: 170rpx;
+    margin-right: 20rpx;
+    border-radius: 10rpx;
+    overflow: hidden;
+    position: relative;
+  }
 
-.orders .goods .quantity {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  line-height: 1;
-  padding: 6rpx 4rpx 6rpx 8rpx;
-  font-size: 24rpx;
-  color: #fff;
-  border-radius: 10rpx 0 0 0;
-  background-color: rgba(0, 0, 0, 0.6);
-}
+  .orders .goods .quantity {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    line-height: 1;
+    padding: 6rpx 4rpx 6rpx 8rpx;
+    font-size: 24rpx;
+    color: #fff;
+    border-radius: 10rpx 0 0 0;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
 
-.orders .goods .meta {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
+  .orders .goods .meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 
-.orders .goods .name {
-  height: 80rpx;
-  font-size: 26rpx;
-  color: #444;
-}
+  .orders .goods .name {
+    height: 80rpx;
+    font-size: 26rpx;
+    color: #444;
+  }
 
-.orders .goods .type {
-  line-height: 1.8;
-  padding: 0 15rpx;
-  margin-top: 10rpx;
-  font-size: 24rpx;
-  align-self: flex-start;
-  border-radius: 4rpx;
-  color: #888;
-  background-color: #f7f7f8;
-}
+  .orders .goods .type {
+    line-height: 1.8;
+    padding: 0 15rpx;
+    margin-top: 10rpx;
+    font-size: 24rpx;
+    align-self: flex-start;
+    border-radius: 4rpx;
+    color: #888;
+    background-color: #f7f7f8;
+  }
 
-.orders .goods .more {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22rpx;
-  color: #333;
-}
+  .orders .goods .more {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22rpx;
+    color: #333;
+  }
 
-.orders .payment {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  line-height: 1;
-  padding: 20rpx 0;
-  text-align: right;
-  color: #999;
-  font-size: 28rpx;
-  border-bottom: 1rpx solid #eee;
-}
+  .orders .payment {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    line-height: 1;
+    padding: 20rpx 0;
+    text-align: right;
+    color: #999;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #eee;
+  }
 
-.orders .payment .quantity {
-  font-size: 24rpx;
-  margin-right: 16rpx;
-}
+  .orders .payment .quantity {
+    font-size: 24rpx;
+    margin-right: 16rpx;
+  }
 
-.orders .payment .amount {
-  color: #444;
-  margin-left: 6rpx;
-}
+  .orders .payment .amount {
+    color: #444;
+    margin-left: 6rpx;
+  }
 
-.orders .payment .symbol {
-  font-size: 20rpx;
-}
+  .orders .payment .symbol {
+    font-size: 20rpx;
+  }
 
-.orders .action {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: flex-start;
-  padding-top: 20rpx;
-}
+  .orders .action {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    padding-top: 20rpx;
+  }
 
-.orders .action .button {
-  width: 200rpx;
-  height: 60rpx;
-  text-align: center;
-  line-height: 60rpx;
-  margin-left: 20rpx;
-  border-radius: 60rpx;
-  border: 1rpx solid #ccc;
-  font-size: 26rpx;
-  color: #444;
-}
+  .orders .action .button {
+    width: 200rpx;
+    height: 60rpx;
+    text-align: center;
+    line-height: 60rpx;
+    margin-left: 20rpx;
+    border-radius: 60rpx;
+    border: 1rpx solid #ccc;
+    font-size: 26rpx;
+    color: #444;
+  }
 
-.orders .action .primary {
-  color: #27ba9b;
-  border-color: #27ba9b;
-}
+  .orders .action .primary {
+    color: #27ba9b;
+    border-color: #27ba9b;
+  }
 
-.orders .blank {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  font-size: 30rpx;
-  margin-top: -40rpx;
-  color: #666;
-}
+  .orders .blank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 30rpx;
+    margin-top: -40rpx;
+    color: #666;
+  }
 </style>

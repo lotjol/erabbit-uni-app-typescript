@@ -34,117 +34,117 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+  import { ref } from "vue";
 
-import { useAppStore } from "@/store";
+  import { useAppStore } from "@/store";
 
-import guess from "@/components/guess/index.vue";
+  import guess from "@/components/guess/index.vue";
 
-const titleOpacity = ref(0);
+  const titleOpacity = ref(0);
 
-const appStore = useAppStore();
-const { safeArea, platform } = appStore;
+  const appStore = useAppStore();
+  const { safeArea, platform } = appStore;
 
-const goBack = () => {
-  uni.navigateBack({});
-};
+  const goBack = () => {
+    uni.navigateBack({});
+  };
 
-const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
-  let opacity = ev.detail.scrollTop / 200;
-  if (opacity < 0.2) opacity = 0;
-  if (opacity > 0.8) opacity = 1;
-  titleOpacity.value = opacity;
-};
+  const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
+    let opacity = ev.detail.scrollTop / 200;
+    if (opacity < 0.2) opacity = 0;
+    if (opacity > 0.8) opacity = 1;
+    titleOpacity.value = opacity;
+  };
 </script>
 
 <style lang="scss">
-page {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-.navbar {
-  width: 750rpx;
-  color: #fff;
-  background-color: #27ba9b;
-
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9;
-}
-
-.navbar .title {
-  height: 40px;
-  line-height: 30px;
-  text-align: center;
-  font-size: 17px;
-  font-weight: 500;
-  opacity: 0;
-}
-
-.navbar .android {
-  text-align: left;
-  padding-left: 42px;
-}
-
-.navbar .wrap {
-  position: relative;
-}
-
-.navbar .back {
-  position: absolute;
-  left: 10px;
-  top: 4px;
-  line-height: 1;
-  font-size: 23px;
-  z-index: 9;
-}
-
-.viewport {
-  background-color: #f7f7f8;
-}
-
-.overview {
-  line-height: 1;
-  padding-bottom: 70rpx;
-  color: #fff;
-  background-color: #27ba9b;
-}
-
-.overview .status {
-  font-size: 36rpx;
-  font-weight: 500;
-  text-align: center;
-}
-
-.overview .status::before {
-  display: block;
-  font-size: 110rpx;
-  margin-bottom: 20rpx;
-}
-
-.overview .buttons {
-  height: 60rpx;
-  line-height: 60rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 60rpx;
-}
-
-.overview navigator {
-  text-align: center;
-  margin: 0 10rpx;
-  font-size: 28rpx;
-  color: #fff;
-
-  &:first-child {
-    width: 200rpx;
-    border-radius: 64rpx;
-    border: 1rpx solid #fff;
+  page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
   }
-}
+
+  .navbar {
+    width: 750rpx;
+    color: #fff;
+    background-color: #27ba9b;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9;
+  }
+
+  .navbar .title {
+    height: 40px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
+    opacity: 0;
+  }
+
+  .navbar .android {
+    text-align: left;
+    padding-left: 42px;
+  }
+
+  .navbar .wrap {
+    position: relative;
+  }
+
+  .navbar .back {
+    position: absolute;
+    left: 10px;
+    top: 4px;
+    line-height: 1;
+    font-size: 23px;
+    z-index: 9;
+  }
+
+  .viewport {
+    background-color: #f7f7f8;
+  }
+
+  .overview {
+    line-height: 1;
+    padding-bottom: 70rpx;
+    color: #fff;
+    background-color: #27ba9b;
+  }
+
+  .overview .status {
+    font-size: 36rpx;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .overview .status::before {
+    display: block;
+    font-size: 110rpx;
+    margin-bottom: 20rpx;
+  }
+
+  .overview .buttons {
+    height: 60rpx;
+    line-height: 60rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60rpx;
+  }
+
+  .overview navigator {
+    text-align: center;
+    margin: 0 10rpx;
+    font-size: 28rpx;
+    color: #fff;
+
+    &:first-child {
+      width: 200rpx;
+      border-radius: 64rpx;
+      border: 1rpx solid #fff;
+    }
+  }
 </style>

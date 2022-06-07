@@ -7,7 +7,10 @@
     <scroll-view scroll-y>
       <!-- 头像 -->
       <view class="avatar">
-        <image @click="chooseImage" src="/static/uploads/avatar_3.jpg" />
+        <image
+          @click="chooseImage"
+          src="http://static.botue.com/erabbit/static/uploads/avatar_3.jpg"
+        />
         <text>点击修改头像</text>
       </view>
       <!-- 用户信息 -->
@@ -55,128 +58,128 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from "@/store";
+  import { useAppStore } from "@/store";
 
-const appStore = useAppStore();
-const safeArea = appStore.safeArea;
+  const appStore = useAppStore();
+  const safeArea = appStore.safeArea;
 
-const goBack = () => {
-  uni.navigateBack({});
-};
+  const goBack = () => {
+    uni.navigateBack({});
+  };
 
-const chooseImage = () => {
-  uni.chooseImage({});
-};
+  const chooseImage = () => {
+    uni.chooseImage({});
+  };
 </script>
 
 <style>
-page {
-  height: 100%;
-  overflow: hidden;
-  background-color: #f4f4f4;
-}
+  page {
+    height: 100%;
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
 
-.viewport {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  background-image: url(/static/images/order_bg.png);
-  background-size: auto 392rpx;
-  background-repeat: no-repeat;
-}
+  .viewport {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-image: url(http://static.botue.com/erabbit/static/images/order_bg.png);
+    background-size: auto 392rpx;
+    background-repeat: no-repeat;
+  }
 
-.navbar .title {
-  height: 40px;
-  line-height: 32px;
-  text-align: center;
-  font-size: 17px;
-  font-weight: 500;
-  color: #fff;
-}
+  .navbar .title {
+    height: 40px;
+    line-height: 32px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
+    color: #fff;
+  }
 
-.navbar .back {
-  position: absolute;
-  left: 20rpx;
-  top: 22px;
-  font-size: 23px;
-  z-index: 9;
-  color: #fff;
-}
+  .navbar .back {
+    position: absolute;
+    left: 20rpx;
+    top: 22px;
+    font-size: 23px;
+    z-index: 9;
+    color: #fff;
+  }
 
-.avatar {
-  text-align: center;
-  padding: 20rpx 0 40rpx;
-}
+  .avatar {
+    text-align: center;
+    padding: 20rpx 0 40rpx;
+  }
 
-.avatar image {
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 50%;
-}
+  .avatar image {
+    width: 160rpx;
+    height: 160rpx;
+    border-radius: 50%;
+  }
 
-.avatar text {
-  display: block;
-  padding-top: 20rpx;
-  line-height: 1;
-  font-size: 26rpx;
-  color: #fff;
-}
+  .avatar text {
+    display: block;
+    padding-top: 20rpx;
+    line-height: 1;
+    font-size: 26rpx;
+    color: #fff;
+  }
 
-.form {
-  margin: 20rpx 20rpx 0;
-  padding: 0 20rpx;
-  border-radius: 10rpx;
-  background-color: #fff;
-}
+  .form {
+    margin: 20rpx 20rpx 0;
+    padding: 0 20rpx;
+    border-radius: 10rpx;
+    background-color: #fff;
+  }
 
-.form .form-item {
-  display: flex;
-  height: 96rpx;
-  line-height: 46rpx;
-  padding: 25rpx 10rpx;
-  background-color: #fff;
-  font-size: 28rpx;
-  border-bottom: 1rpx solid #ddd;
-}
+  .form .form-item {
+    display: flex;
+    height: 96rpx;
+    line-height: 46rpx;
+    padding: 25rpx 10rpx;
+    background-color: #fff;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #ddd;
+  }
 
-.form .form-item:last-child {
-  border: none;
-}
+  .form .form-item:last-child {
+    border: none;
+  }
 
-.form .form-item .label {
-  width: 180rpx;
-  color: #333;
-}
+  .form .form-item .label {
+    width: 180rpx;
+    color: #333;
+  }
 
-.form .form-item input {
-  flex: 1;
-  display: block;
-  height: 46rpx;
-}
+  .form .form-item input {
+    flex: 1;
+    display: block;
+    height: 46rpx;
+  }
 
-.form .form-item .radio {
-  display: inline-block;
-  height: 46rpx;
-  margin-right: 20rpx;
-  vertical-align: middle;
-}
+  .form .form-item .radio {
+    display: inline-block;
+    height: 46rpx;
+    margin-right: 20rpx;
+    vertical-align: middle;
+  }
 
-.form .form-item radio {
-  transform: scale(0.7) translateY(-2px);
-}
+  .form .form-item radio {
+    transform: scale(0.7) translateY(-2px);
+  }
 
-.form .form-item picker {
-  flex: 1;
-}
+  .form .form-item picker {
+    flex: 1;
+  }
 
-.button {
-  height: 80rpx;
-  text-align: center;
-  line-height: 80rpx;
-  margin: 30rpx 20rpx;
-  color: #fff;
-  border-radius: 80rpx;
-  font-size: 30rpx;
-  background-color: #27ba9b;
-}
+  .button {
+    height: 80rpx;
+    text-align: center;
+    line-height: 80rpx;
+    margin: 30rpx 20rpx;
+    color: #fff;
+    border-radius: 80rpx;
+    font-size: 30rpx;
+    background-color: #27ba9b;
+  }
 </style>

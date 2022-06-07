@@ -7,7 +7,7 @@
     class="profile arrow">
     <image
       class="avatar"
-      src="/static/uploads/avatar_3.jpg"></image>
+      src="http://static.botue.com/erabbit/static/uploads/avatar_3.jpg"></image>
     <view class="meta">
       <text class="nickname">花开了</text>
       <text class="level">等级: 钻石</text>
@@ -51,39 +51,39 @@
 <script setup lang="ts"></script>
 
 <style>
-page {
-  background-color: #f4f4f4;
-}
+  page {
+    background-color: #f4f4f4;
+  }
 
-button {
-  text-align: left;
-  border-radius: 0;
-  background-color: #fff;
-}
+  button {
+    text-align: left;
+    border-radius: 0;
+    background-color: #fff;
+  }
 
-button::after {
-  width: auto;
-  height: auto;
-  left: auto;
-  border: none;
-}
+  button::after {
+    width: auto;
+    height: auto;
+    left: auto;
+    border: none;
+  }
 
-.viewport {
-  padding: 20rpx;
-}
+  .viewport {
+    padding: 20rpx;
+  }
 
-.arrow::after {
-  position: absolute;
-  top: 50%;
+  .arrow::after {
+    position: absolute;
+    top: 50%;
 
-  content: "\e6c2";
-  color: #ccc;
-  font-family: "erabbit" !important;
-  font-size: 32rpx;
-  transform: translateY(-50%);
-}
+    content: "\e6c2";
+    color: #ccc;
+    font-family: "erabbit" !important;
+    font-size: 32rpx;
+    transform: translateY(-50%);
+  }
 
-/* .profile {
+  /* .profile {
   height: 180rpx;
   padding: 30rpx;
   margin-bottom: 20rpx;
@@ -121,27 +121,27 @@ button::after {
   color: #666;
 } */
 
-.list {
-  padding: 0 20rpx;
-  background-color: #fff;
-  margin-bottom: 20rpx;
-  border-radius: 10rpx;
-}
+  .list {
+    padding: 0 20rpx;
+    background-color: #fff;
+    margin-bottom: 20rpx;
+    border-radius: 10rpx;
+  }
 
-.list .item {
-  line-height: 90rpx;
-  padding-left: 10rpx;
-  font-size: 30rpx;
-  color: #333;
-  border-top: 1rpx solid #ddd;
-  position: relative;
-}
+  .list .item {
+    line-height: 90rpx;
+    padding-left: 10rpx;
+    font-size: 30rpx;
+    color: #333;
+    border-top: 1rpx solid #ddd;
+    position: relative;
+  }
 
-.list .item:first-child {
-  border: none;
-}
+  .list .item:first-child {
+    border: none;
+  }
 
-.item::after {
-  right: 5rpx;
-}
+  .item::after {
+    right: 5rpx;
+  }
 </style>

@@ -48,7 +48,9 @@
           </view>
           <view class="section">
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_1.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_1.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -57,7 +59,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_2.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_2.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -66,7 +70,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_3.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_3.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -75,7 +81,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_4.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_4.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -84,7 +92,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_5.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_5.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -93,7 +103,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_6.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_6.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -115,7 +127,9 @@
           </view>
           <view class="section">
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_1.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_1.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -124,7 +138,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_2.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_2.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -133,7 +149,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_3.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_3.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -142,7 +160,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_4.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_4.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -151,7 +171,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_5.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_5.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -160,7 +182,9 @@
               </view>
             </navigator>
             <navigator hover-class="none" url="/pages/goods/index">
-              <image src="/static/uploads/category_thumb_6.jpg"></image>
+              <image
+                src="http://static.botue.com/erabbit/static/uploads/category_thumb_6.jpg"
+              ></image>
               <view class="name ellipsis">石榴</view>
               <view class="price">
                 <text class="symbol">¥</text>
@@ -176,195 +200,200 @@
 </template>
 
 <script setup lang="ts">
-import carousel from "@/components/carousel/index.vue";
+  import carousel from "@/components/carousel/index.vue";
 
-const bannerData = [
-  {
-    id: "227415",
-    type: "1",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_1.jpg",
-  },
-  {
-    id: "326416",
-    type: "4",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_2.jpg",
-  },
-  {
-    id: "163424",
-    type: "2",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_3.jpg",
-  },
-  {
-    id: "223413",
-    type: "1",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_4.jpg",
-  },
-  {
-    id: "423426",
-    type: "3",
-    imgUrl: "http://static.botue.com/erabbit/static/uploads/slider_5.jpg",
-  },
-];
+  const bannerData = [
+    {
+      id: "227415",
+      type: "1",
+      imgUrl:
+        "http://static.botue.com/erabbithttp://static.botue.com/erabbit/static/uploads/slider_1.jpg",
+    },
+    {
+      id: "326416",
+      type: "4",
+      imgUrl:
+        "http://static.botue.com/erabbithttp://static.botue.com/erabbit/static/uploads/slider_2.jpg",
+    },
+    {
+      id: "163424",
+      type: "2",
+      imgUrl:
+        "http://static.botue.com/erabbithttp://static.botue.com/erabbit/static/uploads/slider_3.jpg",
+    },
+    {
+      id: "223413",
+      type: "1",
+      imgUrl:
+        "http://static.botue.com/erabbithttp://static.botue.com/erabbit/static/uploads/slider_4.jpg",
+    },
+    {
+      id: "423426",
+      type: "3",
+      imgUrl:
+        "http://static.botue.com/erabbithttp://static.botue.com/erabbit/static/uploads/slider_5.jpg",
+    },
+  ];
 </script>
 
 <style>
-page {
-  height: 100%;
-  overflow: hidden;
-}
+  page {
+    height: 100%;
+    overflow: hidden;
+  }
 
-.viewport {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
+  .viewport {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 
-.search {
-  padding: 0 30rpx 20rpx;
-  background-color: #fff;
-}
+  .search {
+    padding: 0 30rpx 20rpx;
+    background-color: #fff;
+  }
 
-.search .input {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64rpx;
-  padding-left: 26rpx;
-  color: #8b8b8b;
-  font-size: 28rpx;
-  border-radius: 32rpx;
-  background-color: #f3f4f4;
-}
+  .search .input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64rpx;
+    padding-left: 26rpx;
+    color: #8b8b8b;
+    font-size: 28rpx;
+    border-radius: 32rpx;
+    background-color: #f3f4f4;
+  }
 
-.icon-search::before {
-  margin-right: 10rpx;
-}
+  .icon-search::before {
+    margin-right: 10rpx;
+  }
 
-/* 分类 */
-.categories {
-  flex: 1;
-  min-height: 400rpx;
-  display: flex;
-}
+  /* 分类 */
+  .categories {
+    flex: 1;
+    min-height: 400rpx;
+    display: flex;
+  }
 
-/* 主分类 */
-.primary {
-  width: 180rpx;
-  flex: none;
-  background-color: #f6f6f6;
-}
+  /* 主分类 */
+  .primary {
+    width: 180rpx;
+    flex: none;
+    background-color: #f6f6f6;
+  }
 
-.primary .item {
-  height: 96rpx;
-  text-align: center;
-  line-height: 96rpx;
-  font-size: 26rpx;
-  color: #595c63;
-  position: relative;
-}
+  .primary .item {
+    height: 96rpx;
+    text-align: center;
+    line-height: 96rpx;
+    font-size: 26rpx;
+    color: #595c63;
+    position: relative;
+  }
 
-.primary .active::before {
-  position: absolute;
-  left: 0;
-  top: 0;
+  .primary .active::before {
+    position: absolute;
+    left: 0;
+    top: 0;
 
-  content: "";
-  width: 8rpx;
-  height: 100%;
-  background-color: #27ba9b;
-}
+    content: "";
+    width: 8rpx;
+    height: 100%;
+    background-color: #27ba9b;
+  }
 
-.primary .item::after {
-  position: absolute;
-  left: 42rpx;
-  bottom: 0;
+  .primary .item::after {
+    position: absolute;
+    left: 42rpx;
+    bottom: 0;
 
-  content: "";
-  width: 96rpx;
-  border-top: 1rpx solid #e3e4e7;
-}
+    content: "";
+    width: 96rpx;
+    border-top: 1rpx solid #e3e4e7;
+  }
 
-.primary .active {
-  background-color: #fff;
-}
+  .primary .active {
+    background-color: #fff;
+  }
 
-.primary .item:last-child::after,
-.primary .active::after {
-  display: none;
-}
+  .primary .item:last-child::after,
+  .primary .active::after {
+    display: none;
+  }
 
-/* 次分类 */
-.secondary {
-  background-color: #fff;
-}
+  /* 次分类 */
+  .secondary {
+    background-color: #fff;
+  }
 
-.secondary .banner {
-  height: 200rpx;
-  margin: 30rpx;
-  border-radius: 4rpx;
-  overflow: hidden;
-}
+  .secondary .banner {
+    height: 200rpx;
+    margin: 30rpx;
+    border-radius: 4rpx;
+    overflow: hidden;
+  }
 
-.secondary .panel {
-  margin: 0 30rpx 0rpx;
-}
+  .secondary .panel {
+    margin: 0 30rpx 0rpx;
+  }
 
-.secondary .title {
-  height: 60rpx;
-  line-height: 60rpx;
-  color: #333;
-  font-size: 28rpx;
-  border-bottom: 1rpx solid #f7f7f8;
-}
+  .secondary .title {
+    height: 60rpx;
+    line-height: 60rpx;
+    color: #333;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #f7f7f8;
+  }
 
-.secondary .title .more {
-  float: right;
-  padding-left: 20rpx;
-  font-size: 24rpx;
-  color: #999;
-}
+  .secondary .title .more {
+    float: right;
+    padding-left: 20rpx;
+    font-size: 24rpx;
+    color: #999;
+  }
 
-.secondary .more::after {
-  font-family: "erabbit" !important;
-  content: "\e6c2";
-}
+  .secondary .more::after {
+    font-family: "erabbit" !important;
+    content: "\e6c2";
+  }
 
-.secondary .section {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 20rpx 0;
-}
+  .secondary .section {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20rpx 0;
+  }
 
-.secondary .section navigator {
-  /* flex: 1; */
-  width: 150rpx;
-  /* text-align: center; */
-  margin: 0rpx 30rpx 20rpx 0;
-}
+  .secondary .section navigator {
+    /* flex: 1; */
+    width: 150rpx;
+    /* text-align: center; */
+    margin: 0rpx 30rpx 20rpx 0;
+  }
 
-.secondary .section navigator:nth-child(3n) {
-  margin-right: 0;
-}
+  .secondary .section navigator:nth-child(3n) {
+    margin-right: 0;
+  }
 
-.secondary navigator image {
-  width: 126rpx;
-  height: 126rpx;
-}
+  .secondary navigator image {
+    width: 126rpx;
+    height: 126rpx;
+  }
 
-.secondary navigator .name {
-  /* display: block; */
-  font-size: 26rpx;
-  color: #333;
-}
+  .secondary navigator .name {
+    /* display: block; */
+    font-size: 26rpx;
+    color: #333;
+  }
 
-.secondary navigator .price {
-  font-size: 18rpx;
-  color: #cf4444;
-}
+  .secondary navigator .price {
+    font-size: 18rpx;
+    color: #cf4444;
+  }
 
-.secondary navigator .number {
-  font-size: 24rpx;
-  margin-left: 2rpx;
-}
+  .secondary navigator .number {
+    font-size: 24rpx;
+    margin-left: 2rpx;
+  }
 </style>
