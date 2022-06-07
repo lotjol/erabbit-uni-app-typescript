@@ -24,70 +24,70 @@
 <script setup lang="ts"></script>
 
 <style>
-page {
-  background-color: #f4f4f4;
-}
+  page {
+    background-color: #f4f4f4;
+  }
 
-.viewport {
-  padding: 20rpx;
-}
+  .viewport {
+    padding: 20rpx;
+  }
 
-.arrow::after {
-  position: absolute;
-  top: 50%;
+  .arrow::after {
+    position: absolute;
+    top: 50%;
 
-  content: "\e6c2";
-  color: #ccc;
-  font-family: "erabbit" !important;
-  font-size: 32rpx;
-  transform: translateY(-50%);
-}
+    content: "\e6c2";
+    color: #ccc;
+    font-family: "erabbit" !important;
+    font-size: 32rpx;
+    transform: translateY(-50%);
+  }
 
-.list {
-  padding: 0 20rpx;
-  background-color: #fff;
-  margin-bottom: 20rpx;
-  border-radius: 10rpx;
-}
+  .list {
+    padding: 0 20rpx;
+    background-color: #fff;
+    margin-bottom: 20rpx;
+    border-radius: 10rpx;
+  }
 
-.list .item {
-  line-height: 90rpx;
-  padding-left: 10rpx;
-  font-size: 30rpx;
-  color: #333;
-  border-top: 1rpx solid #ddd;
-  position: relative;
-}
+  .list .item {
+    line-height: 90rpx;
+    padding-left: 10rpx;
+    font-size: 30rpx;
+    color: #333;
+    border-top: 1rpx solid #ddd;
+    position: relative;
+  }
 
-.list .item:first-child {
-  border: none;
-}
+  .list .item:first-child {
+    border: none;
+  }
 
-.list .item::after {
-  right: 5rpx;
-}
+  .list .item::after {
+    right: 5rpx;
+  }
 
-.list .item switch {
-  position: absolute;
-  right: -10rpx;
-  transform: scale(0.7) translateY(-2px);
-}
+  .list .item switch {
+    position: absolute;
+    right: -10rpx;
+    transform: scale(0.7) translateY(-2px);
+  }
 
-.action {
-  text-align: center;
-  line-height: 90rpx;
-  margin-top: 40rpx;
-  font-size: 32rpx;
-  color: #333;
-}
+  .action {
+    text-align: center;
+    line-height: 90rpx;
+    margin-top: 40rpx;
+    font-size: 32rpx;
+    color: #333;
+  }
 
-.action .button {
-  background-color: #fff;
-  margin-bottom: 20rpx;
-  border-radius: 10rpx;
-}
+  .action .button {
+    background-color: #fff;
+    margin-bottom: 20rpx;
+    border-radius: 10rpx;
+  }
 
-.action .button:last-child {
-  margin-bottom: 0;
-}
+  .action .button:last-child {
+    margin-bottom: 0;
+  }
 </style>

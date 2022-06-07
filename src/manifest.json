@@ -57,6 +57,9 @@
     "usingComponents": true,
     "useExtendedLib": {
       "weui": true
+    },
+    "packOptions": {
+      "ignore": [{ "type": "glob", "value": "static/?(uploads|images)/*" }]
     }
   },
   "mp-alipay": {

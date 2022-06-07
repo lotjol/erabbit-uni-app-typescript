@@ -5,48 +5,48 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+  import { defineProps, ref } from "vue";
 
-defineProps<{
-  text: string;
-}>();
+  defineProps<{
+    text: string;
+  }>();
 
-const checked = ref(false);
+  const checked = ref(false);
 
-const toggleChecked = () => {
-  checked.value = !checked.value;
-};
+  const toggleChecked = () => {
+    checked.value = !checked.value;
+  };
 </script>
 <script lang="ts">
-export default {
-  options: {
-    virtualHost: true,
-  },
-};
+  export default {
+    options: {
+      virtualHost: true,
+    },
+  };
 </script>
 
 <style>
-.item {
-  width: 210rpx;
-  height: 62rpx;
-  text-align: center;
-  line-height: 60rpx;
-  margin: 0 30rpx 30rpx 0;
-  border: 1rpx solid #f3f4f4;
-  font-size: 24rpx;
-  color: #444;
-  background-color: #f3f4f4;
-  border-radius: 58rpx;
-  float: left;
-}
+  .item {
+    width: 210rpx;
+    height: 62rpx;
+    text-align: center;
+    line-height: 60rpx;
+    margin: 0 30rpx 30rpx 0;
+    border: 1rpx solid #f3f4f4;
+    font-size: 24rpx;
+    color: #444;
+    background-color: #f3f4f4;
+    border-radius: 58rpx;
+    float: left;
+  }
 
-.item:nth-child(3n) {
-  margin-right: 0;
-}
+  .item:nth-child(3n) {
+    margin-right: 0;
+  }
 
-.checked {
-  color: rgba(39, 186, 155, 0.8);
-  border: 1rpx solid rgba(39, 186, 155, 0.3);
-  background-color: rgba(39, 186, 155, 0.1);
-}
+  .checked {
+    color: rgba(39, 186, 155, 0.8);
+    border: 1rpx solid rgba(39, 186, 155, 0.3);
+    background-color: rgba(39, 186, 155, 0.1);
+  }
 </style>

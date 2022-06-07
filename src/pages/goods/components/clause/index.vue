@@ -26,46 +26,46 @@
 </template>
 
 <script lang="ts">
-export default {
-  options: {
-    styleIsolation: "apply-shared",
-  },
-};
+  export default {
+    options: {
+      styleIsolation: "apply-shared",
+    },
+  };
 </script>
 
 <style>
-.content {
-  padding: 20rpx 10rpx 100rpx 20rpx !important;
-}
+  .content {
+    padding: 20rpx 10rpx 100rpx 20rpx !important;
+  }
 
-.item {
-  margin-top: 20rpx;
-}
+  .item {
+    margin-top: 20rpx;
+  }
 
-.dt {
-  margin-bottom: 10rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-  position: relative;
-}
+  .dt {
+    margin-bottom: 10rpx;
+    font-size: 28rpx;
+    color: #333;
+    font-weight: 500;
+    position: relative;
+  }
 
-.dt::before {
-  content: "";
-  width: 10rpx;
-  height: 10rpx;
-  border-radius: 50%;
-  background-color: #eaeaea;
-  transform: translateY(-50%);
+  .dt::before {
+    content: "";
+    width: 10rpx;
+    height: 10rpx;
+    border-radius: 50%;
+    background-color: #eaeaea;
+    transform: translateY(-50%);
 
-  position: absolute;
-  top: 50%;
-  left: -20rpx;
-}
+    position: absolute;
+    top: 50%;
+    left: -20rpx;
+  }
 
-.dd {
-  line-height: 1.6;
-  font-size: 26rpx;
-  color: #999;
-}
+  .dd {
+    line-height: 1.6;
+    font-size: 26rpx;
+    color: #999;
+  }
 </style>
