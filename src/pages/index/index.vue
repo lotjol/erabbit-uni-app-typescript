@@ -246,7 +246,9 @@
       </view>
       <div class="cards">
         <navigator hover-class="none" url=" ">
-          <image src="/static/uploads/topic_1.jpg"></image>
+          <image
+            src="http://static.botue.com/erabbit/static/uploads/topic_1.jpg"
+          ></image>
           <view class="name">忙里忙外，回家吃饭忙里忙外，回家吃饭</view>
           <view class="price"> <text>19.9元</text>起 </view>
           <view class="extra">
@@ -255,7 +257,9 @@
           </view>
         </navigator>
         <navigator hover-class="none" url=" ">
-          <image src="/static/uploads/topic_2.jpg"></image>
+          <image
+            src="http://static.botue.com/erabbit/static/uploads/topic_2.jpg"
+          ></image>
           <view class="name">忙里忙外，回家吃饭</view>
           <view class="price"> <text>19.9元</text>起 </view>
           <view class="extra">
