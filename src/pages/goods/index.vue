@@ -1,14 +1,11 @@
 <template>
-  <view
-    class="navbar"
-    :style="{ paddingTop: safeArea!.top + 5 + 'px', opacity: navbarOpacity }"
-  >
+  <view class="navbar" :style="{ paddingTop: safeArea!.top + 5 + 'px' }">
     <div class="wrap">
       <!-- 返回按钮 -->
       <view class="back icon-left" @click="goBack"></view>
       <!-- 搜索栏 -->
       <view class="search">
-        <view @click="goSearch" class="input icon-search"></view>
+        <view class="input icon-search"></view>
       </view>
     </div>
     <!-- 锚链接 -->
@@ -19,7 +16,7 @@
         :data-anchor-offset="item.offset"
         :data-anchor-index="index"
         :class="{ active: anchorIndex === index }"
-        @click="scrollTo"
+        @tap="scrollTo"
         >{{ item.text }}</text
       >
     </view>
@@ -34,8 +31,8 @@
     :scroll-top="scrollTop"
     @scrolltoupper="scrollToUpper"
     @dragend="dragEnd"
-    @scroll="scrolled"
     class="viewport"
+    id="scrollView"
   >
     <!-- 商品信息 -->
     <view class="goods anchor" data-anchor-index="0">
@@ -444,9 +441,7 @@
   <!-- 用户操作 -->
   <view class="toolbar">
     <view class="icons">
-      <button class="collect" @click="nextVersion">
-        <text class="icon-heart"></text>收藏
-      </button>
+      <button class="collect"><text class="icon-heart"></text>收藏</button>
       <button class="contact" open-type="contact">
         <text class="icon-handset"></text>客服
       </button>
@@ -484,7 +479,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, getCurrentInstance } from "vue";
   import { onReady, onUnload } from "@dcloudio/uni-app";
 
   import clause from "./components/clause/index.vue";
@@ -496,9 +491,18 @@
   const appStore = useAppStore();
   const safeArea = appStore.safeArea;
 
-  let observer: UniApp.IntersectionObserver;
-  let query: UniApp.SelectorQuery;
-  let navBarHeight: number;
+  let navBarHeight: number = 0;
+
+  // 获取页面实例
+  const pageInstance: any = getCurrentInstance();
+
+  // 页面相交状态监听器
+  const observer = uni.createIntersectionObserver(this, {
+    observeAll: true,
+  });
+
+  // 页面节点查询器
+  const query = uni.createSelectorQuery();
 
   const tabs = ref([
     { text: "商品", offset: 0 },
@@ -513,12 +517,6 @@
   const halfDialogVisible = ref(false);
   const swiperCurrentIndex = ref(0);
   const buttonType = ref("");
-  const navbarOpacity = ref(0);
-
-  // 跳转到搜索页面
-  const goSearch = () => {
-    uni.navigateTo({ url: "/pages/search/index" });
-  };
 
   // 返回上一页
   const goBack = () => {
@@ -528,11 +526,6 @@
   // 跳转到购物车页面
   const goCart = () => {
     uni.navigateTo({ url: "/pages/cart/default" });
-  };
-
-  // 消息提示
-  const nextVersion = () => {
-    uni.showToast({ title: "等待下一个版本哦", icon: "none" });
   };
 
   const swiperChanged = (ev: WechatMiniprogram.SwiperChange) => {
@@ -545,17 +538,28 @@
   };
 
   // 点击 Tab 切换实现页内跳转
-  const scrollTo = (ev: any) => {
+  const scrollTo = (ev: WechatMiniprogram.BaseEvent) => {
     // 停止监听相交状态
     observer.disconnect();
-
     // // 获取滚动位置及索引值
     let { anchorOffset: offset, anchorIndex: index } = ev.target.dataset;
-
     // 调整滚动距离
     scrollTop.value = offset - navBarHeight;
     // 更新 Tab 的状态
     anchorIndex.value = index;
+  };
+
+  // 显示弹层
+  const showHalfDialog = (name: string, type?: string) => {
+    // 动态获取 halfDialog 展示的内容
+    layer.value = name;
+    halfDialogVisible.value = true;
+    buttonType.value = type || "";
+  };
+
+  // 关闭弹层
+  const hideHalfDialog = () => {
+    halfDialogVisible.value = false;
   };
 
   // 监测元素相交状态
@@ -577,39 +581,7 @@
     intersectionObserver();
   };
 
-  // 显示弹层
-  const showHalfDialog = (name: string, type?: string) => {
-    // 动态获取 halfDialog 展示的内容
-    layer.value = name;
-    halfDialogVisible.value = true;
-    buttonType.value = type || "";
-  };
-
-  // 关闭弹层
-  const hideHalfDialog = () => {
-    halfDialogVisible.value = false;
-  };
-
-  // 基于滚动的动画
-  const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
-    if (ev.detail.scrollTop >= 100) return;
-
-    // 导航栏动画
-    let opacity = ev.detail.scrollTop / 85;
-    if (opacity < 0.1) opacity = 0;
-    if (opacity > 0.9) opacity = 1;
-    navbarOpacity.value = opacity;
-  };
-
   onReady(() => {
-    // 页面相交状态监听器
-    observer = uni.createIntersectionObserver(this, {
-      observeAll: true,
-    });
-
-    // 页面节点查询器
-    query = uni.createSelectorQuery();
-
     // 监听元素间相关状态
     intersectionObserver();
 
@@ -630,6 +602,55 @@
         if (rect.height) navBarHeight = rect.height;
       })
       .exec();
+
+    // 动画时间线
+    const scrollTimeline = {
+      scrollSource: "#scrollView",
+      timeRange: 500,
+      startScrollOffset: 0,
+      endScrollOffset: 85,
+    };
+
+    // 创建帧动画
+    pageInstance.ctx.$scope.animate(
+      ".navbar",
+      [{ backgroundColor: "#fff0" }, { backgroundColor: "#fff" }],
+      500,
+      scrollTimeline
+    );
+
+    pageInstance.ctx.$scope.animate(
+      ".back",
+      [
+        {
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+          left: "10px",
+          color: "#fff",
+          offset: 0,
+        },
+        {
+          backgroundColor: "rgba(0, 0, 0, 0.12)",
+          left: "7px",
+          color: "#fff",
+          offset: 0.7,
+        },
+        {
+          backgroundColor: "rgba(0, 0, 0, 0)",
+          left: "6px",
+          color: "#191919",
+          offset: 1,
+        },
+      ],
+      500,
+      scrollTimeline
+    );
+
+    pageInstance.ctx.$scope.animate(
+      ".tabs, .search",
+      [{ opacity: 0 }, { opacity: 1 }],
+      500,
+      scrollTimeline
+    );
   });
 
   // 页面卸载停止相交状态监听

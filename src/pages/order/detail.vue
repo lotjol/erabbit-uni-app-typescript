@@ -2,17 +2,15 @@
   <view class="navbar" :style="{ paddingTop: safeArea?.top + 'px' }">
     <view class="wrap">
       <view class="back icon-left" @click="goBack"></view>
-      <view :style="{ opacity: titleOpacity }" :class="['title', platform]"
-        >订单详情</view
-      >
+      <view :class="['title', platform]">订单详情</view>
     </view>
   </view>
 
   <scroll-view
     class="viewport"
+    id="scrollView"
     enhanced
     scroll-y
-    @scroll="scrolled"
     :show-scrollbar="false"
   >
     <!-- 订单状态 -->
@@ -233,7 +231,8 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, getCurrentInstance } from "vue";
+  import { onReady } from "@dcloudio/uni-app";
 
   import { useAppStore } from "@/store";
 
@@ -244,7 +243,8 @@
   const { safeArea, platform } = appStore;
 
   const showHalfDialog = ref(false);
-  const titleOpacity = ref(0);
+
+  const pageInstance: any = getCurrentInstance();
 
   const cancelOrder = () => {
     showHalfDialog.value = true;
@@ -258,12 +258,19 @@
     uni.navigateBack({});
   };
 
-  const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
-    let opacity = ev.detail.scrollTop / 200;
-    if (opacity < 0.2) opacity = 0;
-    if (opacity > 0.8) opacity = 1;
-    titleOpacity.value = opacity;
-  };
+  onReady(() => {
+    pageInstance.ctx.$scope.animate(
+      ".navbar .title",
+      [{ opacity: 0 }, { opacity: 1 }],
+      600,
+      {
+        scrollSource: "#scrollView",
+        timeRange: 600,
+        startScrollOffset: 0,
+        endScrollOffset: 120,
+      }
+    );
+  });
 </script>
 
 <style>

@@ -1,8 +1,8 @@
 <template>
-  <scroll-view @scroll="scrolled" scroll-y enhanced :show-scrollbar="false">
+  <scroll-view scroll-y enhanced :show-scrollbar="false" id="scrollView">
     <view class="viewport" :style="{ paddingTop: safeArea!.top + 40 + 'px' }">
       <!-- 个人资料 -->
-      <view class="profile" :style="{ opacity: profileOpacity }">
+      <view class="profile">
         <view class="overview">
           <image
             class="avatar"
@@ -411,26 +411,21 @@
           </block>
         </view>
       </view>
-      <view
-        class="navbar"
-        :style="{ paddingTop: safeArea!.top + 30 + 'px', top: navbarTop + 'px' }"
-      >
-        <view class="title" :style="{ opacity: titleOpacity }">我的</view>
+      <view class="navbar" :style="{ paddingTop: safeArea!.top + 30 + 'px' }">
+        <view class="title">我的</view>
       </view>
     </view>
   </scroll-view>
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, getCurrentInstance } from "vue";
+  import { onReady } from "@dcloudio/uni-app";
 
   import { useAppStore } from "@/store";
   const appStore = useAppStore();
   const safeArea = appStore.safeArea;
 
-  const profileOpacity = ref(1);
-  const navbarTop = ref(0);
-  const titleOpacity = ref(0);
   const tabs = ["我的收藏", "猜你喜欢", "我的足迹"];
   const orderTypes = [
     { text: "待付款", icon: "icon-currency", type: 1 },
@@ -440,32 +435,50 @@
   ];
   const tabIndex = ref(0);
 
+  // 获取页面实例
+  const pageInstance: any = getCurrentInstance();
+
   const changeTab = (index: number) => {
     tabIndex.value = index;
   };
 
-  // 滚动动画
-  const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
-    if (ev.detail.scrollTop >= 200) return;
+  onReady(() => {
+    pageInstance.ctx.$scope.animate(
+      ".profile",
+      [{ opacity: 1 }, { opacity: 0 }],
+      500,
+      {
+        scrollSource: "#scrollView",
+        timeRange: 500,
+        startScrollOffset: 0,
+        endScrollOffset: 85,
+      }
+    );
 
-    // 用户头像动画
-    let opacity1 = 1 - ev.detail.scrollTop / 85;
-    if (opacity1 < 0.1) opacity1 = 0;
-    if (opacity1 > 0.9) opacity1 = 1;
-    profileOpacity.value = opacity1;
+    pageInstance.ctx.$scope.animate(
+      ".navbar",
+      [{ top: "0" }, { top: "-30px" }],
+      500,
+      {
+        scrollSource: "#scrollView",
+        timeRange: 500,
+        startScrollOffset: 0,
+        endScrollOffset: 85,
+      }
+    );
 
-    // 导航栏动画
-    let top = ev.detail.scrollTop * (30 / 85);
-    top = Math.max(0, top);
-    top = Math.min(30, top);
-    navbarTop.value = -top;
-
-    // 导航栏标题
-    var opacity = (ev.detail.scrollTop - 85) * (1 / 15);
-    if (opacity < 0.1) opacity = 0;
-    if (opacity > 0.9) opacity = 1;
-    titleOpacity.value = opacity;
-  };
+    pageInstance.ctx.$scope.animate(
+      ".navbar .title",
+      [{ opacity: 0 }, { opacity: 1 }],
+      500,
+      {
+        scrollSource: "#scrollView",
+        timeRange: 500,
+        startScrollOffset: 85,
+        endScrollOffset: 100,
+      }
+    );
+  });
 </script>
 
 <style>

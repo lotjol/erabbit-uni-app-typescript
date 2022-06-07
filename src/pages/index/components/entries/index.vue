@@ -253,7 +253,7 @@
   let cursorLeft = ref("0%");
 
   // 组件属性
-  const props = defineProps<{
+  defineProps<{
     source: [];
   }>();
 
