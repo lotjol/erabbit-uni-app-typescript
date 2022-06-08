@@ -57,6 +57,7 @@
     <view v-else @click="goOrder" class="button primary">立即购买</view>
   </view>
 </template>
+
 <script setup lang="ts">
   import { defineProps } from "vue";
 
