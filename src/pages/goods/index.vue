@@ -538,23 +538,20 @@
     </view>
   </view>
 
-  <mp-half-screen-dialog
-    extClass="half-dialog"
+  <van-popup
     :show="halfDialogVisible"
-    :closabled="false"
+    position="bottom"
+    close-on-click-overlay
+    @close="hideHalfDialog"
   >
-    <template v-slot:desc>
-      <view class="description">
-        <text @click="hideHalfDialog" class="close icon-close"></text>
-        <!-- 好像不支持？ -->
-        <!-- <component :is="layer"></component> -->
-        <sku :button-type="buttonType" v-if="layer === 'sku'"></sku>
-        <shipment v-if="layer === 'shipment'"></shipment>
-        <clause v-if="layer === 'clause'"></clause>
-        <help v-if="layer === 'help'"></help>
-      </view>
-    </template>
-  </mp-half-screen-dialog>
+    <view class="popup-root">
+      <text @click="hideHalfDialog" class="close icon-close"></text>
+      <sku :buttonType="buttonType" v-if="layer === 'sku'"></sku>
+      <shipment v-if="layer === 'shipment'"></shipment>
+      <clause v-if="layer === 'clause'"></clause>
+      <help v-if="layer === 'help'"></help>
+    </view>
+  </van-popup>
 </template>
 
 <script setup lang="ts">
