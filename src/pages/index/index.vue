@@ -192,8 +192,8 @@
           <image mode="aspectFit" :src="item.picture"></image>
           <view class="name">{{ item.name }}</view>
           <view class="price">
-            <text class="small">¥</text>{{ item.price }}</view
-          >
+            <text class="small">¥</text>{{ item.price }}
+          </view>
         </navigator>
       </view>
     </view>

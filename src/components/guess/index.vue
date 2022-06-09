@@ -12,10 +12,7 @@
     >
       <image class="image" :src="item.picture"></image>
       <view class="name">{{ item.name }}</view>
-      <view class="price">
-        <text class="small">¥</text>{{ item.price }}
-        <!-- <text class="small">.00</text> -->
-      </view>
+      <view class="price"><text class="small">¥</text>{{ item.price }}</view>
     </navigator>
   </view>
 </template>
