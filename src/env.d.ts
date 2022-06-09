@@ -6,12 +6,3 @@ declare module "*.vue" {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
-
-declare namespace UniApp {
-  interface ObserveResult {
-    dataset: {
-      [key: string]: string | undefined;
-    };
-    id?: string;
-  }
-}

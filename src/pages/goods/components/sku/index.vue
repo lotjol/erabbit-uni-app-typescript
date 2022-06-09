@@ -1,3 +1,30 @@
+<script setup lang="ts">
+  import { defineProps, computed } from "vue";
+
+  import { useGoodsStore } from "@/store/goods";
+
+  const goodsStore = useGoodsStore();
+
+  const skus = computed(() => goodsStore.skus);
+  const specs = computed(() => goodsStore.specs);
+
+  defineProps<{
+    buttonType: string;
+  }>();
+
+  const goCart = () => {
+    uni.navigateTo({
+      url: "/pages/cart/default/index",
+    });
+  };
+
+  const goOrder = () => {
+    uni.navigateTo({
+      url: "/pages/order/create/index",
+    });
+  };
+</script>
+
 <template>
   <view class="header">
     <image
@@ -57,31 +84,6 @@
     <view v-else @click="goOrder" class="button primary">立即购买</view>
   </view>
 </template>
-
-<script setup lang="ts">
-  import { defineProps } from "vue";
-
-  defineProps<{ buttonType: string }>();
-
-  const goCart = () => {
-    uni.navigateTo({
-      url: "/pages/cart/default/index",
-    });
-  };
-
-  const goOrder = () => {
-    uni.navigateTo({
-      url: "/pages/order/create/index",
-    });
-  };
-</script>
-<script lang="ts">
-  export default {
-    options: {
-      styleIsolation: "apply-shared",
-    },
-  };
-</script>
 
 <style>
   .header {

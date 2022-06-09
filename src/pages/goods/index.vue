@@ -1,13 +1,236 @@
+<script setup lang="ts">
+  import { ref, computed } from "vue";
+  import { onLoad } from "@dcloudio/uni-app";
+
+  import { getRelationGoods } from "@/api/goods";
+  import type { RelationType } from "@/api/goods";
+  import { useGoodsStore } from "@/store/goods";
+  import { useAppStore } from "@/store";
+
+  const appStore = useAppStore();
+  const goodsStore = useGoodsStore();
+
+  const safeArea = computed(() => appStore.safeArea);
+  const goodsDetail = computed(() => goodsStore.goodsDetail);
+
+  // 同类商品推荐
+  const relationGoods = ref<RelationType>([]);
+
+  onLoad(async ({ id }) => {
+    if (id) {
+      goodsStore.getGoodsDetail(id);
+      // 同类商品推荐
+      relationGoods.value = await getRelationGoods(id);
+    }
+  });
+
+  // 返回上一页
+  const goBack = () => {
+    uni.navigateBack({});
+  };
+
+  // 跳转到购物车页面
+  const goCart = () => {
+    uni.navigateTo({ url: "/pages/cart/default" });
+  };
+</script>
+
+<script lang="ts">
+  import { getCurrentInstance } from "vue";
+
+  import clause from "./components/clause/index.vue";
+  import help from "./components/help/index.vue";
+  import shipment from "./components/shipment/index.vue";
+  import sku from "./components/sku/index.vue";
+
+  let observer: WechatMiniprogram.IntersectionObserver;
+  let navBarHeight = 0;
+  let imageCount = 0;
+
+  export default {
+    data() {
+      return {
+        tabs: [
+          { text: "商品", offset: 0 },
+          { text: "评价", offset: 0 },
+          { text: "详情", offset: 0 },
+          { text: "推荐", offset: 0 },
+        ],
+        tabIndex: 0,
+        anchorIndex: 0,
+        scrollTop: 0,
+        layer: "sku",
+        halfDialogVisible: false,
+        swiperCurrentIndex: 0,
+        buttonType: "",
+      };
+    },
+
+    onReady: function () {
+      // 获取页面实例
+      const pageInstance: any = getCurrentInstance();
+
+      // 页面相交状态监听器
+      observer = pageInstance.ctx.$scope.createIntersectionObserver({
+        observeAll: true,
+      });
+
+      // 监听元素间相关状态
+      this.intersectionObserver();
+
+      // 动画时间线
+      const scrollTimeline = {
+        scrollSource: "#scrollView",
+        timeRange: 500,
+        startScrollOffset: 0,
+        endScrollOffset: 85,
+      };
+
+      // 创建帧动画
+      pageInstance.ctx.$scope.animate(
+        ".navbar",
+        [{ backgroundColor: "#fff0" }, { backgroundColor: "#fff" }],
+        500,
+        scrollTimeline
+      );
+
+      pageInstance.ctx.$scope.animate(
+        ".back",
+        [
+          {
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            left: "10px",
+            color: "#fff",
+            offset: 0,
+          },
+          {
+            backgroundColor: "rgba(0, 0, 0, 0.12)",
+            left: "7px",
+            color: "#fff",
+            offset: 0.7,
+          },
+          {
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            left: "6px",
+            color: "#191919",
+            offset: 1,
+          },
+        ],
+        500,
+        scrollTimeline
+      );
+
+      pageInstance.ctx.$scope.animate(
+        ".tabs, .search",
+        [{ opacity: 0 }, { opacity: 1 }],
+        500,
+        scrollTimeline
+      );
+    },
+
+    // 页面卸载停止相交状态监听
+    onUnload: function () {
+      observer.disconnect();
+    },
+
+    methods: {
+      // 快速返回顶部更新状态
+      scrollToUpper() {
+        this.anchorIndex = 0;
+      },
+
+      swiperChanged(ev: WechatMiniprogram.SwiperChange) {
+        this.swiperCurrentIndex = ev.detail.current;
+      },
+
+      // 点击 Tab 切换实现页内跳转
+      scrollTo(ev: WechatMiniprogram.BaseEvent) {
+        // 停止监听相交状态
+        observer.disconnect();
+        // // 获取滚动位置及索引值
+        let { anchorOffset, anchorIndex } = ev.target.dataset;
+        // 调整滚动距离
+        this.scrollTop = anchorOffset - navBarHeight;
+        // 更新 Tab 的状态
+        this.anchorIndex = anchorIndex;
+      },
+
+      // 显示弹层
+      showHalfDialog(ev: WechatMiniprogram.BaseEvent) {
+        const { layer, buttonType } = ev.currentTarget.dataset;
+        // 动态获取 halfDialog 展示的内容
+        this.layer = layer;
+        this.halfDialogVisible = true;
+        // console.log(this.halfDialogVisible);
+
+        // 是否为加入购物车
+        if (buttonType) this.buttonType = buttonType;
+      },
+
+      // 关闭弹层
+      hideHalfDialog() {
+        this.halfDialogVisible = false;
+      },
+
+      // 用户滑动手势
+      dragEnd() {
+        observer.disconnect();
+        this.intersectionObserver();
+      },
+
+      // 监测元素相交状态
+      intersectionObserver() {
+        observer
+          .relativeTo(".navbar")
+          .observe(
+            ".anchor",
+            ({ dataset: { anchorIndex }, boundingClientRect: { top } }) => {
+              if (top < 0) return;
+              if (anchorIndex) this.anchorIndex = parseInt(anchorIndex);
+            }
+          );
+      },
+
+      imageLoad(size: number) {
+        if (++imageCount >= size) this.selectWXML();
+      },
+
+      //
+      selectWXML() {
+        // 页面节点查询器
+        const query = uni.createSelectorQuery();
+        // 计算节点相对于窗口的位置
+        query
+          .selectAll(".anchor")
+          .boundingClientRect((rects) => {
+            (rects as { top: number }[]).forEach((rect, index) => {
+              this.tabs[index].offset = rect.top;
+            });
+          })
+          .exec();
+
+        // 计算自定义导航栏的高度
+        query
+          .select(".navbar")
+          .boundingClientRect((rect) => {
+            if (rect.height) navBarHeight = rect.height;
+          })
+          .exec();
+      },
+    },
+  };
+</script>
+
 <template>
   <view class="navbar" :style="{ paddingTop: safeArea!.top + 5 + 'px' }">
-    <div class="wrap">
+    <view class="wrap">
       <!-- 返回按钮 -->
       <view class="back icon-left" @click="goBack"></view>
       <!-- 搜索栏 -->
       <view class="search">
         <view class="input icon-search"></view>
       </view>
-    </div>
+    </view>
     <!-- 锚链接 -->
     <view class="tabs">
       <text
@@ -25,74 +248,46 @@
   <scroll-view
     scroll-y
     enhanced
+    scroll-with-animation
+    class="viewport"
+    id="scrollView"
     :bounces="false"
     :show-scrollbar="false"
-    scroll-with-animation
     :scroll-top="scrollTop"
     @scrolltoupper="scrollToUpper"
     @dragend="dragEnd"
-    class="viewport"
-    id="scrollView"
   >
     <!-- 商品信息 -->
     <view class="goods anchor" data-anchor-index="0">
       <view class="preview">
         <swiper circular :current="swiperCurrentIndex" @change="swiperChanged">
-          <swiper-item>
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_1.jpg"
-            />
-          </swiper-item>
-          <swiper-item>
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_2.jpg"
-            />
-          </swiper-item>
-          <swiper-item>
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_3.jpg"
-            />
-          </swiper-item>
-          <swiper-item>
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_4.jpg"
-            />
-          </swiper-item>
-          <swiper-item>
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_5.jpg"
-            />
-          </swiper-item>
-          <swiper-item>
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_6.jpg"
-            />
+          <swiper-item
+            v-for="picture in goodsDetail.mainPictures"
+            :key="picture"
+          >
+            <image :src="picture" />
           </swiper-item>
         </swiper>
         <view class="indicator">
           <text class="current">{{ swiperCurrentIndex + 1 }}</text>
           <text class="split">/</text>
-          <text class="total">6</text>
+          <text class="total">{{ goodsDetail.mainPictures?.length }}</text>
         </view>
       </view>
 
       <view class="meta">
         <view class="price">
           <text class="symbol">¥</text>
-          <text class="number">129</text>
+          <text class="number">{{ goodsDetail.price }}</text>
           <text class="decimal">.00</text>
         </view>
         <view class="brand">
-          <image
-            src="http://static.botue.com/erabbit/static/uploads/brand_logo_9.jpg"
-          />
+          <image :src="goodsDetail.brand?.picture" />
         </view>
         <view class="name ellipsis">
-          康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温更安全康尔贝
-          非接触式红外体温仪 领券立减30元 婴儿级材质 测温更安全康尔贝
-          非接触式红外体温仪 领券立减30元 婴儿级材质 测温更安全康尔贝
+          {{ goodsDetail.name }}
         </view>
-        <view class="remarks"> 一秒测温 一键操作 双探头精准测温 </view>
+        <view class="remarks">{{ goodsDetail.desc }}</view>
       </view>
       <view class="related">
         <view @tap="showHalfDialog" data-layer="sku" class="item arrow">
@@ -213,50 +408,41 @@
         v-show="tabIndex === 0"
         scroll-x
         enhanced
-        show-scrollbar="{{false}}"
+        :show-scrollbar="false"
       >
         <view class="content">
-          <navigator hover-class="none">
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_2.jpg"
-            />
-            <view class="name ellipsis">非接触体外红外仪</view>
+          <navigator
+            hover-class="none"
+            v-for="goods in goodsDetail.similarProducts"
+            :key="goods.id"
+          >
+            <image :src="goods.picture" />
+            <view class="name ellipsis">{{ goods.name }}</view>
             <view class="price">
               <text class="symbol">¥</text>
-              <text class="number">899</text>
+              <text class="number">{{ goods.price }}</text>
               <text class="decimal">.00</text>
             </view>
           </navigator>
-          <navigator hover-class="none">
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_5.jpg"
-            />
-            <view class="name ellipsis">非接触体外红外仪</view>
+        </view>
+      </scroll-view>
+      <scroll-view
+        v-show="tabIndex === 1"
+        scroll-x
+        enhanced
+        :show-scrollbar="false"
+      >
+        <view class="content">
+          <navigator
+            hover-class="none"
+            v-for="goods in goodsDetail.hotByDay"
+            :key="goods.id"
+          >
+            <image :src="goods.picture" />
+            <view class="name ellipsis">{{ goods.name }}</view>
             <view class="price">
               <text class="symbol">¥</text>
-              <text class="number">899</text>
-              <text class="decimal">.00</text>
-            </view>
-          </navigator>
-          <navigator hover-class="none">
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_3.jpg"
-            />
-            <view class="name ellipsis">非接触体外红外仪</view>
-            <view class="price">
-              <text class="symbol">¥</text>
-              <text class="number">899</text>
-              <text class="decimal">.00</text>
-            </view>
-          </navigator>
-          <navigator hover-class="none">
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_6.jpg"
-            />
-            <view class="name ellipsis">非接触体外红外仪</view>
-            <view class="price">
-              <text class="symbol">¥</text>
-              <text class="number">899</text>
+              <text class="number">{{ goods.price }}</text>
               <text class="decimal">.00</text>
             </view>
           </navigator>
@@ -323,72 +509,22 @@
       </view>
       <view class="content">
         <view class="properties">
-          <view class="item">
-            <text class="label">材质</text>
-            <text class="value">玻璃</text>
-          </view>
-          <view class="item">
-            <text class="label">适应酒种</text>
-            <text class="value">红葡萄酒</text>
-          </view>
-          <view class="item">
-            <text class="label">材质说明</text>
-            <text class="value"
-              >机身：不锈钢外壳-SUS202；按键：ABS；顶盖+下壳：透明PC；底盖：ABS开瓶刀：SUS304不锈钢</text
-            >
-          </view>
-          <view class="item">
-            <text class="label">参数设置</text>
-            <text class="value"
-              >额定电压：3.7V额定频率：50/60Hz额定功率：10W净重：314g</text
-            >
+          <view
+            class="item"
+            v-for="property in goodsDetail.details?.properties"
+            :key="property.name"
+          >
+            <text class="label">{{ property.name }}</text>
+            <text class="value">{{ property.value }}</text>
           </view>
         </view>
 
         <image
           mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_1.jpg"
-          @load="imageLoad(9)"
-        ></image>
-        <image
-          mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_2.jpg"
-          @load="imageLoad(9)"
-        ></image>
-        <image
-          mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_3.jpg"
-          @load="imageLoad(9)"
-        ></image>
-        <image
-          mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_4.jpg"
-          @load="imageLoad(9)"
-        ></image>
-        <image
-          mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_5.jpg"
-          @load="imageLoad(9)"
-        ></image>
-        <image
-          mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_6.jpg"
-          @load="imageLoad(9)"
-        ></image>
-        <image
-          mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_7.jpg"
-          @load="imageLoad(9)"
-        ></image>
-        <image
-          mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_8.jpg"
-          @load="imageLoad(9)"
-        ></image>
-        <image
-          mode="widthFix"
-          src="http://static.botue.com/erabbit/static/uploads/goods_detail_9.jpg"
-          @load="imageLoad(9)"
+          v-for="picture in goodsDetail.details?.pictures"
+          :key="picture"
+          :src="picture"
+          @load="imageLoad(goodsDetail.details?.pictures.length)"
         ></image>
       </view>
     </view>
@@ -403,106 +539,18 @@
         <text>推荐</text>
       </view>
       <view class="content">
-        <navigator url="/pages/goods/index" hover-class="none">
-          <image
-            class="image"
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_1.jpg"
-          ></image>
-          <view class="name ellipsis"
-            >肖勒超薄防水手表精钢材质放水水功能肖勒超薄防水手表精钢材质放水水功能肖勒超薄防水手表精钢材质放水水功能</view
-          >
+        <navigator
+          url="/pages/goods/index"
+          hover-class="none"
+          v-for="goods in relationGoods"
+          :key="goods.id"
+        >
+          <image class="image" mode="aspectFit" :src="goods.picture"></image>
+          <view class="name ellipsis">{{ goods.name }}</view>
           <view class="price">
             <text class="symbol">¥</text>
-            <text class="number">899</text>
+            <text class="number">{{ goods.price }}</text>
             <text class="decimal">.00</text>
-          </view>
-        </navigator>
-        <navigator url="/pages/goods/index" hover-class="none">
-          <image
-            class="image"
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_2.jpg"
-          ></image>
-          <view class="name ellipsis">肖勒超薄防水手表精钢材质放水水功能</view>
-          <view class="price">
-            <text class="symbol">¥</text>
-            <text class="number">899</text>
-            <text class="decimal">.00</text>
-          </view>
-        </navigator>
-        <navigator url="/pages/goods/index" hover-class="none">
-          <image
-            class="image"
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_3.jpg"
-          ></image>
-          <view class="name ellipsis">肖勒超薄防水手表精钢材质放水水功能</view>
-          <view class="price">
-            <text class="symbol">¥</text>
-            <text class="number">899</text>
-            <text class="decimal">.00</text>
-          </view>
-        </navigator>
-        <navigator url="/pages/goods/index" hover-class="none">
-          <image
-            class="image"
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_4.jpg"
-          ></image>
-          <view class="name ellipsis">肖勒超薄防水手表精钢材质放水水功能</view>
-          <view class="price">
-            <text class="symbol">¥</text>
-            <text class="number">899</text>
-            <text class="decimal">.00</text>
-          </view>
-        </navigator>
-        <navigator url="/pages/goods/index" hover-class="none">
-          <image
-            class="image"
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
-          ></image>
-          <view class="name ellipsis">肖勒超薄防水手表精钢材质放水水功能</view>
-          <view class="price">
-            <text class="symbol">¥</text>
-            <text class="number">899</text>
-            <text class="decimal">.00</text>
-          </view>
-        </navigator>
-        <navigator url="/pages/goods/index" hover-class="none">
-          <image
-            class="image"
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
-          ></image>
-          <view class="name ellipsis">肖勒超薄防水手表精钢材质放水水功能</view>
-          <view class="price">
-            <text class="small">¥</text>899<text class="small">.00</text>
-          </view>
-        </navigator>
-        <navigator url="/pages/goods/index" hover-class="none">
-          <image
-            class="image"
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
-          ></image>
-          <view class="name ellipsis">肖勒超薄防水手表精钢材质放水水功能</view>
-          <view class="price">
-            <text class="symbol">¥</text>
-            <text class="number">899</text>
-            <text class="decimal">.00</text>
-          </view>
-        </navigator>
-        <navigator url="/pages/goods/index" hover-class="none">
-          <image
-            class="image"
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_3.jpg"
-          ></image>
-          <view class="name ellipsis">肖勒超薄防水手表精钢材质放水水功能</view>
-          <view class="price">
-            <text class="small">¥</text>899<text class="small">.00</text>
           </view>
         </navigator>
       </view>
@@ -523,241 +571,36 @@
     <view class="buttons">
       <view
         @tap="showHalfDialog"
-        data-layer="sku"
         data-button-type="cart"
+        data-layer="sku"
         class="addcart"
         >加入购物车</view
       >
       <view
         @tap="showHalfDialog"
-        data-layer="sku"
         data-button-type="payment"
+        data-layer="sku"
         class="payment"
         >立即购买</view
       >
     </view>
   </view>
 
-  <mp-half-screen-dialog
-    extClass="half-dialog"
+  <van-popup
     :show="halfDialogVisible"
-    :closabled="false"
+    position="bottom"
+    close-on-click-overlay
+    @close="hideHalfDialog"
   >
-    <template v-slot:desc>
-      <view class="description">
-        <text @click="hideHalfDialog" class="close icon-close"></text>
-        <!-- 好像不支持？ -->
-        <!-- <component :is="layer"></component> -->
-        <sku :button-type="buttonType" v-if="layer === 'sku'"></sku>
-        <shipment v-if="layer === 'shipment'"></shipment>
-        <clause v-if="layer === 'clause'"></clause>
-        <help v-if="layer === 'help'"></help>
-      </view>
-    </template>
-  </mp-half-screen-dialog>
+    <view class="popup-root">
+      <text @click="hideHalfDialog" class="close icon-close"></text>
+      <sku :buttonType="buttonType" v-if="layer === 'sku'"></sku>
+      <shipment v-if="layer === 'shipment'"></shipment>
+      <clause v-if="layer === 'clause'"></clause>
+      <help v-if="layer === 'help'"></help>
+    </view>
+  </van-popup>
 </template>
-
-<script setup lang="ts">
-  import { useAppStore } from "@/store";
-  const appStore = useAppStore();
-  const safeArea = appStore.safeArea;
-
-  // 返回上一页
-  const goBack = () => {
-    uni.navigateBack({});
-  };
-
-  // 跳转到购物车页面
-  const goCart = () => {
-    uni.navigateTo({ url: "/pages/cart/default" });
-  };
-</script>
-
-<script lang="ts">
-  import { getCurrentInstance } from "vue";
-
-  import clause from "./components/clause/index.vue";
-  import help from "./components/help/index.vue";
-  import shipment from "./components/shipment/index.vue";
-  import sku from "./components/sku/index.vue";
-
-  let observer: WechatMiniprogram.IntersectionObserver;
-  let navBarHeight = 0;
-  let imageCount = 0;
-
-  export default {
-    data() {
-      return {
-        tabs: [
-          { text: "商品", offset: 0 },
-          { text: "评价", offset: 0 },
-          { text: "详情", offset: 0 },
-          { text: "推荐", offset: 0 },
-        ],
-        tabIndex: 0,
-        anchorIndex: 0,
-        scrollTop: 0,
-        layer: "",
-        halfDialogVisible: false,
-        swiperCurrentIndex: 0,
-        buttonType: "",
-      };
-    },
-
-    onReady: function () {
-      // 获取页面实例
-      const pageInstance: any = getCurrentInstance();
-
-      // 页面相交状态监听器
-      observer = pageInstance.ctx.$scope.createIntersectionObserver({
-        observeAll: true,
-      });
-
-      // 监听元素间相关状态
-      this.intersectionObserver();
-
-      // 动画时间线
-      const scrollTimeline = {
-        scrollSource: "#scrollView",
-        timeRange: 500,
-        startScrollOffset: 0,
-        endScrollOffset: 85,
-      };
-
-      // 创建帧动画
-      pageInstance.ctx.$scope.animate(
-        ".navbar",
-        [{ backgroundColor: "#fff0" }, { backgroundColor: "#fff" }],
-        500,
-        scrollTimeline
-      );
-
-      pageInstance.ctx.$scope.animate(
-        ".back",
-        [
-          {
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
-            left: "10px",
-            color: "#fff",
-            offset: 0,
-          },
-          {
-            backgroundColor: "rgba(0, 0, 0, 0.12)",
-            left: "7px",
-            color: "#fff",
-            offset: 0.7,
-          },
-          {
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            left: "6px",
-            color: "#191919",
-            offset: 1,
-          },
-        ],
-        500,
-        scrollTimeline
-      );
-
-      pageInstance.ctx.$scope.animate(
-        ".tabs, .search",
-        [{ opacity: 0 }, { opacity: 1 }],
-        500,
-        scrollTimeline
-      );
-    },
-
-    // 页面卸载停止相交状态监听
-    onUnload: function () {
-      observer.disconnect();
-    },
-
-    methods: {
-      // 快速返回顶部更新状态
-      scrollToUpper() {
-        this.anchorIndex = 0;
-      },
-
-      swiperChanged(ev: WechatMiniprogram.SwiperChange) {
-        this.swiperCurrentIndex = ev.detail.current;
-      },
-
-      // 点击 Tab 切换实现页内跳转
-      scrollTo(ev: WechatMiniprogram.BaseEvent) {
-        // 停止监听相交状态
-        observer.disconnect();
-        // // 获取滚动位置及索引值
-        let { anchorOffset, anchorIndex } = ev.target.dataset;
-        // 调整滚动距离
-        this.scrollTop = anchorOffset - navBarHeight;
-        // 更新 Tab 的状态
-        this.anchorIndex = anchorIndex;
-      },
-
-      // 显示弹层
-      showHalfDialog(ev: WechatMiniprogram.BaseEvent) {
-        const { layer, buttonType } = ev.currentTarget.dataset;
-        // 动态获取 halfDialog 展示的内容
-        this.layer = layer;
-        this.halfDialogVisible = true;
-
-        // 是否为加入购物车
-        if (buttonType) this.buttonType = buttonType;
-      },
-
-      // 关闭弹层
-      hideHalfDialog() {
-        this.halfDialogVisible = false;
-      },
-
-      // 用户滑动手势
-      dragEnd() {
-        observer.disconnect();
-        this.intersectionObserver();
-      },
-
-      // 监测元素相交状态
-      intersectionObserver() {
-        observer
-          .relativeTo(".navbar")
-          .observe(
-            ".anchor",
-            ({ dataset: { anchorIndex }, boundingClientRect: { top } }) => {
-              if (top < 0) return;
-              if (anchorIndex) this.anchorIndex = parseInt(anchorIndex);
-            }
-          );
-      },
-
-      imageLoad(size: number) {
-        if (++imageCount >= size) this.selectWXML();
-      },
-
-      //
-      selectWXML() {
-        // 页面节点查询器
-        const query = uni.createSelectorQuery();
-        // 计算节点相对于窗口的位置
-        query
-          .selectAll(".anchor")
-          .boundingClientRect((rects) => {
-            (rects as { top: number }[]).forEach((rect, index) => {
-              this.tabs[index].offset = rect.top;
-            });
-          })
-          .exec();
-
-        // 计算自定义导航栏的高度
-        query
-          .select(".navbar")
-          .boundingClientRect((rect) => {
-            if (rect.height) navBarHeight = rect.height;
-            console.log(navBarHeight);
-          })
-          .exec();
-      },
-    },
-  };
-</script>
 
 <style>
   page {
