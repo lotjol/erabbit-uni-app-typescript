@@ -126,6 +126,7 @@
       text: "周末配送 (周六至周日)",
     },
   ];
+
   const paymentShow = ref(false);
 
   const shipments = [
@@ -138,6 +139,7 @@
       text: "货到付款",
     },
   ];
+
   const shipmentShow = ref(false);
 
   const payment = ref(payments[0]);

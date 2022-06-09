@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var relation_1 = require("../common/relation");
-(0, component_1.VantComponent)({
+import { VantComponent } from '../common/component';
+import { useParent } from '../common/relation';
+VantComponent({
     props: {
         info: null,
         name: null,
@@ -13,34 +11,34 @@ var relation_1 = require("../common/relation");
             value: 'van-icon',
         },
     },
-    relation: (0, relation_1.useParent)('tabbar'),
+    relation: useParent('tabbar'),
     data: {
         active: false,
         activeColor: '',
         inactiveColor: '',
     },
     methods: {
-        onClick: function () {
-            var parent = this.parent;
+        onClick() {
+            const { parent } = this;
             if (parent) {
-                var index = parent.children.indexOf(this);
-                var active = this.data.name || index;
+                const index = parent.children.indexOf(this);
+                const active = this.data.name || index;
                 if (active !== this.data.active) {
                     parent.$emit('change', active);
                 }
             }
             this.$emit('click');
         },
-        updateFromParent: function () {
-            var parent = this.parent;
+        updateFromParent() {
+            const { parent } = this;
             if (!parent) {
                 return;
             }
-            var index = parent.children.indexOf(this);
-            var parentData = parent.data;
-            var data = this.data;
-            var active = (data.name || index) === parentData.active;
-            var patch = {};
+            const index = parent.children.indexOf(this);
+            const parentData = parent.data;
+            const { data } = this;
+            const active = (data.name || index) === parentData.active;
+            const patch = {};
             if (active !== data.active) {
                 patch.active = active;
             }

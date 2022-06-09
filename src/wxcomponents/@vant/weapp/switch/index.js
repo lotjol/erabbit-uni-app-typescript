@@ -1,7 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-(0, component_1.VantComponent)({
+import { VantComponent } from '../common/component';
+VantComponent({
     field: true,
     classes: ['node-class'],
     props: {
@@ -24,13 +22,13 @@ var component_1 = require("../common/component");
         },
     },
     methods: {
-        onClick: function () {
-            var _a = this.data, activeValue = _a.activeValue, inactiveValue = _a.inactiveValue, disabled = _a.disabled, loading = _a.loading;
+        onClick() {
+            const { activeValue, inactiveValue, disabled, loading } = this.data;
             if (disabled || loading) {
                 return;
             }
-            var checked = this.data.checked === activeValue;
-            var value = checked ? inactiveValue : activeValue;
+            const checked = this.data.checked === activeValue;
+            const value = checked ? inactiveValue : activeValue;
             this.$emit('input', value);
             this.$emit('change', value);
         },

@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var relation_1 = require("../common/relation");
-var utils_1 = require("../common/utils");
-var ARRAY = [];
-(0, component_1.VantComponent)({
+import { VantComponent } from '../common/component';
+import { useChildren } from '../common/relation';
+import { addUnit, getRect, getSystemInfoSync } from '../common/utils';
+let ARRAY = [];
+VantComponent({
     field: true,
-    relation: (0, relation_1.useChildren)('dropdown-item', function () {
+    relation: useChildren('dropdown-item', function () {
         this.updateItemListData();
     }),
     props: {
@@ -46,29 +44,28 @@ var ARRAY = [];
     data: {
         itemListData: [],
     },
-    beforeCreate: function () {
-        var windowHeight = (0, utils_1.getSystemInfoSync)().windowHeight;
+    beforeCreate() {
+        const { windowHeight } = getSystemInfoSync();
         this.windowHeight = windowHeight;
         ARRAY.push(this);
     },
-    destroyed: function () {
-        var _this = this;
-        ARRAY = ARRAY.filter(function (item) { return item !== _this; });
+    destroyed() {
+        ARRAY = ARRAY.filter((item) => item !== this);
     },
     methods: {
-        updateItemListData: function () {
+        updateItemListData() {
             this.setData({
-                itemListData: this.children.map(function (child) { return child.data; }),
+                itemListData: this.children.map((child) => child.data),
             });
         },
-        updateChildrenData: function () {
-            this.children.forEach(function (child) {
+        updateChildrenData() {
+            this.children.forEach((child) => {
                 child.updateDataFromParent();
             });
         },
-        toggleItem: function (active) {
-            this.children.forEach(function (item, index) {
-                var showPopup = item.data.showPopup;
+        toggleItem(active) {
+            this.children.forEach((item, index) => {
+                const { showPopup } = item.data;
                 if (index === active) {
                     item.toggle();
                 }
@@ -77,36 +74,34 @@ var ARRAY = [];
                 }
             });
         },
-        close: function () {
-            this.children.forEach(function (child) {
+        close() {
+            this.children.forEach((child) => {
                 child.toggle(false, { immediate: true });
             });
         },
-        getChildWrapperStyle: function () {
-            var _this = this;
-            var _a = this.data, zIndex = _a.zIndex, direction = _a.direction;
-            return (0, utils_1.getRect)(this, '.van-dropdown-menu').then(function (rect) {
-                var _a = rect.top, top = _a === void 0 ? 0 : _a, _b = rect.bottom, bottom = _b === void 0 ? 0 : _b;
-                var offset = direction === 'down' ? bottom : _this.windowHeight - top;
-                var wrapperStyle = "z-index: ".concat(zIndex, ";");
+        getChildWrapperStyle() {
+            const { zIndex, direction } = this.data;
+            return getRect(this, '.van-dropdown-menu').then((rect) => {
+                const { top = 0, bottom = 0 } = rect;
+                const offset = direction === 'down' ? bottom : this.windowHeight - top;
+                let wrapperStyle = `z-index: ${zIndex};`;
                 if (direction === 'down') {
-                    wrapperStyle += "top: ".concat((0, utils_1.addUnit)(offset), ";");
+                    wrapperStyle += `top: ${addUnit(offset)};`;
                 }
                 else {
-                    wrapperStyle += "bottom: ".concat((0, utils_1.addUnit)(offset), ";");
+                    wrapperStyle += `bottom: ${addUnit(offset)};`;
                 }
                 return wrapperStyle;
             });
         },
-        onTitleTap: function (event) {
-            var _this = this;
-            var index = event.currentTarget.dataset.index;
-            var child = this.children[index];
+        onTitleTap(event) {
+            const { index } = event.currentTarget.dataset;
+            const child = this.children[index];
             if (!child.data.disabled) {
-                ARRAY.forEach(function (menuItem) {
+                ARRAY.forEach((menuItem) => {
                     if (menuItem &&
                         menuItem.data.closeOnClickOutside &&
-                        menuItem !== _this) {
+                        menuItem !== this) {
                         menuItem.close();
                     }
                 });

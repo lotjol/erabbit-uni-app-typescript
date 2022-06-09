@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var relation_1 = require("../common/relation");
-var button_1 = require("../mixins/button");
-var link_1 = require("../mixins/link");
-(0, component_1.VantComponent)({
-    mixins: [link_1.link, button_1.button],
-    relation: (0, relation_1.useParent)('goods-action'),
+import { VantComponent } from '../common/component';
+import { useParent } from '../common/relation';
+import { button } from '../mixins/button';
+import { link } from '../mixins/link';
+VantComponent({
+    mixins: [link, button],
+    relation: useParent('goods-action'),
     props: {
         text: String,
         color: String,
@@ -19,16 +17,16 @@ var link_1 = require("../mixins/link");
         },
     },
     methods: {
-        onClick: function (event) {
+        onClick(event) {
             this.$emit('click', event.detail);
             this.jumpLink();
         },
-        updateStyle: function () {
+        updateStyle() {
             if (this.parent == null) {
                 return;
             }
-            var index = this.index;
-            var _a = this.parent.children, children = _a === void 0 ? [] : _a;
+            const { index } = this;
+            const { children = [] } = this.parent;
             this.setData({
                 isFirst: index === 0,
                 isLast: index === children.length - 1,

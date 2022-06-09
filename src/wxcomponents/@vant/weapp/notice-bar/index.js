@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var utils_1 = require("../common/utils");
-(0, component_1.VantComponent)({
+import { VantComponent } from '../common/component';
+import { getRect, requestAnimationFrame } from '../common/utils';
+VantComponent({
     props: {
         text: {
             type: String,
@@ -43,28 +41,27 @@ var utils_1 = require("../common/utils");
     data: {
         show: true,
     },
-    created: function () {
+    created() {
         this.resetAnimation = wx.createAnimation({
             duration: 0,
             timingFunction: 'linear',
         });
     },
-    destroyed: function () {
+    destroyed() {
         this.timer && clearTimeout(this.timer);
     },
-    mounted: function () {
+    mounted() {
         this.init();
     },
     methods: {
-        init: function () {
-            var _this = this;
-            (0, utils_1.requestAnimationFrame)(function () {
+        init() {
+            requestAnimationFrame(() => {
                 Promise.all([
-                    (0, utils_1.getRect)(_this, '.van-notice-bar__content'),
-                    (0, utils_1.getRect)(_this, '.van-notice-bar__wrap'),
-                ]).then(function (rects) {
-                    var contentRect = rects[0], wrapRect = rects[1];
-                    var _a = _this.data, speed = _a.speed, scrollable = _a.scrollable, delay = _a.delay;
+                    getRect(this, '.van-notice-bar__content'),
+                    getRect(this, '.van-notice-bar__wrap'),
+                ]).then((rects) => {
+                    const [contentRect, wrapRect] = rects;
+                    const { speed, scrollable, delay } = this.data;
                     if (contentRect == null ||
                         wrapRect == null ||
                         !contentRect.width ||
@@ -73,23 +70,21 @@ var utils_1 = require("../common/utils");
                         return;
                     }
                     if (scrollable || wrapRect.width < contentRect.width) {
-                        var duration = ((wrapRect.width + contentRect.width) / speed) * 1000;
-                        _this.wrapWidth = wrapRect.width;
-                        _this.contentWidth = contentRect.width;
-                        _this.duration = duration;
-                        _this.animation = wx.createAnimation({
-                            duration: duration,
+                        const duration = ((wrapRect.width + contentRect.width) / speed) * 1000;
+                        this.wrapWidth = wrapRect.width;
+                        this.contentWidth = contentRect.width;
+                        this.duration = duration;
+                        this.animation = wx.createAnimation({
+                            duration,
                             timingFunction: 'linear',
-                            delay: delay,
+                            delay,
                         });
-                        _this.scroll(true);
+                        this.scroll(true);
                     }
                 });
             });
         },
-        scroll: function (isInit) {
-            var _this = this;
-            if (isInit === void 0) { isInit = false; }
+        scroll(isInit = false) {
             this.timer && clearTimeout(this.timer);
             this.timer = null;
             this.setData({
@@ -98,19 +93,19 @@ var utils_1 = require("../common/utils");
                     .step()
                     .export(),
             });
-            (0, utils_1.requestAnimationFrame)(function () {
-                _this.setData({
-                    animationData: _this.animation
-                        .translateX(-_this.contentWidth)
+            requestAnimationFrame(() => {
+                this.setData({
+                    animationData: this.animation
+                        .translateX(-this.contentWidth)
                         .step()
                         .export(),
                 });
             });
-            this.timer = setTimeout(function () {
-                _this.scroll();
+            this.timer = setTimeout(() => {
+                this.scroll();
             }, this.duration);
         },
-        onClickIcon: function (event) {
+        onClickIcon(event) {
             if (this.data.mode === 'closeable') {
                 this.timer && clearTimeout(this.timer);
                 this.timer = null;
@@ -118,7 +113,7 @@ var utils_1 = require("../common/utils");
                 this.$emit('close', event.detail);
             }
         },
-        onClick: function (event) {
+        onClick(event) {
             this.$emit('click', event);
         },
     },

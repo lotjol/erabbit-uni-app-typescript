@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var button_1 = require("../mixins/button");
-(0, component_1.VantComponent)({
-    mixins: [button_1.button],
+import { VantComponent } from '../common/component';
+import { button } from '../mixins/button';
+VantComponent({
+    mixins: [button],
     props: {
         show: Boolean,
         title: String,
@@ -39,11 +37,10 @@ var button_1 = require("../mixins/button");
         },
     },
     methods: {
-        onSelect: function (event) {
-            var _this = this;
-            var index = event.currentTarget.dataset.index;
-            var _a = this.data, actions = _a.actions, closeOnClickAction = _a.closeOnClickAction, canIUseGetUserProfile = _a.canIUseGetUserProfile;
-            var item = actions[index];
+        onSelect(event) {
+            const { index } = event.currentTarget.dataset;
+            const { actions, closeOnClickAction, canIUseGetUserProfile } = this.data;
+            const item = actions[index];
             if (item) {
                 this.$emit('select', item);
                 if (closeOnClickAction) {
@@ -52,20 +49,20 @@ var button_1 = require("../mixins/button");
                 if (item.openType === 'getUserInfo' && canIUseGetUserProfile) {
                     wx.getUserProfile({
                         desc: item.getUserProfileDesc || '  ',
-                        complete: function (userProfile) {
-                            _this.$emit('getuserinfo', userProfile);
+                        complete: (userProfile) => {
+                            this.$emit('getuserinfo', userProfile);
                         },
                     });
                 }
             }
         },
-        onCancel: function () {
+        onCancel() {
             this.$emit('cancel');
         },
-        onClose: function () {
+        onClose() {
             this.$emit('close');
         },
-        onClickOverlay: function () {
+        onClickOverlay() {
             this.$emit('click-overlay');
             this.onClose();
         },

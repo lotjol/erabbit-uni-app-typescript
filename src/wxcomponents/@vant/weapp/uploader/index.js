@@ -1,22 +1,9 @@
-"use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var utils_1 = require("./utils");
-var shared_1 = require("./shared");
-var validator_1 = require("../common/validator");
-(0, component_1.VantComponent)({
-    props: __assign(__assign({ disabled: Boolean, multiple: Boolean, uploadText: String, useBeforeRead: Boolean, afterRead: null, beforeRead: null, previewSize: {
+import { VantComponent } from '../common/component';
+import { isImageFile, chooseFile, isVideoFile } from './utils';
+import { chooseImageProps, chooseVideoProps } from './shared';
+import { isBoolean, isPromise } from '../common/validator';
+VantComponent({
+    props: Object.assign(Object.assign({ disabled: Boolean, multiple: Boolean, uploadText: String, useBeforeRead: Boolean, afterRead: null, beforeRead: null, previewSize: {
             type: null,
             value: 80,
         }, name: {
@@ -53,46 +40,44 @@ var validator_1 = require("../common/validator");
         }, uploadIcon: {
             type: String,
             value: 'photograph',
-        } }, shared_1.chooseImageProps), shared_1.chooseVideoProps),
+        } }, chooseImageProps), chooseVideoProps),
     data: {
         lists: [],
         isInCount: true,
     },
     methods: {
-        formatFileList: function () {
-            var _a = this.data, _b = _a.fileList, fileList = _b === void 0 ? [] : _b, maxCount = _a.maxCount;
-            var lists = fileList.map(function (item) { return (__assign(__assign({}, item), { isImage: (0, utils_1.isImageFile)(item), isVideo: (0, utils_1.isVideoFile)(item), deletable: (0, validator_1.isBoolean)(item.deletable) ? item.deletable : true })); });
-            this.setData({ lists: lists, isInCount: lists.length < maxCount });
+        formatFileList() {
+            const { fileList = [], maxCount } = this.data;
+            const lists = fileList.map((item) => (Object.assign(Object.assign({}, item), { isImage: isImageFile(item), isVideo: isVideoFile(item), deletable: isBoolean(item.deletable) ? item.deletable : true })));
+            this.setData({ lists, isInCount: lists.length < maxCount });
         },
-        getDetail: function (index) {
+        getDetail(index) {
             return {
                 name: this.data.name,
                 index: index == null ? this.data.fileList.length : index,
             };
         },
-        startUpload: function () {
-            var _this = this;
-            var _a = this.data, maxCount = _a.maxCount, multiple = _a.multiple, lists = _a.lists, disabled = _a.disabled;
+        startUpload() {
+            const { maxCount, multiple, lists, disabled } = this.data;
             if (disabled)
                 return;
-            (0, utils_1.chooseFile)(__assign(__assign({}, this.data), { maxCount: maxCount - lists.length }))
-                .then(function (res) {
-                _this.onBeforeRead(multiple ? res : res[0]);
+            chooseFile(Object.assign(Object.assign({}, this.data), { maxCount: maxCount - lists.length }))
+                .then((res) => {
+                this.onBeforeRead(multiple ? res : res[0]);
             })
-                .catch(function (error) {
-                _this.$emit('error', error);
+                .catch((error) => {
+                this.$emit('error', error);
             });
         },
-        onBeforeRead: function (file) {
-            var _this = this;
-            var _a = this.data, beforeRead = _a.beforeRead, useBeforeRead = _a.useBeforeRead;
-            var res = true;
+        onBeforeRead(file) {
+            const { beforeRead, useBeforeRead } = this.data;
+            let res = true;
             if (typeof beforeRead === 'function') {
                 res = beforeRead(file, this.getDetail());
             }
             if (useBeforeRead) {
-                res = new Promise(function (resolve, reject) {
-                    _this.$emit('before-read', __assign(__assign({ file: file }, _this.getDetail()), { callback: function (ok) {
+                res = new Promise((resolve, reject) => {
+                    this.$emit('before-read', Object.assign(Object.assign({ file }, this.getDetail()), { callback: (ok) => {
                             ok ? resolve() : reject();
                         } }));
                 });
@@ -100,71 +85,71 @@ var validator_1 = require("../common/validator");
             if (!res) {
                 return;
             }
-            if ((0, validator_1.isPromise)(res)) {
-                res.then(function (data) { return _this.onAfterRead(data || file); });
+            if (isPromise(res)) {
+                res.then((data) => this.onAfterRead(data || file));
             }
             else {
                 this.onAfterRead(file);
             }
         },
-        onAfterRead: function (file) {
-            var _a = this.data, maxSize = _a.maxSize, afterRead = _a.afterRead;
-            var oversize = Array.isArray(file)
-                ? file.some(function (item) { return item.size > maxSize; })
+        onAfterRead(file) {
+            const { maxSize, afterRead } = this.data;
+            const oversize = Array.isArray(file)
+                ? file.some((item) => item.size > maxSize)
                 : file.size > maxSize;
             if (oversize) {
-                this.$emit('oversize', __assign({ file: file }, this.getDetail()));
+                this.$emit('oversize', Object.assign({ file }, this.getDetail()));
                 return;
             }
             if (typeof afterRead === 'function') {
                 afterRead(file, this.getDetail());
             }
-            this.$emit('after-read', __assign({ file: file }, this.getDetail()));
+            this.$emit('after-read', Object.assign({ file }, this.getDetail()));
         },
-        deleteItem: function (event) {
-            var index = event.currentTarget.dataset.index;
-            this.$emit('delete', __assign(__assign({}, this.getDetail(index)), { file: this.data.fileList[index] }));
+        deleteItem(event) {
+            const { index } = event.currentTarget.dataset;
+            this.$emit('delete', Object.assign(Object.assign({}, this.getDetail(index)), { file: this.data.fileList[index] }));
         },
-        onPreviewImage: function (event) {
+        onPreviewImage(event) {
             if (!this.data.previewFullImage)
                 return;
-            var index = event.currentTarget.dataset.index;
-            var lists = this.data.lists;
-            var item = lists[index];
+            const { index } = event.currentTarget.dataset;
+            const { lists } = this.data;
+            const item = lists[index];
             wx.previewImage({
-                urls: lists.filter(function (item) { return (0, utils_1.isImageFile)(item); }).map(function (item) { return item.url; }),
+                urls: lists.filter((item) => isImageFile(item)).map((item) => item.url),
                 current: item.url,
-                fail: function () {
+                fail() {
                     wx.showToast({ title: '预览图片失败', icon: 'none' });
                 },
             });
         },
-        onPreviewVideo: function (event) {
+        onPreviewVideo(event) {
             if (!this.data.previewFullImage)
                 return;
-            var index = event.currentTarget.dataset.index;
-            var lists = this.data.lists;
+            const { index } = event.currentTarget.dataset;
+            const { lists } = this.data;
             wx.previewMedia({
                 sources: lists
-                    .filter(function (item) { return (0, utils_1.isVideoFile)(item); })
-                    .map(function (item) { return (__assign(__assign({}, item), { type: 'video' })); }),
+                    .filter((item) => isVideoFile(item))
+                    .map((item) => (Object.assign(Object.assign({}, item), { type: 'video' }))),
                 current: index,
-                fail: function () {
+                fail() {
                     wx.showToast({ title: '预览视频失败', icon: 'none' });
                 },
             });
         },
-        onPreviewFile: function (event) {
-            var index = event.currentTarget.dataset.index;
+        onPreviewFile(event) {
+            const { index } = event.currentTarget.dataset;
             wx.openDocument({
                 filePath: this.data.lists[index].url,
                 showMenu: true,
             });
         },
-        onClickPreview: function (event) {
-            var index = event.currentTarget.dataset.index;
-            var item = this.data.lists[index];
-            this.$emit('click-preview', __assign(__assign({}, item), this.getDetail(index)));
+        onClickPreview(event) {
+            const { index } = event.currentTarget.dataset;
+            const item = this.data.lists[index];
+            this.$emit('click-preview', Object.assign(Object.assign({}, item), this.getDetail(index)));
         },
     },
 });

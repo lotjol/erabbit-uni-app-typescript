@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var relation_1 = require("../common/relation");
-var animate_1 = require("./animate");
-(0, component_1.VantComponent)({
+import { VantComponent } from '../common/component';
+import { useParent } from '../common/relation';
+import { setContentAnimate } from './animate';
+VantComponent({
     classes: ['title-class', 'content-class'],
-    relation: (0, relation_1.useParent)('collapse'),
+    relation: useParent('collapse'),
     props: {
         size: String,
         name: null,
@@ -27,35 +25,35 @@ var animate_1 = require("./animate");
     data: {
         expanded: false,
     },
-    mounted: function () {
+    mounted() {
         this.updateExpanded();
         this.mounted = true;
     },
     methods: {
-        updateExpanded: function () {
+        updateExpanded() {
             if (!this.parent) {
                 return;
             }
-            var _a = this.parent.data, value = _a.value, accordion = _a.accordion;
-            var _b = this.parent.children, children = _b === void 0 ? [] : _b;
-            var name = this.data.name;
-            var index = children.indexOf(this);
-            var currentName = name == null ? index : name;
-            var expanded = accordion
+            const { value, accordion } = this.parent.data;
+            const { children = [] } = this.parent;
+            const { name } = this.data;
+            const index = children.indexOf(this);
+            const currentName = name == null ? index : name;
+            const expanded = accordion
                 ? value === currentName
-                : (value || []).some(function (name) { return name === currentName; });
+                : (value || []).some((name) => name === currentName);
             if (expanded !== this.data.expanded) {
-                (0, animate_1.setContentAnimate)(this, expanded, this.mounted);
+                setContentAnimate(this, expanded, this.mounted);
             }
-            this.setData({ index: index, expanded: expanded });
+            this.setData({ index, expanded });
         },
-        onClick: function () {
+        onClick() {
             if (this.data.disabled) {
                 return;
             }
-            var _a = this.data, name = _a.name, expanded = _a.expanded;
-            var index = this.parent.children.indexOf(this);
-            var currentName = name == null ? index : name;
+            const { name, expanded } = this.data;
+            const index = this.parent.children.indexOf(this);
+            const currentName = name == null ? index : name;
             this.parent.switch(currentName, !expanded);
         },
     },

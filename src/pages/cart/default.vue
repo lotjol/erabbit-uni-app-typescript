@@ -18,35 +18,48 @@
 
       <!-- 购物车商品 -->
       <view class="carts">
-        <mp-slideview
+        <van-swipe-cell
+          class="swipe-cell"
+          async-close
+          :right-width="100"
           v-for="(item, index) in carts"
           :key="index"
-          class="slideview"
-          :buttons="slideButtons"
+          @close="onClose"
         >
-          <view class="card">
-            <text
-              @click="checkToggle(index)"
-              :class="['checkbox', `icon-${item.checked ? 'checked' : 'ring'}`]"
-            ></text>
-            <!-- 商品缩略图 -->
-            <image class="thumb" :src="item.thumb"></image>
-            <div class="meta">
-              <!-- 商品名称 -->
-              <view class="name ellipsis">{{ item.name }}</view>
-              <!-- 商品类型 -->
-              <view class="type">{{ item.type }}</view>
-              <!-- 价格 -->
-              <view class="price"> ¥{{ item.price }} </view>
-              <!-- 商品数量 -->
-              <view class="quantity">
-                <text class="text" bind:tap="changeQuantity">-</text>
-                <input class="input" type="text" :value="item.quantity" />
-                <text class="text" bind:tap="changeQuantity">+</text>
+          <van-cell-group>
+            <view class="card">
+              <text
+                @click="checkToggle(index)"
+                :class="[
+                  'checkbox',
+                  `icon-${item.checked ? 'checked' : 'ring'}`,
+                ]"
+              ></text>
+              <!-- 商品缩略图 -->
+              <image class="thumb" :src="item.thumb"></image>
+              <view class="meta">
+                <!-- 商品名称 -->
+                <view class="name ellipsis">{{ item.name }}</view>
+                <!-- 商品类型 -->
+                <view class="type">{{ item.type }}</view>
+                <!-- 价格 -->
+                <view class="price"> ¥{{ item.price }} </view>
+                <!-- 商品数量 -->
+                <view class="quantity">
+                  <text class="text" bind:tap="changeQuantity">-</text>
+                  <input class="input" type="text" :value="item.quantity" />
+                  <text class="text" bind:tap="changeQuantity">+</text>
+                </view>
               </view>
-            </div>
-          </view>
-        </mp-slideview>
+            </view>
+          </van-cell-group>
+          <template v-slot:right>
+            <view class="swipe-cell-action">
+              <button class="collect-button">移入收藏</button>
+              <button class="delete-button">删除</button>
+            </view>
+          </template>
+        </van-swipe-cell>
       </view>
     </block>
 
@@ -59,6 +72,9 @@
     <!-- 猜你喜欢 -->
     <guess :source="[]"></guess>
   </scroll-view>
+  <van-dialog use-slot title="标题" :show="dialogShow" show-cancel-button>
+    <image src="https://img.yzcdn.cn/1.jpg" />
+  </van-dialog>
 
   <!-- 吸底工具栏 -->
   <view class="toolbar" v-if="true">
@@ -72,34 +88,13 @@
       <view class="button delete">删除</view>
     </view>
   </view>
-
-  <!-- 对话框 -->
-  <view class="mask" v-if="false">
-    <view class="dialog">
-      <text class="text">是否确认将此商品移入收藏?</text>
-      <div class="buttons">
-        <view class="button cancel">取消</view>
-        <view class="button confirm">确认</view>
-      </div>
-    </view>
-  </view>
 </template>
 
 <script setup lang="ts">
   import { ref } from "vue";
   import guess from "@/components/guess/index.vue";
 
-  const slideButtons = [
-    {
-      text: "移入收藏",
-      extClass: "slideview-collect-button",
-    },
-    {
-      text: "删除",
-      extClass: "slideview-delete-button",
-    },
-  ];
-
+  const dialogShow = ref(false);
   const carts = ref([
     {
       thumb: "http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg",
@@ -138,14 +133,15 @@
   };
 
   const checkAll = () => {};
-</script>
 
-<script lang="ts">
-  export default {
-    options: {
-      // virtualHost: true,
-      styleIsolation: "shared",
-    },
+  const onClose = (ev: any) => {
+    const { position, instance } = ev.detail;
+    switch (position) {
+      case "right":
+        dialogShow.value = true;
+        instance.close();
+        break;
+    }
   };
 </script>
 
@@ -249,12 +245,12 @@
     position: relative;
   }
 
-  .carts .slideview {
+  .carts .swipe-cell {
     display: block;
     margin-top: 20rpx;
   }
 
-  .carts .slideview:first-child {
+  .carts .swipe-cell:first-child {
     margin-top: 0;
   }
 
@@ -457,74 +453,29 @@
     background-color: #ffa868;
   }
 
-  /* 对话框 */
-  .mask {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .mask .dialog {
-    width: 575rpx;
-    text-align: center;
-    padding: 60rpx 30rpx;
-    border-radius: 10rpx;
-    transform: translate(-50%, -70%);
-    background-color: #fff;
-
-    position: absolute;
-    left: 50%;
-    top: 50%;
-  }
-
-  .mask .dialog .text {
-    font-size: 32rpx;
-    color: #444;
-  }
-
-  .mask .dialog .buttons {
+  .swipe-cell-action {
     display: flex;
-    justify-content: space-around;
-    height: 66rpx;
-    line-height: 66rpx;
-    margin-top: 40rpx;
-    font-size: 26rpx;
+    height: 100%;
+    /* flex-direction: column; */
   }
 
-  .mask .buttons .button {
-    width: 190rpx;
-    border-radius: 6rpx;
-  }
-
-  .mask .buttons .cancel {
-    color: #999;
-    border: 1rpx solid #999;
-  }
-
-  .mask .buttons .confirm {
-    color: #fff;
-    background-color: #27ba9b;
-  }
-
-  .slideview-collect-button,
-  .slideview-delete-button {
+  .swipe-cell-action button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    padding: 6px;
+    line-height: 1.5;
     color: #fff;
     font-size: 26rpx;
+    border-radius: 0;
   }
 
-  .slideview-collect-button {
-    background-color: #ffa868 !important;
+  .swipe-cell-action .collect-button {
+    background-color: #ffa868;
   }
 
-  .slideview-delete-button {
-    background-color: #cf4444 !important;
-  }
-
-  .slideview-delete-button::before {
-    display: none;
+  .swipe-cell-action .delete-button {
+    background-color: #cf4444;
   }
 </style>

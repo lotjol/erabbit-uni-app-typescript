@@ -1,11 +1,6 @@
 <template>
-  <mp-half-screen-dialog
-    extClass="half-dialog"
-    :show="show"
-    :closabled="false"
-    :maskClosable="false"
-  >
-    <view slot="desc" class="description">
+  <van-popup position="bottom" :show="show">
+    <view class="popup-root">
       <view class="title">{{ title }}</view>
       <view class="list">
         <view
@@ -25,11 +20,11 @@
         <view @click="confirm" class="button primary">确认</view>
       </view>
     </view>
-  </mp-half-screen-dialog>
+  </van-popup>
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, computed } from "vue";
 
   interface listType {
     id: number;
@@ -47,6 +42,7 @@
   }>();
 
   const currentIndex = ref(0);
+
   const onChange = (index: number) => {
     // 切换选中状态
     currentIndex.value = index;

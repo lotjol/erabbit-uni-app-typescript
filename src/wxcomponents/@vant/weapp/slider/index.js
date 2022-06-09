@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var touch_1 = require("../mixins/touch");
-var version_1 = require("../common/version");
-var utils_1 = require("../common/utils");
-(0, component_1.VantComponent)({
-    mixins: [touch_1.touch],
+import { VantComponent } from '../common/component';
+import { touch } from '../mixins/touch';
+import { canIUseModel } from '../common/version';
+import { getRect, addUnit } from '../common/utils';
+VantComponent({
+    mixins: [touch],
     props: {
         range: Boolean,
         disabled: Boolean,
@@ -27,7 +25,7 @@ var utils_1 = require("../common/utils");
         value: {
             type: null,
             value: 0,
-            observer: function (val) {
+            observer(val) {
                 if (val !== this.value) {
                     this.updateValue(val);
                 }
@@ -36,15 +34,14 @@ var utils_1 = require("../common/utils");
         vertical: Boolean,
         barHeight: null,
     },
-    created: function () {
+    created() {
         this.updateValue(this.data.value);
     },
     methods: {
-        onTouchStart: function (event) {
-            var _this = this;
+        onTouchStart(event) {
             if (this.data.disabled)
                 return;
-            var index = event.currentTarget.dataset.index;
+            const { index } = event.currentTarget.dataset;
             if (typeof index === 'number') {
                 this.buttonIndex = index;
             }
@@ -52,15 +49,14 @@ var utils_1 = require("../common/utils");
             this.startValue = this.format(this.value);
             this.newValue = this.value;
             if (this.isRange(this.newValue)) {
-                this.startValue = this.newValue.map(function (val) { return _this.format(val); });
+                this.startValue = this.newValue.map((val) => this.format(val));
             }
             else {
                 this.startValue = this.format(this.newValue);
             }
             this.dragStatus = 'start';
         },
-        onTouchMove: function (event) {
-            var _this = this;
+        onTouchMove(event) {
             if (this.data.disabled)
                 return;
             if (this.dragStatus === 'start') {
@@ -68,22 +64,22 @@ var utils_1 = require("../common/utils");
             }
             this.touchMove(event);
             this.dragStatus = 'draging';
-            (0, utils_1.getRect)(this, '.van-slider').then(function (rect) {
-                var vertical = _this.data.vertical;
-                var delta = vertical ? _this.deltaY : _this.deltaX;
-                var total = vertical ? rect.height : rect.width;
-                var diff = (delta / total) * _this.getRange();
-                if (_this.isRange(_this.startValue)) {
-                    _this.newValue[_this.buttonIndex] =
-                        _this.startValue[_this.buttonIndex] + diff;
+            getRect(this, '.van-slider').then((rect) => {
+                const { vertical } = this.data;
+                const delta = vertical ? this.deltaY : this.deltaX;
+                const total = vertical ? rect.height : rect.width;
+                const diff = (delta / total) * this.getRange();
+                if (this.isRange(this.startValue)) {
+                    this.newValue[this.buttonIndex] =
+                        this.startValue[this.buttonIndex] + diff;
                 }
                 else {
-                    _this.newValue = _this.startValue + diff;
+                    this.newValue = this.startValue + diff;
                 }
-                _this.updateValue(_this.newValue, false, true);
+                this.updateValue(this.newValue, false, true);
             });
         },
-        onTouchEnd: function () {
+        onTouchEnd() {
             if (this.data.disabled)
                 return;
             if (this.dragStatus === 'draging') {
@@ -91,98 +87,104 @@ var utils_1 = require("../common/utils");
                 this.$emit('drag-end');
             }
         },
-        onClick: function (event) {
-            var _this = this;
+        onClick(event) {
             if (this.data.disabled)
                 return;
-            var min = this.data.min;
-            (0, utils_1.getRect)(this, '.van-slider').then(function (rect) {
-                var vertical = _this.data.vertical;
-                var touch = event.touches[0];
-                var delta = vertical
+            const { min } = this.data;
+            getRect(this, '.van-slider').then((rect) => {
+                const { vertical } = this.data;
+                const touch = event.touches[0];
+                const delta = vertical
                     ? touch.clientY - rect.top
                     : touch.clientX - rect.left;
-                var total = vertical ? rect.height : rect.width;
-                var value = Number(min) + (delta / total) * _this.getRange();
-                if (_this.isRange(_this.value)) {
-                    var _a = _this.value, left = _a[0], right = _a[1];
-                    var middle = (left + right) / 2;
+                const total = vertical ? rect.height : rect.width;
+                const value = Number(min) + (delta / total) * this.getRange();
+                if (this.isRange(this.value)) {
+                    const [left, right] = this.value;
+                    const middle = (left + right) / 2;
                     if (value <= middle) {
-                        _this.updateValue([value, right], true);
+                        this.updateValue([value, right], true);
                     }
                     else {
-                        _this.updateValue([left, value], true);
+                        this.updateValue([left, value], true);
                     }
                 }
                 else {
-                    _this.updateValue(value, true);
+                    this.updateValue(value, true);
                 }
             });
         },
-        isRange: function (val) {
-            var range = this.data.range;
+        isRange(val) {
+            const { range } = this.data;
             return range && Array.isArray(val);
         },
-        handleOverlap: function (value) {
+        handleOverlap(value) {
             if (value[0] > value[1]) {
                 return value.slice(0).reverse();
             }
             return value;
         },
-        updateValue: function (value, end, drag) {
-            var _this = this;
+        updateValue(value, end, drag) {
             if (this.isRange(value)) {
-                value = this.handleOverlap(value).map(function (val) { return _this.format(val); });
+                value = this.handleOverlap(value).map((val) => this.format(val));
             }
             else {
                 value = this.format(value);
             }
             this.value = value;
-            var vertical = this.data.vertical;
-            var mainAxis = vertical ? 'height' : 'width';
+            const { vertical } = this.data;
+            const mainAxis = vertical ? 'height' : 'width';
             this.setData({
-                wrapperStyle: "\n          background: ".concat(this.data.inactiveColor || '', ";\n          ").concat(vertical ? 'width' : 'height', ": ").concat((0, utils_1.addUnit)(this.data.barHeight) || '', ";\n        "),
-                barStyle: "\n          ".concat(mainAxis, ": ").concat(this.calcMainAxis(), ";\n          left: ").concat(vertical ? 0 : this.calcOffset(), ";\n          top: ").concat(vertical ? this.calcOffset() : 0, ";\n          ").concat(drag ? 'transition: none;' : '', "\n        "),
+                wrapperStyle: `
+          background: ${this.data.inactiveColor || ''};
+          ${vertical ? 'width' : 'height'}: ${addUnit(this.data.barHeight) || ''};
+        `,
+                barStyle: `
+          ${mainAxis}: ${this.calcMainAxis()};
+          left: ${vertical ? 0 : this.calcOffset()};
+          top: ${vertical ? this.calcOffset() : 0};
+          ${drag ? 'transition: none;' : ''}
+        `,
             });
             if (drag) {
-                this.$emit('drag', { value: value });
+                this.$emit('drag', { value });
             }
             if (end) {
                 this.$emit('change', value);
             }
-            if ((drag || end) && (0, version_1.canIUseModel)()) {
-                this.setData({ value: value });
+            if ((drag || end) && canIUseModel()) {
+                this.setData({ value });
             }
         },
-        getScope: function () {
+        getScope() {
             return Number(this.data.max) - Number(this.data.min);
         },
-        getRange: function () {
-            var _a = this.data, max = _a.max, min = _a.min;
+        getRange() {
+            const { max, min } = this.data;
             return max - min;
         },
         // 计算选中条的长度百分比
-        calcMainAxis: function () {
-            var value = this.value;
-            var min = this.data.min;
-            var scope = this.getScope();
+        calcMainAxis() {
+            const { value } = this;
+            const { min } = this.data;
+            const scope = this.getScope();
             if (this.isRange(value)) {
-                return "".concat(((value[1] - value[0]) * 100) / scope, "%");
+                return `${((value[1] - value[0]) * 100) / scope}%`;
             }
-            return "".concat(((value - Number(min)) * 100) / scope, "%");
+            return `${((value - Number(min)) * 100) / scope}%`;
         },
         // 计算选中条的开始位置的偏移量
-        calcOffset: function () {
-            var value = this.value;
-            var min = this.data.min;
-            var scope = this.getScope();
+        calcOffset() {
+            const { value } = this;
+            const { min } = this.data;
+            const scope = this.getScope();
             if (this.isRange(value)) {
-                return "".concat(((value[0] - Number(min)) * 100) / scope, "%");
+                return `${((value[0] - Number(min)) * 100) / scope}%`;
             }
             return '0%';
         },
-        format: function (value) {
-            var _a = this.data, max = _a.max, min = _a.min, step = _a.step;
+        format(value) {
+            const { max, min, step } = this.data;
             return Math.round(Math.max(min, Math.min(value, max)) / step) * step;
         },
     },
