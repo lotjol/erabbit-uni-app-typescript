@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { ref } from "vue";
-  import { useAppStore } from "@/store/index";
+  import { toRef } from "vue";
+  import useAppStore from "@/store/index";
 
   import carousel from "@/components/carousel/index.vue";
   import guess from "@/components/guess/index.vue";
@@ -8,10 +8,10 @@
 
   // pinia
   const appStore = useAppStore();
-  const safeArea = appStore.safeArea;
+  const safeArea = toRef(appStore, "safeArea");
 
   // 初始数据
-  let hasMore = ref(true);
+  let hasMore = $ref(true);
 
   const bannerData = [
     {

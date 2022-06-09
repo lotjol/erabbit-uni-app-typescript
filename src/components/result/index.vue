@@ -85,13 +85,11 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
-
-  const selecting = ref(false);
-  const optionIndex = ref(0);
-  const optionValue = ref("综合");
-  const tabIndex = ref(0);
-  const sortIcon = ref("icon-sort");
+  let selecting = $ref(false);
+  let optionIndex = $ref(0);
+  let optionValue = $ref("综合");
+  let tabIndex = $ref(0);
+  let sortIcon = $ref("icon-sort");
 
   const goods = [
     {
@@ -154,31 +152,31 @@
   const changeOption = (ev: MouseEvent) => {
     const { index = "0", option = "" } = (ev.target as HTMLElement).dataset;
 
-    selecting.value = false;
-    optionValue.value = option;
-    optionIndex.value = parseInt(index);
+    selecting = false;
+    optionValue = option;
+    optionIndex = parseInt(index);
   };
 
   // 综合下拉选择
   const doSelect = () => {
-    selecting.value = !selecting.value;
-    tabIndex.value = 0;
-    sortIcon.value = "icon-sort";
+    selecting = !selecting;
+    tabIndex = 0;
+    sortIcon = "icon-sort";
   };
 
   // 按价格
   const byPrice = () => {
-    tabIndex.value = 1;
-    selecting.value = false;
+    tabIndex = 1;
+    selecting = false;
     // 字体图标
-    sortIcon.value = sortIcon.value === "icon-up" ? "icon-down" : "icon-up";
+    sortIcon = sortIcon === "icon-up" ? "icon-down" : "icon-up";
   };
 
   // 按销量
   const bySales = () => {
-    tabIndex.value = 2;
-    selecting.value = false;
-    sortIcon.value = "icon-sort";
+    tabIndex = 2;
+    selecting = false;
+    sortIcon = "icon-sort";
   };
 </script>
 

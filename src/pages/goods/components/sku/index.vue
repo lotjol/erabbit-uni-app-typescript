@@ -59,8 +59,6 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps } from "vue";
-
   defineProps<{ buttonType: string }>();
 
   const goCart = () => {

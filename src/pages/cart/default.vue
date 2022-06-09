@@ -91,11 +91,10 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
   import guess from "@/components/guess/index.vue";
 
-  const dialogShow = ref(false);
-  const carts = ref([
+  let dialogShow = $ref(false);
+  let carts = $ref([
     {
       thumb: "http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg",
       name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
@@ -129,7 +128,7 @@
   };
 
   const checkToggle = (index: number) => {
-    carts.value[index].checked = !carts.value[index].checked;
+    carts[index].checked = !carts[index].checked;
   };
 
   const checkAll = () => {};
@@ -138,7 +137,7 @@
     const { position, instance } = ev.detail;
     switch (position) {
       case "right":
-        dialogShow.value = true;
+        dialogShow = true;
         instance.close();
         break;
     }

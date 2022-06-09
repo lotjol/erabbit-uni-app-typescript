@@ -419,12 +419,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, getCurrentInstance } from "vue";
+  import { toRef, getCurrentInstance } from "vue";
   import { onReady } from "@dcloudio/uni-app";
+  import useAppStore from "@/store";
 
-  import { useAppStore } from "@/store";
   const appStore = useAppStore();
-  const safeArea = appStore.safeArea;
+  const safeArea = toRef(appStore, "safeArea");
 
   const tabs = ["我的收藏", "猜你喜欢", "我的足迹"];
   const orderTypes = [
@@ -433,13 +433,13 @@
     { text: "待收货", icon: "icon-check", type: 3 },
     { text: "待评价", icon: "icon-comment", type: 4 },
   ];
-  const tabIndex = ref(0);
+  let tabIndex = $ref(0);
 
   // 获取页面实例
   const pageInstance: any = getCurrentInstance();
 
   const changeTab = (index: number) => {
-    tabIndex.value = index;
+    tabIndex = index;
   };
 
   onReady(() => {

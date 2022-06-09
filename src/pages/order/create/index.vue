@@ -108,8 +108,6 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
-
   import layer from "./layer.vue";
 
   const payments = [
@@ -127,7 +125,7 @@
     },
   ];
 
-  const paymentShow = ref(false);
+  let paymentShow = $ref(false);
 
   const shipments = [
     {
@@ -140,19 +138,19 @@
     },
   ];
 
-  const shipmentShow = ref(false);
+  let shipmentShow = $ref(false);
 
-  const payment = ref(payments[0]);
-  const shipment = ref(shipments[0]);
+  let payment = $ref(payments[0]);
+  let shipment = $ref(shipments[0]);
 
   const getPaymentInfo = (info: any) => {
-    paymentShow.value = false;
-    payment.value = info;
+    paymentShow = false;
+    payment = info;
   };
 
   const getShipmentInfo = (info: any) => {
-    shipmentShow.value = false;
-    shipment.value = info;
+    shipmentShow = false;
+    shipment = info;
   };
 
   const goPayment = () => {

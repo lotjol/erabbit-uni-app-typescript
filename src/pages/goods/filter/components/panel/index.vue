@@ -13,8 +13,6 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps, ref } from "vue";
-
   import item from "../item/index.vue";
 
   defineProps<{
@@ -23,10 +21,10 @@
     title: string;
   }>();
 
-  const collapsed = ref(false);
+  let collapsed = $ref(false);
 
   const toggleMore = () => {
-    collapsed.value = !collapsed.value;
+    collapsed = !collapsed;
   };
   const selected = () => {};
 </script>

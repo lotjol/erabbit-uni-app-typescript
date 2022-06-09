@@ -150,7 +150,7 @@
 </template>
 
 <script setup lang="ts">
-  import { reactive, ref } from "vue";
+  import { reactive } from "vue";
 
   import { onLoad } from "@dcloudio/uni-app";
 
@@ -186,16 +186,17 @@
       tabs: ["抢先尝新", "新品预告"],
     },
   });
-  const type = ref("1");
-  const meta = ref(metaMap[type.value]);
+
+  let type = $ref("1");
+  let meta = $ref(metaMap[type]);
 
   onLoad(({ type }) => {
-    if (type) meta.value = metaMap[type];
+    if (type) meta = metaMap[type];
   });
 
   // 动态更新导航栏标题
   uni.setNavigationBarTitle({
-    title: meta.value.title,
+    title: meta.title,
   });
 </script>
 

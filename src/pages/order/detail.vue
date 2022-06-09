@@ -223,27 +223,26 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, getCurrentInstance } from "vue";
+  import { toRefs, getCurrentInstance } from "vue";
   import { onReady } from "@dcloudio/uni-app";
 
-  import { useAppStore } from "@/store";
+  import useAppStore from "@/store";
 
   import guess from "@/components/guess/index.vue";
 
   const appStore = useAppStore();
-  // 不需要响应式变化
-  const { safeArea, platform } = appStore;
+  const { safeArea, platform } = toRefs(appStore);
 
-  const showHalfDialog = ref(false);
+  let showHalfDialog = $ref(false);
 
   const pageInstance: any = getCurrentInstance();
 
   const cancelOrder = () => {
-    showHalfDialog.value = true;
+    showHalfDialog = true;
   };
 
   const cancelHalfDialog = () => {
-    showHalfDialog.value = false;
+    showHalfDialog = false;
   };
 
   const goBack = () => {

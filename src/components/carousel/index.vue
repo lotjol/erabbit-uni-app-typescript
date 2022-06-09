@@ -19,8 +19,6 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps, ref } from "vue";
-
   interface bannerType {
     [index: number]: { id: string; type: string; imgUrl: string };
   }
@@ -29,11 +27,11 @@
     source: bannerType;
   }>();
 
-  const activeIndex = ref(0);
+  let activeIndex = $ref(0);
 
   // 更新指示器状态
   const swiperChanged = (ev: WechatMiniprogram.SwiperChange) => {
-    activeIndex.value = ev.detail.current;
+    activeIndex = ev.detail.current;
   };
 </script>
 

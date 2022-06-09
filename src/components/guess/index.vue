@@ -50,8 +50,6 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps } from "vue";
-
   interface Goods {
     name: string;
     path: string;
