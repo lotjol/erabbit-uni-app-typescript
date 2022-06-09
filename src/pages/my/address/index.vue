@@ -3,56 +3,102 @@
     <!-- 地址列表 -->
     <scroll-view enhanced scroll-y>
       <view class="address">
-        <mp-slideview :buttons="slideButtons">
-          <view class="item">
-            <view class="user">
-              王东
-              <text>13824686868</text>
-              <text class="badge">默认</text>
+        <van-swipe-cell
+          class="swipe-cell"
+          async-close
+          :right-width="50"
+          @close="onClose"
+        >
+          <van-cell-group>
+            <view class="item">
+              <view class="user">
+                王东
+                <text>13824686868</text>
+                <text class="badge">默认</text>
+              </view>
+              <view class="locate">北京市顺义区后沙峪地区安平北街6号院</view>
+              <navigator url="./form?id=1" class="edit" hover-class="none"
+                >修改</navigator
+              >
             </view>
-            <view class="locate">北京市顺义区后沙峪地区安平北街6号院</view>
-            <navigator url="./form?id=1" class="edit" hover-class="none"
-              >修改</navigator
-            >
-          </view>
-        </mp-slideview>
-        <mp-slideview :buttons="slideButtons">
-          <view class="item">
-            <view class="user"> 寒冰 <text>13824686868</text> </view>
-            <view class="locate">北京市顺义区后沙峪地区安平北街6号院</view>
-            <navigator url="./form?id=2" class="edit" hover-class="none"
-              >修改</navigator
-            >
-          </view>
-        </mp-slideview>
-        <mp-slideview :buttons="slideButtons">
-          <view class="item">
-            <view class="user"> 寒冰 <text>13824686868</text> </view>
-            <view class="locate default"
-              >北京市顺义区后沙峪地区安平北街6号院北京市顺义区后沙峪地区安平北街6号院</view
-            >
-            <navigator url="./form?id=3" class="edit" hover-class="none"
-              >修改</navigator
-            >
-          </view>
-        </mp-slideview>
+          </van-cell-group>
+          <template v-slot:right>
+            <view class="swipe-cell-action">
+              <button class="delete-button">删除</button>
+            </view>
+          </template>
+        </van-swipe-cell>
+        <van-swipe-cell
+          class="swipe-cell"
+          async-close
+          :right-width="50"
+          @close="onClose"
+        >
+          <van-cell-group>
+            <view class="item">
+              <view class="user"> 寒冰 <text>13824686868</text> </view>
+              <view class="locate">北京市顺义区后沙峪地区安平北街6号院</view>
+              <navigator url="./form?id=2" class="edit" hover-class="none"
+                >修改</navigator
+              >
+            </view>
+          </van-cell-group>
+          <template v-slot:right>
+            <view class="swipe-cell-action">
+              <button class="delete-button">删除</button>
+            </view>
+          </template>
+        </van-swipe-cell>
+        <van-swipe-cell
+          class="swipe-cell"
+          async-close
+          :right-width="50"
+          @close="onClose"
+        >
+          <van-cell-group>
+            <view class="item">
+              <view class="user"> 寒冰 <text>13824686868</text> </view>
+              <view class="locate default"
+                >北京市顺义区后沙峪地区安平北街6号院北京市顺义区后沙峪地区安平北街6号院</view
+              >
+              <navigator url="./form?id=3" class="edit" hover-class="none"
+                >修改</navigator
+              >
+            </view>
+          </van-cell-group>
+          <template v-slot:right>
+            <view class="swipe-cell-action">
+              <button class="delete-button">删除</button>
+            </view>
+          </template>
+        </van-swipe-cell>
       </view>
       <view v-if="false" class="blank">收货地址为空~</view>
     </scroll-view>
     <!-- 添加按钮 -->
-    <view class="button">
+    <view class="add-btn">
       <navigator hover-class="none" url="./form">新建地址</navigator>
     </view>
   </view>
+  <van-dialog use-slot title="标题" :show="dialogShow" show-cancel-button>
+    <image src="https://img.yzcdn.cn/1.jpg" />
+  </van-dialog>
 </template>
 
 <script setup lang="ts">
-  const slideButtons = [
-    {
-      text: "删除",
-      extClass: "slideview-delete-button",
-    },
-  ];
+  import { ref } from "vue";
+
+  const dialogShow = ref(false);
+
+  const onClose = (ev: any) => {
+    const { position, instance } = ev.detail;
+    switch (position) {
+      case "right":
+        dialogShow.value = true;
+        instance.close();
+        break;
+    }
+  };
 </script>
 
 <style>
@@ -116,12 +162,20 @@
     color: #333;
   }
 
-  .slideview-delete-button > view {
+  .swipe-cell-action {
+    height: 100%;
+  }
+
+  .swipe-cell-action .delete-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 50px;
     height: 100%;
     font-size: 28rpx;
+    color: #fff;
+    border-radius: 0;
+    padding: 0;
     background-color: #cf4444 !important;
   }
 
@@ -137,7 +191,7 @@
     line-height: 1;
   }
 
-  .button {
+  .add-btn {
     height: 80rpx;
     text-align: center;
     line-height: 80rpx;
