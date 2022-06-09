@@ -1,12 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var relation_1 = require("../common/relation");
-(0, component_1.VantComponent)({
-    relation: (0, relation_1.useChildren)('col', function (target) {
-        var gutter = this.data.gutter;
+import { VantComponent } from '../common/component';
+import { useChildren } from '../common/relation';
+VantComponent({
+    relation: useChildren('col', function (target) {
+        const { gutter } = this.data;
         if (gutter) {
-            target.setData({ gutter: gutter });
+            target.setData({ gutter });
         }
     }),
     props: {
@@ -16,10 +14,9 @@ var relation_1 = require("../common/relation");
         },
     },
     methods: {
-        setGutter: function () {
-            var _this = this;
-            this.children.forEach(function (col) {
-                col.setData(_this.data);
+        setGutter() {
+            this.children.forEach((col) => {
+                col.setData(this.data);
             });
         },
     },

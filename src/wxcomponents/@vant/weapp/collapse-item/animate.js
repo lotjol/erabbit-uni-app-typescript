@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.setContentAnimate = void 0;
-var utils_1 = require("../common/utils");
+import { getRect } from '../common/utils';
 function useAnimation(context, expanded, mounted, height) {
-    var animation = wx.createAnimation({
+    const animation = wx.createAnimation({
         duration: 0,
         timingFunction: 'ease-in-out',
     });
@@ -33,11 +30,10 @@ function useAnimation(context, expanded, mounted, height) {
         animation: animation.export(),
     });
 }
-function setContentAnimate(context, expanded, mounted) {
-    (0, utils_1.getRect)(context, '.van-collapse-item__content')
-        .then(function (rect) { return rect.height; })
-        .then(function (height) {
+export function setContentAnimate(context, expanded, mounted) {
+    getRect(context, '.van-collapse-item__content')
+        .then((rect) => rect.height)
+        .then((height) => {
         useAnimation(context, expanded, mounted, height);
     });
 }
-exports.setContentAnimate = setContentAnimate;

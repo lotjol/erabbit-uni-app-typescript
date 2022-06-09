@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var version_1 = require("../common/version");
-var component_1 = require("../common/component");
-var relation_1 = require("../common/relation");
-(0, component_1.VantComponent)({
+import { canIUseModel } from '../common/version';
+import { VantComponent } from '../common/component';
+import { useParent } from '../common/relation';
+VantComponent({
     field: true,
-    relation: (0, relation_1.useParent)('radio-group', function () {
+    relation: useParent('radio-group', function () {
         this.updateFromParent();
     }),
     classes: ['icon-class', 'label-class'],
@@ -34,32 +32,32 @@ var relation_1 = require("../common/relation");
         parentDisabled: false,
     },
     methods: {
-        updateFromParent: function () {
+        updateFromParent() {
             if (!this.parent) {
                 return;
             }
-            var _a = this.parent.data, value = _a.value, parentDisabled = _a.disabled, direction = _a.direction;
+            const { value, disabled: parentDisabled, direction } = this.parent.data;
             this.setData({
-                value: value,
-                direction: direction,
-                parentDisabled: parentDisabled,
+                value,
+                direction,
+                parentDisabled,
             });
         },
-        emitChange: function (value) {
-            var instance = this.parent || this;
+        emitChange(value) {
+            const instance = this.parent || this;
             instance.$emit('input', value);
             instance.$emit('change', value);
-            if ((0, version_1.canIUseModel)()) {
-                instance.setData({ value: value });
+            if (canIUseModel()) {
+                instance.setData({ value });
             }
         },
-        onChange: function () {
+        onChange() {
             if (!this.data.disabled && !this.data.parentDisabled) {
                 this.emitChange(this.data.name);
             }
         },
-        onClickLabel: function () {
-            var _a = this.data, disabled = _a.disabled, parentDisabled = _a.parentDisabled, labelDisabled = _a.labelDisabled, name = _a.name;
+        onClickLabel() {
+            const { disabled, parentDisabled, labelDisabled, name } = this.data;
             if (!(disabled || parentDisabled) && !labelDisabled) {
                 this.emitChange(name);
             }

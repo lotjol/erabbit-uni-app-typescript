@@ -1,8 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.button = void 0;
-var version_1 = require("../common/version");
-exports.button = Behavior({
+import { canIUseGetUserProfile } from '../common/version';
+export const button = Behavior({
     externalClasses: ['hover-class'],
     properties: {
         id: String,
@@ -19,25 +16,25 @@ exports.button = Behavior({
         getUserProfileDesc: String,
     },
     data: {
-        canIUseGetUserProfile: (0, version_1.canIUseGetUserProfile)(),
+        canIUseGetUserProfile: canIUseGetUserProfile(),
     },
     methods: {
-        onGetUserInfo: function (event) {
+        onGetUserInfo(event) {
             this.triggerEvent('getuserinfo', event.detail);
         },
-        onContact: function (event) {
+        onContact(event) {
             this.triggerEvent('contact', event.detail);
         },
-        onGetPhoneNumber: function (event) {
+        onGetPhoneNumber(event) {
             this.triggerEvent('getphonenumber', event.detail);
         },
-        onError: function (event) {
+        onError(event) {
             this.triggerEvent('error', event.detail);
         },
-        onLaunchApp: function (event) {
+        onLaunchApp(event) {
             this.triggerEvent('launchapp', event.detail);
         },
-        onOpenSetting: function (event) {
+        onOpenSetting(event) {
             this.triggerEvent('opensetting', event.detail);
         },
     },

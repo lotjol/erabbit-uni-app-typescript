@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var relation_1 = require("../common/relation");
-var component_1 = require("../common/component");
-(0, component_1.VantComponent)({
-    relation: (0, relation_1.useParent)('tabs'),
+import { useParent } from '../common/relation';
+import { VantComponent } from '../common/component';
+VantComponent({
+    relation: useParent('tabs'),
     props: {
         dot: {
             type: Boolean,
@@ -34,22 +32,22 @@ var component_1 = require("../common/component");
         active: false,
     },
     methods: {
-        getComputedName: function () {
+        getComputedName() {
             if (this.data.name !== '') {
                 return this.data.name;
             }
             return this.index;
         },
-        updateRender: function (active, parent) {
-            var parentData = parent.data;
+        updateRender(active, parent) {
+            const { data: parentData } = parent;
             this.inited = this.inited || active;
             this.setData({
-                active: active,
+                active,
                 shouldRender: this.inited || !parentData.lazyRender,
                 shouldShow: active || parentData.animated,
             });
         },
-        update: function () {
+        update() {
             if (this.parent) {
                 this.parent.updateTabs();
             }

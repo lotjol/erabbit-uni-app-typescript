@@ -1,8 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var link_1 = require("../mixins/link");
-var component_1 = require("../common/component");
-(0, component_1.VantComponent)({
+import { link } from '../mixins/link';
+import { VantComponent } from '../common/component';
+VantComponent({
     classes: [
         'title-class',
         'label-class',
@@ -10,7 +8,7 @@ var component_1 = require("../common/component");
         'right-icon-class',
         'hover-class',
     ],
-    mixins: [link_1.link],
+    mixins: [link],
     props: {
         title: null,
         value: null,
@@ -32,7 +30,7 @@ var component_1 = require("../common/component");
         titleStyle: String,
     },
     methods: {
-        onClick: function (event) {
+        onClick(event) {
             this.$emit('click', event.detail);
             this.jumpLink();
         },

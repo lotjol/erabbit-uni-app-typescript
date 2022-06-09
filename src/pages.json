@@ -138,7 +138,9 @@
       "mp-slideview": "/wxcomponents/weui-miniprogram/slideview/slideview",
       "mp-half-screen-dialog": "/wxcomponents/weui-miniprogram/half-screen-dialog/half-screen-dialog",
       "van-button": "/wxcomponents/@vant/weapp/button/index",
-      "van-popup": "/wxcomponents/@vant/weapp/popup/index"
+      "van-popup": "/wxcomponents/@vant/weapp/popup/index",
+      "van-swipe-cell": "/wxcomponents/@vant/weapp/swipe-cell/index",
+      "van-dialog": "/wxcomponents/@vant/weapp/dialog/index"
     }
   },
 

@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var relation_1 = require("../common/relation");
-(0, component_1.VantComponent)({
+import { VantComponent } from '../common/component';
+import { useChildren } from '../common/relation';
+VantComponent({
     field: true,
-    relation: (0, relation_1.useChildren)('radio'),
+    relation: useChildren('radio'),
     props: {
         value: {
             type: null,
@@ -17,8 +15,8 @@ var relation_1 = require("../common/relation");
         },
     },
     methods: {
-        updateChildren: function () {
-            this.children.forEach(function (child) { return child.updateFromParent(); });
+        updateChildren() {
+            this.children.forEach((child) => child.updateFromParent());
         },
     },
 });

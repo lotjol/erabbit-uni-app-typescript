@@ -1,9 +1,7 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var relation_1 = require("../common/relation");
-(0, component_1.VantComponent)({
-    relation: (0, relation_1.useChildren)('collapse-item'),
+import { VantComponent } from '../common/component';
+import { useChildren } from '../common/relation';
+VantComponent({
+    relation: useChildren('collapse-item'),
     props: {
         value: {
             type: null,
@@ -19,18 +17,18 @@ var relation_1 = require("../common/relation");
         },
     },
     methods: {
-        updateExpanded: function () {
-            this.children.forEach(function (child) {
+        updateExpanded() {
+            this.children.forEach((child) => {
                 child.updateExpanded();
             });
         },
-        switch: function (name, expanded) {
-            var _a = this.data, accordion = _a.accordion, value = _a.value;
-            var changeItem = name;
+        switch(name, expanded) {
+            const { accordion, value } = this.data;
+            const changeItem = name;
             if (!accordion) {
                 name = expanded
                     ? (value || []).concat(name)
-                    : (value || []).filter(function (activeName) { return activeName !== name; });
+                    : (value || []).filter((activeName) => activeName !== name);
             }
             else {
                 name = expanded ? name : '';

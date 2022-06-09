@@ -1,14 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var component_1 = require("../common/component");
-var button_1 = require("../mixins/button");
-(0, component_1.VantComponent)({
-    mixins: [button_1.button],
+import { VantComponent } from '../common/component';
+import { button } from '../mixins/button';
+VantComponent({
+    mixins: [button],
     classes: ['custom-class', 'loading-class', 'error-class', 'image-class'],
     props: {
         src: {
             type: String,
-            observer: function () {
+            observer() {
                 this.setData({
                     error: false,
                     loading: true,
@@ -42,20 +40,20 @@ var button_1 = require("../mixins/button");
         viewStyle: '',
     },
     methods: {
-        onLoad: function (event) {
+        onLoad(event) {
             this.setData({
                 loading: false,
             });
             this.$emit('load', event.detail);
         },
-        onError: function (event) {
+        onError(event) {
             this.setData({
                 loading: false,
                 error: true,
             });
             this.$emit('error', event.detail);
         },
-        onClick: function (event) {
+        onClick(event) {
             this.$emit('click', event.detail);
         },
     },
