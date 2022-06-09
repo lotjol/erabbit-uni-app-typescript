@@ -179,20 +179,14 @@
     <guess :source="[]"></guess>
   </scroll-view>
 
-  <div class="buttons">
+  <div class="toobar">
     <view class="primary">去支付</view>
-    <view class="default" @click="cancelOrder">取消订单</view>
+    <view class="default" @tap="cancelOrder">取消订单</view>
   </div>
 
-  <mp-half-screen-dialog
-    extClass="half-dialog"
-    :show="showHalfDialog"
-    closabled="{{false}}"
-  >
-    <template v-slot:title>
+  <van-popup :show="showHalfDialog" @close="cancelHalfDialog" position="bottom">
+    <view class="popup-root">
       <view class="title">订单取消</view>
-    </template>
-    <template v-slot:desc>
       <view class="description">
         <view class="tips">请选择取消订单的原因:</view>
         <view class="cell">
@@ -220,14 +214,12 @@
           <text class="icon-ring"></text>
         </view>
       </view>
-    </template>
-    <template v-slot:footer>
       <view class="footer">
-        <view class="button" @click="cancelHalfDialog">取消</view>
+        <view class="button" @tap="cancelHalfDialog">取消</view>
         <view class="button primary">确认</view>
       </view>
-    </template>
-  </mp-half-screen-dialog>
+    </view>
+  </van-popup>
 </template>
 
 <script setup lang="ts">
@@ -516,6 +508,7 @@
     width: 200rpx;
     height: 60rpx;
     text-align: center;
+    justify-content: center;
     line-height: 60rpx;
     margin-left: 20rpx;
     border-radius: 60rpx;
@@ -581,7 +574,7 @@
     padding: 10rpx 0;
   }
 
-  .buttons {
+  .toobar {
     display: flex;
     flex-direction: row-reverse;
     justify-content: flex-start;
@@ -592,7 +585,7 @@
     z-index: 9;
   }
 
-  .buttons > view {
+  .toobar > view {
     width: 200rpx;
     height: 72rpx;
     text-align: center;
@@ -602,30 +595,39 @@
     border-radius: 72rpx;
   }
 
-  .buttons .default {
+  .toobar .default {
     color: #444;
     border: 1rpx solid #ccc;
   }
 
-  .buttons .primary {
+  .toobar .primary {
     color: #fff;
     background-color: #27ba9b;
   }
 
-  .half-dialog .title {
-    border-bottom: none;
+  .popup-root {
+    padding: 30rpx 30rpx 0;
+    border-radius: 10rpx 10rpx 0 0;
+    overflow: hidden;
   }
 
-  .half-dialog .description {
+  .popup-root .title {
+    font-size: 30rpx;
+    text-align: center;
+    margin-bottom: 30rpx;
+  }
+
+  .popup-root .description {
     font-size: 28rpx;
+    padding: 0 20rpx;
   }
 
-  .half-dialog .description .tips {
+  .popup-root .description .tips {
     color: #444;
     margin-bottom: 12rpx;
   }
 
-  .half-dialog .description .cell {
+  .popup-root .description .cell {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -636,13 +638,38 @@
     color: #666;
   }
 
-  .half-dialog .description .icon-ring {
+  .popup-root .description .icon-ring {
     font-size: 38rpx;
     color: #999;
   }
 
-  .half-dialog .description .icon-checked {
+  .popup-root .description .icon-checked {
     font-size: 38rpx;
     color: #27ba9b;
+  }
+
+  .popup-root .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 30rpx 0 40rpx;
+    font-size: 28rpx;
+    color: #444;
+  }
+
+  .popup-root .footer .button {
+    flex: 1;
+    height: 72rpx;
+    text-align: center;
+    line-height: 72rpx;
+    margin: 0 20rpx;
+    color: #444;
+    border-radius: 72rpx;
+    border: 1rpx solid #ccc;
+  }
+
+  .popup-root .footer .primary {
+    color: #fff;
+    background-color: #27ba9b;
+    border: none;
   }
 </style>

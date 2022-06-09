@@ -95,15 +95,15 @@
         <view class="remarks"> 一秒测温 一键操作 双探头精准测温 </view>
       </view>
       <view class="related">
-        <view @click="showHalfDialog('sku')" class="item arrow">
+        <view @tap="showHalfDialog" data-layer="sku" class="item arrow">
           <text class="label">选择</text>
           <text class="text ellipsis">白色 红外体温计 1件</text>
         </view>
-        <view @click="showHalfDialog('shipment')" class="item arrow">
+        <view @tap="showHalfDialog" data-layer="shipment" class="item arrow">
           <text class="label">送至</text>
           <text class="text ellipsis">北京市顺义区京顺路9号黑马程序员</text>
         </view>
-        <view @click="showHalfDialog('clause')" class="item arrow">
+        <view @tap="showHalfDialog" data-layer="clause" class="item arrow">
           <text class="label">服务</text>
           <text class="text ellipsis">无忧退 快速退款 免费包邮</text>
         </view>
@@ -202,10 +202,19 @@
     <!-- 同类商品 -->
     <view class="similar">
       <view class="bar">
-        <text class="active">同类商品</text>
-        <text>24小时热销</text>
+        <text @tap="tabIndex = 0" :class="{ active: tabIndex === 0 }"
+          >同类商品</text
+        >
+        <text @tap="tabIndex = 1" :class="{ active: tabIndex === 1 }"
+          >24小时热销</text
+        >
       </view>
-      <scroll-view scroll-x enhanced show-scrollbar="{{false}}">
+      <scroll-view
+        v-show="tabIndex === 0"
+        scroll-x
+        enhanced
+        show-scrollbar="{{false}}"
+      >
         <view class="content">
           <navigator hover-class="none">
             <image
@@ -253,6 +262,59 @@
           </navigator>
         </view>
       </scroll-view>
+      <scroll-view
+        v-show="tabIndex === 1"
+        scroll-x
+        enhanced
+        show-scrollbar="{{false}}"
+      >
+        <view class="content">
+          <navigator hover-class="none">
+            <image
+              src="http://static.botue.com/erabbit/static/uploads/goods_preview_6.jpg"
+            />
+            <view class="name ellipsis">非接触体外红外仪</view>
+            <view class="price">
+              <text class="symbol">¥</text>
+              <text class="number">899</text>
+              <text class="decimal">.00</text>
+            </view>
+          </navigator>
+          <navigator hover-class="none">
+            <image
+              src="http://static.botue.com/erabbit/static/uploads/goods_preview_2.jpg"
+            />
+            <view class="name ellipsis">非接触体外红外仪</view>
+            <view class="price">
+              <text class="symbol">¥</text>
+              <text class="number">899</text>
+              <text class="decimal">.00</text>
+            </view>
+          </navigator>
+          <navigator hover-class="none">
+            <image
+              src="http://static.botue.com/erabbit/static/uploads/goods_preview_5.jpg"
+            />
+            <view class="name ellipsis">非接触体外红外仪</view>
+            <view class="price">
+              <text class="symbol">¥</text>
+              <text class="number">899</text>
+              <text class="decimal">.00</text>
+            </view>
+          </navigator>
+          <navigator hover-class="none">
+            <image
+              src="http://static.botue.com/erabbit/static/uploads/goods_preview_3.jpg"
+            />
+            <view class="name ellipsis">非接触体外红外仪</view>
+            <view class="price">
+              <text class="symbol">¥</text>
+              <text class="number">899</text>
+              <text class="decimal">.00</text>
+            </view>
+          </navigator>
+        </view>
+      </scroll-view>
     </view>
     <!-- 商品详情 -->
     <view class="detail panel anchor" data-anchor-index="2">
@@ -286,43 +348,52 @@
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_1.jpg"
+          @load="imageLoad(9)"
         ></image>
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_2.jpg"
+          @load="imageLoad(9)"
         ></image>
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_3.jpg"
+          @load="imageLoad(9)"
         ></image>
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_4.jpg"
+          @load="imageLoad(9)"
         ></image>
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_5.jpg"
+          @load="imageLoad(9)"
         ></image>
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_6.jpg"
+          @load="imageLoad(9)"
         ></image>
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_7.jpg"
+          @load="imageLoad(9)"
         ></image>
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_8.jpg"
+          @load="imageLoad(9)"
         ></image>
         <image
           mode="widthFix"
           src="http://static.botue.com/erabbit/static/uploads/goods_detail_9.jpg"
+          @load="imageLoad(9)"
         ></image>
       </view>
     </view>
     <!-- 常见问题 -->
-    <view class="help arrow" @click="showHalfDialog('help')">
+    <view class="help arrow" @tap="showHalfDialog" data-layer="help">
       <text class="icon-help"></text>
       <navigator hover-class="none">常见问题</navigator>
     </view>
@@ -450,10 +521,18 @@
       </button>
     </view>
     <view class="buttons">
-      <view @click="showHalfDialog('sku', 'cart')" class="addcart"
+      <view
+        @tap="showHalfDialog"
+        data-layer="sku"
+        data-button-type="cart"
+        class="addcart"
         >加入购物车</view
       >
-      <view @tap="showHalfDialog('sku', 'payment')" class="payment"
+      <view
+        @tap="showHalfDialog"
+        data-layer="sku"
+        data-button-type="payment"
+        class="payment"
         >立即购买</view
       >
     </view>
@@ -479,44 +558,9 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, getCurrentInstance } from "vue";
-  import { onReady, onUnload } from "@dcloudio/uni-app";
-
-  import clause from "./components/clause/index.vue";
-  import help from "./components/help/index.vue";
-  import shipment from "./components/shipment/index.vue";
-  import sku from "./components/sku/index.vue";
-
   import { useAppStore } from "@/store";
   const appStore = useAppStore();
   const safeArea = appStore.safeArea;
-
-  let navBarHeight: number = 0;
-
-  // 获取页面实例
-  const pageInstance: any = getCurrentInstance();
-
-  // 页面相交状态监听器
-  const observer = uni.createIntersectionObserver(this, {
-    observeAll: true,
-  });
-
-  // 页面节点查询器
-  const query = uni.createSelectorQuery();
-
-  const tabs = ref([
-    { text: "商品", offset: 0 },
-    { text: "评价", offset: 0 },
-    { text: "详情", offset: 0 },
-    { text: "推荐", offset: 0 },
-  ]);
-
-  const anchorIndex = ref(0);
-  const scrollTop = ref(0);
-  const layer = ref("");
-  const halfDialogVisible = ref(false);
-  const swiperCurrentIndex = ref(0);
-  const buttonType = ref("");
 
   // 返回上一页
   const goBack = () => {
@@ -527,136 +571,192 @@
   const goCart = () => {
     uni.navigateTo({ url: "/pages/cart/default" });
   };
+</script>
 
-  const swiperChanged = (ev: WechatMiniprogram.SwiperChange) => {
-    swiperCurrentIndex.value = ev.detail.current;
-  };
+<script lang="ts">
+  import { getCurrentInstance } from "vue";
 
-  // 快速返回顶部更新状态
-  const scrollToUpper = () => {
-    anchorIndex.value = 0;
-  };
+  import clause from "./components/clause/index.vue";
+  import help from "./components/help/index.vue";
+  import shipment from "./components/shipment/index.vue";
+  import sku from "./components/sku/index.vue";
 
-  // 点击 Tab 切换实现页内跳转
-  const scrollTo = (ev: WechatMiniprogram.BaseEvent) => {
-    // 停止监听相交状态
-    observer.disconnect();
-    // // 获取滚动位置及索引值
-    let { anchorOffset: offset, anchorIndex: index } = ev.target.dataset;
-    // 调整滚动距离
-    scrollTop.value = offset - navBarHeight;
-    // 更新 Tab 的状态
-    anchorIndex.value = index;
-  };
+  let observer: WechatMiniprogram.IntersectionObserver;
+  let navBarHeight = 0;
+  let imageCount = 0;
 
-  // 显示弹层
-  const showHalfDialog = (name: string, type?: string) => {
-    // 动态获取 halfDialog 展示的内容
-    layer.value = name;
-    halfDialogVisible.value = true;
-    buttonType.value = type || "";
-  };
+  export default {
+    data() {
+      return {
+        tabs: [
+          { text: "商品", offset: 0 },
+          { text: "评价", offset: 0 },
+          { text: "详情", offset: 0 },
+          { text: "推荐", offset: 0 },
+        ],
+        tabIndex: 0,
+        anchorIndex: 0,
+        scrollTop: 0,
+        layer: "",
+        halfDialogVisible: false,
+        swiperCurrentIndex: 0,
+        buttonType: "",
+      };
+    },
 
-  // 关闭弹层
-  const hideHalfDialog = () => {
-    halfDialogVisible.value = false;
-  };
+    onReady: function () {
+      // 获取页面实例
+      const pageInstance: any = getCurrentInstance();
 
-  // 监测元素相交状态
-  const intersectionObserver = () => {
-    observer
-      .relativeTo(".navbar")
-      .observe(
-        ".anchor",
-        ({ dataset: { anchorIndex: index }, boundingClientRect: { top } }) => {
-          if (top < 0) return;
-          if (index) anchorIndex.value = parseInt(index);
-        }
+      // 页面相交状态监听器
+      observer = pageInstance.ctx.$scope.createIntersectionObserver({
+        observeAll: true,
+      });
+
+      // 监听元素间相关状态
+      this.intersectionObserver();
+
+      // 动画时间线
+      const scrollTimeline = {
+        scrollSource: "#scrollView",
+        timeRange: 500,
+        startScrollOffset: 0,
+        endScrollOffset: 85,
+      };
+
+      // 创建帧动画
+      pageInstance.ctx.$scope.animate(
+        ".navbar",
+        [{ backgroundColor: "#fff0" }, { backgroundColor: "#fff" }],
+        500,
+        scrollTimeline
       );
+
+      pageInstance.ctx.$scope.animate(
+        ".back",
+        [
+          {
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+            left: "10px",
+            color: "#fff",
+            offset: 0,
+          },
+          {
+            backgroundColor: "rgba(0, 0, 0, 0.12)",
+            left: "7px",
+            color: "#fff",
+            offset: 0.7,
+          },
+          {
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            left: "6px",
+            color: "#191919",
+            offset: 1,
+          },
+        ],
+        500,
+        scrollTimeline
+      );
+
+      pageInstance.ctx.$scope.animate(
+        ".tabs, .search",
+        [{ opacity: 0 }, { opacity: 1 }],
+        500,
+        scrollTimeline
+      );
+    },
+
+    // 页面卸载停止相交状态监听
+    onUnload: function () {
+      observer.disconnect();
+    },
+
+    methods: {
+      // 快速返回顶部更新状态
+      scrollToUpper() {
+        this.anchorIndex = 0;
+      },
+
+      swiperChanged(ev: WechatMiniprogram.SwiperChange) {
+        this.swiperCurrentIndex = ev.detail.current;
+      },
+
+      // 点击 Tab 切换实现页内跳转
+      scrollTo(ev: WechatMiniprogram.BaseEvent) {
+        // 停止监听相交状态
+        observer.disconnect();
+        // // 获取滚动位置及索引值
+        let { anchorOffset, anchorIndex } = ev.target.dataset;
+        // 调整滚动距离
+        this.scrollTop = anchorOffset - navBarHeight;
+        // 更新 Tab 的状态
+        this.anchorIndex = anchorIndex;
+      },
+
+      // 显示弹层
+      showHalfDialog(ev: WechatMiniprogram.BaseEvent) {
+        const { layer, buttonType } = ev.currentTarget.dataset;
+        // 动态获取 halfDialog 展示的内容
+        this.layer = layer;
+        this.halfDialogVisible = true;
+
+        // 是否为加入购物车
+        if (buttonType) this.buttonType = buttonType;
+      },
+
+      // 关闭弹层
+      hideHalfDialog() {
+        this.halfDialogVisible = false;
+      },
+
+      // 用户滑动手势
+      dragEnd() {
+        observer.disconnect();
+        this.intersectionObserver();
+      },
+
+      // 监测元素相交状态
+      intersectionObserver() {
+        observer
+          .relativeTo(".navbar")
+          .observe(
+            ".anchor",
+            ({ dataset: { anchorIndex }, boundingClientRect: { top } }) => {
+              if (top < 0) return;
+              if (anchorIndex) this.anchorIndex = parseInt(anchorIndex);
+            }
+          );
+      },
+
+      imageLoad(size: number) {
+        if (++imageCount >= size) this.selectWXML();
+      },
+
+      //
+      selectWXML() {
+        // 页面节点查询器
+        const query = uni.createSelectorQuery();
+        // 计算节点相对于窗口的位置
+        query
+          .selectAll(".anchor")
+          .boundingClientRect((rects) => {
+            (rects as { top: number }[]).forEach((rect, index) => {
+              this.tabs[index].offset = rect.top;
+            });
+          })
+          .exec();
+
+        // 计算自定义导航栏的高度
+        query
+          .select(".navbar")
+          .boundingClientRect((rect) => {
+            if (rect.height) navBarHeight = rect.height;
+            console.log(navBarHeight);
+          })
+          .exec();
+      },
+    },
   };
-
-  // 用户滑动手势
-  const dragEnd = () => {
-    observer.disconnect();
-    intersectionObserver();
-  };
-
-  onReady(() => {
-    // 监听元素间相关状态
-    intersectionObserver();
-
-    // 计算节点相对于窗口的位置
-    query
-      .selectAll(".anchor")
-      .boundingClientRect((rects) => {
-        (rects as { top: number }[]).forEach((rect, index) => {
-          tabs.value[index].offset = rect.top;
-        });
-      })
-      .exec();
-
-    // 计算自定义导航栏的高度
-    query
-      .select(".navbar")
-      .boundingClientRect((rect) => {
-        if (rect.height) navBarHeight = rect.height;
-      })
-      .exec();
-
-    // 动画时间线
-    const scrollTimeline = {
-      scrollSource: "#scrollView",
-      timeRange: 500,
-      startScrollOffset: 0,
-      endScrollOffset: 85,
-    };
-
-    // 创建帧动画
-    pageInstance.ctx.$scope.animate(
-      ".navbar",
-      [{ backgroundColor: "#fff0" }, { backgroundColor: "#fff" }],
-      500,
-      scrollTimeline
-    );
-
-    pageInstance.ctx.$scope.animate(
-      ".back",
-      [
-        {
-          backgroundColor: "rgba(0, 0, 0, 0.4)",
-          left: "10px",
-          color: "#fff",
-          offset: 0,
-        },
-        {
-          backgroundColor: "rgba(0, 0, 0, 0.12)",
-          left: "7px",
-          color: "#fff",
-          offset: 0.7,
-        },
-        {
-          backgroundColor: "rgba(0, 0, 0, 0)",
-          left: "6px",
-          color: "#191919",
-          offset: 1,
-        },
-      ],
-      500,
-      scrollTimeline
-    );
-
-    pageInstance.ctx.$scope.animate(
-      ".tabs, .search",
-      [{ opacity: 0 }, { opacity: 1 }],
-      500,
-      scrollTimeline
-    );
-  });
-
-  // 页面卸载停止相交状态监听
-  onUnload(() => {
-    observer.disconnect();
-  });
 </script>
 
 <style>
