@@ -32,10 +32,10 @@
 </template>
 
 <script setup lang="ts">
-  import { getCurrentInstance } from "vue";
+  import { toRefs, getCurrentInstance } from "vue";
   import { onReady } from "@dcloudio/uni-app";
 
-  import { useAppStore } from "@/store";
+  import useAppStore from "@/store";
 
   import guess from "@/components/guess/index.vue";
 
@@ -43,7 +43,7 @@
   const pageInstance: any = getCurrentInstance();
 
   const appStore = useAppStore();
-  const { safeArea, platform } = appStore;
+  const { safeArea, platform } = toRefs(appStore);
 
   const goBack = () => {
     uni.navigateBack({});

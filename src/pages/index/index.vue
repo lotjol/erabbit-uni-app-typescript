@@ -1,56 +1,48 @@
 <script setup lang="ts">
-  import { ref } from "vue";
-  import { useAppStore } from "@/store/index";
+  import { toRef } from "vue";
   import { onLoad } from "@dcloudio/uni-app";
+  import useAppStore from "@/store/index";
 
   import { debounce } from "lodash";
-
-  import { getBanner } from "@/api/banner";
-  import { getEntry } from "@/api/category";
-  import { getFresh, getGuess, getRecommend } from "@/api/goods";
-
-  import type { BannerType } from "@/api/banner";
-  import type { EntryType } from "@/api/category";
-  import type { FreshType, GuessType, RecommendType } from "@/api/goods";
 
   import carousel from "@/components/carousel/index.vue";
   import guess from "@/components/guess/index.vue";
   import entries from "./components/entries/index.vue";
 
+  import { getBanner } from "@/api/banner";
+  import { getEntry } from "@/api/category";
+  import { getRecommend, getGuess, getFresh } from "@/api/goods";
+
+  import type { BannerType } from "@/api/banner";
+  import type { EntryType } from "@/api/category";
+  import type { RecommendType, GuessType, FreshType } from "@/api/goods";
+
   // Pinia
   const appStore = useAppStore();
-  const safeArea = appStore.safeArea;
+  const safeArea = toRef(appStore, "safeArea");
 
   // 初始数据
-  const hasMore = ref(true);
-  const triggered = ref(false);
-  const bannerData = ref<BannerType>([]);
-  const entryData = ref<EntryType>([]);
-  const recommendData = ref<RecommendType>([]);
-  const freshData = ref<FreshType>([]);
-  const guessData = ref<GuessType>({} as GuessType);
+  let hasMore = $ref(true);
+  let triggered = $ref(false);
+  // 获取广告数据
+  let bannerData = $ref<BannerType>([]);
+  // 获取前台类目数据
+  let entryData = $ref<EntryType>([]);
+  // 获取人气推幕数据
+  let recommendData = $ref<RecommendType>([]);
+  // 获取新鲜好物数据
+  let freshData = $ref<FreshType>([]);
+  let guessData = $ref<GuessType>({} as GuessType);
 
   // 调用首页面所需要的数据接口
   const getAll = async () => {
     // 并发调用接口
-    const [banner, entry, recommend, fresh] = await Promise.all([
+    [bannerData, entryData, recommendData, freshData] = await Promise.all([
       getBanner(),
       getEntry(),
       getRecommend(),
       getFresh(),
     ]);
-
-    // 获取广告数据
-    bannerData.value = banner;
-
-    // 获取前台类目数据
-    entryData.value = entry;
-
-    // 获取人气推幕数据
-    recommendData.value = recommend;
-
-    // 获取新鲜好物数据
-    freshData.value = fresh;
   };
 
   // 获取首页数据
@@ -58,16 +50,16 @@
     // 获取除猜你喜欢外的接品数据
     getAll();
     // 获取猜你喜欢数据
-    guessData.value = await getGuess();
+    guessData = await getGuess();
   });
 
   // 下拉刷新
   const refresh = debounce(async () => {
     // 开户下拉状态
-    triggered.value = true;
+    triggered = true;
     await getAll();
     // 关闭下拉状态
-    triggered.value = false;
+    triggered = false;
   }, 300);
 
   // 滚动分页
@@ -75,16 +67,16 @@
   let pageSize = 10;
   const getMore = async () => {
     // 检测是否还有更多的数据
-    hasMore.value = page++ < guessData.value.pages;
+    hasMore = page++ < guessData.pages;
     // 没有更多数据时不再发起请求
-    if (!hasMore.value) return;
+    if (!hasMore) return;
 
     // 缓存上一页的商品数据
-    const { items } = guessData.value;
+    const { items } = guessData;
     const nextPageData = await getGuess(page, pageSize);
     // 将上一页获取的商品数据与下一页商品数据进行合并并
     nextPageData.items = items.concat(nextPageData.items);
-    guessData.value = nextPageData;
+    guessData = nextPageData;
   };
 
   // 跳转到搜索页面

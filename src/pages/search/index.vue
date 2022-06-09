@@ -31,7 +31,7 @@
     <view class="history">
       <view class="title">历史搜索</view>
       <view class="keywords" @click="execQuery">
-        <text :data-keywords="item" v-for="item in historyKeys" key="item">{{
+        <text :data-keywords="item" v-for="item in historyKeys" :key="item">{{
           item
         }}</text>
       </view>
@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive } from "vue";
+  import { reactive } from "vue";
 
   import result from "@/components/result/index.vue";
 
@@ -86,9 +86,9 @@
     original: number;
   }
 
-  const entering = ref(true);
-  const focused = ref(true);
-  const currentKey = ref("手机");
+  let entering = $ref(true);
+  let focused = $ref(true);
+  let currentKey = $ref("手机");
   const hotKeys = reactive(["华为手机", "苹果", "戴森", "变形金刚"]);
   const historyKeys = reactive([
     "施华洛世奇",
@@ -102,28 +102,28 @@
     "矿泉水",
   ]);
 
-  const suggestions = ref<suggestType[]>([]);
-  const goods = ref<goodsType[]>();
+  let suggestions = $ref<suggestType[]>([]);
+  let goods = $ref<goodsType[]>();
 
   const startInput = () => {
-    entering.value = true;
+    entering = true;
   };
 
   const clearInput = () => {
     // 重置搜索状态
-    currentKey.value = "";
-    suggestions.value = [];
-    entering.value = true;
+    currentKey = "";
+    suggestions = [];
+    entering = true;
   };
 
   // 获得搜索建议
   const getSuggestion = (ev: any) => {
     if (!ev.detail.value) {
-      return (suggestions.value = []);
+      return (suggestions = []);
     }
 
     // 模拟一些数据
-    suggestions.value = [
+    suggestions = [
       {
         match: "支架",
         related: ["懒人支架", "电动车", "汽车"],
@@ -154,14 +154,14 @@
     // 更新查询关键字
     let { keywords } = ev.target.dataset;
 
-    if (keywords) currentKey.value = keywords;
+    if (keywords) currentKey = keywords;
 
     // 更改查询状态
-    entering.value = false;
+    entering = false;
 
     if (!currentKey) return;
 
-    goods.value = [
+    goods = [
       {
         id: 1,
         path: "http://static.botue.com/erabbit/static/uploads/goods_big_2.jpg",

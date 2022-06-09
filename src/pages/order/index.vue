@@ -736,28 +736,27 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
-
-  import { useAppStore } from "@/store";
+  import { toRef } from "vue";
+  import useAppStore from "@/store";
 
   const appStore = useAppStore();
-  const safeArea = appStore.safeArea;
+  const safeArea = toRef(appStore, "safeArea");
 
-  const swiperIndex = ref<string | number>(0);
-  const adjustIndex = ref<string | number>(0);
-  const cursorLeft = ref<string>("0%");
+  let swiperIndex = $ref<string | number>(0);
+  let adjustIndex = $ref<string | number>(0);
+  let cursorLeft = $ref<string>("0%");
 
   const changeTab = (ev: any) => {
     // 获取当前 swiperItem 的索引值值
     let { index } = ev.target.dataset;
     if (ev.detail.currentItemId) index = ev.detail.currentItemId;
     // 切换不同的 swiperItem
-    swiperIndex.value = index;
+    swiperIndex = index;
   };
 
   const onFinish = () => {
     // 控制索引值改变的顺序
-    adjustIndex.value = swiperIndex.value;
+    adjustIndex = swiperIndex;
   };
 
   const onTransition = (ev: WechatMiniprogram.SwiperTransition) => {
@@ -765,7 +764,7 @@
     const current = parseInt(ev.target.dataset.current);
     const dx = ev.detail.dx;
 
-    cursorLeft.value = (current + dx / safeArea!.width) * 20 + "%";
+    cursorLeft = (current + dx / safeArea.value!.width) * 20 + "%";
   };
 </script>
 

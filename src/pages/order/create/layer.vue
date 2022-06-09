@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from "vue";
+  import { computed } from "vue";
 
   interface listType {
     id: number;
@@ -41,15 +41,15 @@
     (e: "confirm", info: listType): void;
   }>();
 
-  const currentIndex = ref(0);
+  let currentIndex = $ref(0);
 
   const onChange = (index: number) => {
     // 切换选中状态
-    currentIndex.value = index;
+    currentIndex = index;
   };
 
   const confirm = () => {
-    emit("confirm", source[currentIndex.value]);
+    emit("confirm", source[currentIndex]);
   };
 </script>
 

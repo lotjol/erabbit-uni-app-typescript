@@ -58,10 +58,11 @@
 </template>
 
 <script setup lang="ts">
-  import { useAppStore } from "@/store";
+  import { toRef } from "vue";
+  import useAppStore from "@/store";
 
   const appStore = useAppStore();
-  const safeArea = appStore.safeArea;
+  const safeArea = toRef(appStore, "safeArea");
 
   const goBack = () => {
     uni.navigateBack({});

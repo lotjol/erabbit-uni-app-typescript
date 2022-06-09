@@ -1,26 +1,27 @@
 <script setup lang="ts">
-  import { ref, computed } from "vue";
+  import { toRef } from "vue";
   import { onLoad } from "@dcloudio/uni-app";
 
   import { getRelationGoods } from "@/api/goods";
   import type { RelationType } from "@/api/goods";
-  import { useGoodsStore } from "@/store/goods";
-  import { useAppStore } from "@/store";
+
+  import useAppStore from "@/store";
+  import { useGoodsStore } from "@/store";
 
   const appStore = useAppStore();
   const goodsStore = useGoodsStore();
 
-  const safeArea = computed(() => appStore.safeArea);
-  const goodsDetail = computed(() => goodsStore.goodsDetail);
+  const safeArea = toRef(appStore, "safeArea");
+  const goodsDetail = toRef(goodsStore, "goodsDetail");
 
   // 同类商品推荐
-  const relationGoods = ref<RelationType>([]);
+  let relationGoods = $ref<RelationType>([]);
 
   onLoad(async ({ id }) => {
     if (id) {
-      goodsStore.getGoodsDetail(id);
+      goodsStore.getDetail(id);
       // 同类商品推荐
-      relationGoods.value = await getRelationGoods(id);
+      relationGoods = await getRelationGoods(id);
     }
   });
 

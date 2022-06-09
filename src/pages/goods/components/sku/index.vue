@@ -1,13 +1,4 @@
 <script setup lang="ts">
-  import { defineProps, computed } from "vue";
-
-  import { useGoodsStore } from "@/store/goods";
-
-  const goodsStore = useGoodsStore();
-
-  const skus = computed(() => goodsStore.skus);
-  const specs = computed(() => goodsStore.specs);
-
   defineProps<{
     buttonType: string;
   }>();
@@ -84,6 +75,14 @@
     <view v-else @click="goOrder" class="button primary">立即购买</view>
   </view>
 </template>
+
+<script lang="ts">
+  export default {
+    options: {
+      styleIsolation: "apply-shared",
+    },
+  };
+</script>
 
 <style>
   .header {

@@ -42,11 +42,10 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
   import type { EntryType } from "@/api/category";
 
   // 响应数据
-  let cursorLeft = ref("0%");
+  let cursorLeft = $ref("0%");
 
   // 组件属性
   defineProps<{
@@ -55,8 +54,7 @@
 
   // 滚动动画
   const scrolled = (ev: WechatMiniprogram.ScrollViewScroll) => {
-    cursorLeft.value =
-      (ev.detail.scrollLeft / ev.detail.scrollWidth) * 100 + "%";
+    cursorLeft = (ev.detail.scrollLeft / ev.detail.scrollWidth) * 100 + "%";
   };
 </script>
 

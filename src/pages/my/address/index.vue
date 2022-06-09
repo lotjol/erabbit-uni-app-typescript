@@ -86,15 +86,13 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
-
-  const dialogShow = ref(false);
+  let dialogShow = $ref(false);
 
   const onClose = (ev: any) => {
     const { position, instance } = ev.detail;
     switch (position) {
       case "right":
-        dialogShow.value = true;
+        dialogShow = true;
         instance.close();
         break;
     }

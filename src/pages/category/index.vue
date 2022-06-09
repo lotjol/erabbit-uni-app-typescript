@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref } from "vue";
   import { onLoad } from "@dcloudio/uni-app";
 
   import { getBanner } from "@/api/banner";
@@ -11,20 +10,20 @@
   import carousel from "@/components/carousel/index.vue";
 
   // 初始数据
-  const bannerData = ref<BannerType>([]);
-  const entryData = ref<EntryType>([]);
-  const activeId = ref("");
-  const subCategoryData = ref<subCategoryType>({} as subCategoryType);
+  let bannerData = $ref<BannerType>([]);
+  let entryData = $ref<EntryType>([]);
+  let activeId = $ref("");
+  let subCategoryData = $ref<subCategoryType>({} as subCategoryType);
 
   onLoad(async () => {
     // 商品分类入口数据
-    entryData.value = await getEntry();
+    entryData = await getEntry();
 
     // 子分类数据
-    subCategoryData.value = await getSubCatetory(entryData.value[0].id);
+    subCategoryData = await getSubCatetory(entryData[0].id);
 
     // 获取广告位数据
-    bannerData.value = await getBanner(2);
+    bannerData = await getBanner(2);
   });
 
   // 缓存二级分类
@@ -33,16 +32,16 @@
   } = {};
   // 获取子分类数据
   const getSubCategory = async (id: string) => {
-    activeId.value = id;
+    activeId = id;
 
     if (cacheData[id]) {
-      return (subCategoryData.value = cacheData[id]);
+      return (subCategoryData = cacheData[id]);
     }
 
     // 子分类数据
-    subCategoryData.value = await getSubCatetory(id);
+    subCategoryData = await getSubCatetory(id);
     // 将请求来的数缓存到本地
-    cacheData[id] = subCategoryData.value;
+    cacheData[id] = subCategoryData;
   };
 </script>
 

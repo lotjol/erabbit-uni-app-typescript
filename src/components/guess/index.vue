@@ -18,8 +18,6 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps } from "vue";
-
   import type { Goods } from "@/api/goods";
 
   defineProps<{

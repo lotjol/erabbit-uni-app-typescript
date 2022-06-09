@@ -5,16 +5,14 @@
 </template>
 
 <script setup lang="ts">
-  import { defineProps, ref } from "vue";
-
   defineProps<{
     text: string;
   }>();
 
-  const checked = ref(false);
+  let checked = $ref(false);
 
   const toggleChecked = () => {
-    checked.value = !checked.value;
+    checked = !checked;
   };
 </script>
 <script lang="ts">
