@@ -18,11 +18,12 @@
   let relationGoods = $ref<RelationType>([]);
 
   onLoad(async ({ id }) => {
-    if (id) {
-      goodsStore.getDetail(id);
-      // 同类商品推荐
-      relationGoods = await getRelationGoods(id);
-    }
+    if (typeof id !== "string") return;
+    // 获取商品详情
+    goodsStore.getDetail(id).then(() => goodsStore.getSkuLabel());
+
+    // 同类商品推荐
+    relationGoods = await getRelationGoods(id);
   });
 
   // 返回上一页
@@ -60,7 +61,7 @@
         tabIndex: 0,
         anchorIndex: 0,
         scrollTop: 0,
-        layer: "sku",
+        layer: "",
         halfDialogVisible: false,
         swiperCurrentIndex: 0,
         buttonType: "",
@@ -293,7 +294,7 @@
       <view class="related">
         <view @tap="showHalfDialog" data-layer="sku" class="item arrow">
           <text class="label">选择</text>
-          <text class="text ellipsis">白色 红外体温计 1件</text>
+          <text class="text ellipsis">{{ goodsStore.skuLabel }}</text>
         </view>
         <view @tap="showHalfDialog" data-layer="shipment" class="item arrow">
           <text class="label">送至</text>
@@ -595,7 +596,11 @@
   >
     <view class="popup-root">
       <text @click="hideHalfDialog" class="close icon-close"></text>
-      <sku :buttonType="buttonType" v-if="layer === 'sku'"></sku>
+      <sku
+        :buttonType="buttonType"
+        @confirm="halfDialogVisible = false"
+        v-if="layer === 'sku'"
+      ></sku>
       <shipment v-if="layer === 'shipment'"></shipment>
       <clause v-if="layer === 'clause'"></clause>
       <help v-if="layer === 'help'"></help>

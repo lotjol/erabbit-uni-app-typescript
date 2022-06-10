@@ -1,15 +1,163 @@
 <script setup lang="ts">
+  import { useGoodsStore } from "@/store";
+  import type { DetailType } from "@/api/goods";
+  import powerSet from "@/utils/bwPowerSet";
+
+  // sku 类型
+  type skuType = Omit<DetailType["skus"][number], "specs">;
+
+  // 组件属性
   defineProps<{
     buttonType: string;
   }>();
 
+  // 自定义事件
+  const emit = defineEmits<{
+    (e: "confirm"): void;
+  }>();
+
+  // Pinia
+  const goodsStore = useGoodsStore();
+
+  // 初始数据
+  let { skus, specs, ...goods } = goodsStore.goodsDetail;
+  let price = $ref(goods.price);
+  let oldPrice = $ref(goods.oldPrice);
+  let inventory = $ref(goods.inventory);
+  let mainPicture = $ref(goods.mainPictures[0]);
+  let sku = $ref<skuType>({} as skuType);
+
+  // 用户选中的规格型号名称
+  const checkedNames = $computed(() => {
+    return specs.reduce((names, spec) => {
+      spec.values.forEach((value) => {
+        if (value.checked) names.push(value.name);
+      });
+      return names;
+    }, [] as string[]);
+  });
+
+  // 用户未选中的规格类别名称
+  const unCheckedNames = $computed(() => {
+    return specs
+      .filter((spec) => {
+        return spec.values.filter((value) => value.checked)?.length === 0;
+      })
+      .map(({ name }) => name);
+  });
+
+  // 格式化处理sku信息
+  const formatSku = skus.reduce((skuCache, item) => {
+    // 将 sku 规格整理成数组，方便计算其幂集
+    const { specs, ...sku } = item;
+    if (sku.inventory === 0) return skuCache;
+    // 计算 sku 规格的幂集
+    const subset = powerSet(specs.map((spec) => spec.valueName));
+
+    // 缓存幂集对应 sku 的数据
+    subset.forEach((arr) => {
+      if (arr.length === 0) return;
+      // 将幂集集合拼凑成对象的 key
+      const key = arr.sort().join("|");
+      // 根据规格记录 sku 信息
+      skuCache[key] ? skuCache[key].push(sku) : (skuCache[key] = [sku]);
+    });
+
+    return skuCache;
+  }, {} as { [key: string]: skuType[] });
+
+  // 检测库信息中是否有符合用户选择的规格型号
+  const checkSku = (checked: string[]) => {
+    // 检查规格/型号是否可选
+    specs.forEach((spec) => {
+      // 设置默认的选中状态并取出规格/型号的名称
+      const names = spec.values.map((value) => {
+        if (checked.includes(value.name)) {
+          value.checked = true;
+        }
+        return value.name;
+      });
+
+      // 过滤全部待组合的规格/型号
+      const diffChecked = checked.filter((item) => {
+        return !names.some((name) => item === name);
+      });
+
+      spec.values.forEach((value) => {
+        // 组合规格型号
+        const key = [...diffChecked, value.name].sort().join("|");
+
+        // 是否可选标识
+        value.disabled = true;
+
+        // 去超集中进行检测
+        if (formatSku[key]) value.disabled = false;
+      });
+    });
+  };
+
+  // 切换选中规格型号选中状态
+  const toggleChecked = (index: number, key: number) => {
+    // 读取当前选择的是哪个规格类别
+    const values = specs[index].values;
+
+    // 设置或更新被选择规格类别的状态
+    if (values[key].checked) {
+      values[key].checked = false;
+    } else {
+      values.forEach((value) => (value.checked = false));
+      values[key].checked = true;
+    }
+
+    // 检测库存信息
+    checkSku(checkedNames);
+
+    // 展示选择结果
+    goodsStore.skuLabel = unCheckedNames.join("/") || checkedNames.join("/");
+
+    // 更新显示结果
+    [sku] = formatSku[checkedNames.sort().join("|")] || [];
+
+    if (sku) {
+      price = sku.price;
+      oldPrice = sku.oldPrice;
+      inventory = sku.inventory;
+      mainPicture = values[key].picture || mainPicture;
+    }
+  };
+
+  // 修改购买数量
+  const changeNumber = (step: number) => {
+    if (goodsStore.number <= 1) return;
+    if (goodsStore.number >= sku.inventory) return;
+    goodsStore.number += step;
+  };
+
   const goCart = () => {
+    if (unCheckedNames.length !== 0) {
+      return uni.showToast({
+        title: unCheckedNames.join("/"),
+        icon: "none",
+      });
+    }
+
+    emit("confirm");
+
     uni.navigateTo({
-      url: "/pages/cart/default/index",
+      url: "/pages/cart/default",
     });
   };
 
   const goOrder = () => {
+    if (unCheckedNames.length !== 0) {
+      return uni.showToast({
+        title: unCheckedNames.join("/"),
+        icon: "none",
+      });
+    }
+
+    emit("confirm");
+
     uni.navigateTo({
       url: "/pages/order/create/index",
     });
@@ -18,53 +166,48 @@
 
 <template>
   <view class="header">
-    <image
-      class="thumb"
-      src="http://static.botue.com/erabbit/static/uploads/goods_preview_1.jpg"
-    ></image>
+    <image class="thumb" :src="mainPicture"></image>
     <view class="wrap">
       <view class="price">
         <view class="discount">
           <text class="symbol">¥</text>
-          <text class="number">129</text>
-          <text class="decimal">.00</text>
+          <text class="number">{{ price }}</text>
         </view>
         <view class="original">
           <text class="symbol">¥</text>
-          <text class="number">199</text>
-          <text class="decimal">.00</text>
+          <text class="number">{{ oldPrice }}</text>
         </view>
       </view>
       <view class="extra">
-        <text class="text">重量: 0.2kg</text>
-        <text class="text">编号: 676587698</text>
+        <text class="text">库存: {{ inventory }}</text>
       </view>
     </view>
   </view>
 
   <view class="body">
     <view class="specs">
-      <view class="label">颜色</view>
-      <view class="section">
-        <view class="item checked">白色</view>
-        <view class="item">黑色</view>
-        <view class="item">灰色</view>
-        <view class="item">卡其色</view>
-      </view>
-      <view class="label">类型</view>
-      <view class="section">
-        <view class="item">红外体温计</view>
-        <view class="item disabled">双模</view>
-        <view class="item">灵敏</view>
-        <view class="item">便携式</view>
-      </view>
+      <template v-for="(spec, index) in specs" :key="spec.id">
+        <view class="label">{{ spec.name }}</view>
+        <view class="section">
+          <view
+            v-for="(value, key) in spec.values"
+            :key="value.name"
+            :class="[
+              'item',
+              { checked: value.checked, disabled: value.disabled },
+            ]"
+            @tap="toggleChecked(index, key)"
+            >{{ value.name }}</view
+          >
+        </view>
+      </template>
     </view>
     <view class="number">
       <view class="label">数量</view>
       <view class="counter">
-        <text class="text disabled">-</text>
-        <input type="text" class="input" value="1" />
-        <text class="text">+</text>
+        <text class="text" @tap="changeNumber(-1)">-</text>
+        <input type="text" class="input" :value="goodsStore.number" />
+        <text class="text" @tap="changeNumber(1)">+</text>
       </view>
     </view>
   </view>

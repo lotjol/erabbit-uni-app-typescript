@@ -49,6 +49,7 @@ export type DetailType = {
   };
   similarProducts: Goods[];
   hotByDay: Goods[];
+  inventory: number;
   specs: {
     id: string;
     name: string;
@@ -56,6 +57,8 @@ export type DetailType = {
       desc: string;
       name: string;
       picture: string;
+      checked?: boolean;
+      disabled?: boolean;
     }[];
   }[];
   skus: {
