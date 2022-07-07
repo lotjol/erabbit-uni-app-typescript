@@ -11,5 +11,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "prettier.printWidth": 120,
-  "editor.foldingStrategy": "auto"
+  "editor.foldingStrategy": "auto",
+  "emmet.triggerExpansionOnTab": true
 }
