@@ -109,8 +109,18 @@
     </view>
   </view>
 
-  <scroll-view class="viewport" scroll-y refresher-enabled enable-back-to-top enhanced refresher-background="#f7f7f8"
-    :show-scrollbar="false" :refresher-triggered="triggered" @refresherrefresh="refresh" @scrolltolower="getMore">
+  <scroll-view
+    class="viewport"
+    scroll-y
+    refresher-enabled
+    enable-back-to-top
+    enhanced
+    refresher-background="#f7f7f8"
+    :show-scrollbar="false"
+    :refresher-triggered="triggered"
+    @refresherrefresh="refresh"
+    @scrolltolower="getMore"
+  >
     <!-- 焦点图 -->
     <era-carousel style="height: 280rpx" :source="bannerData"></era-carousel>
     <!-- 前台类目 -->
@@ -119,13 +129,17 @@
     <view class="panel recommend">
       <template v-for="item in recommendData" :key="item.id">
         <view class="item" v-if="item.type !== 4">
-          <view class="title">{{ item.title }}<text>{{ item.alt }}</text></view>
+          <view class="title"
+            >{{ item.title }}<text>{{ item.alt }}</text></view
+          >
           <navigator hover-class="none" :url="`/pages/recommend/index?type=${item.type}`" class="cards">
             <image mode="aspectFit" v-for="picture in item.pictures" :key="picture" :src="picture"></image>
           </navigator>
         </view>
         <view class="item" v-else @click="nextVersion">
-          <view class="title">{{ item.title }}<text>{{ item.alt }}</text></view>
+          <view class="title"
+            >{{ item.title }}<text>{{ item.alt }}</text></view
+          >
           <navigator hover-class="none" url=" " class="cards">
             <image mode="aspectFit" v-for="picture in item.pictures" :key="picture" :src="picture"></image>
           </navigator>
@@ -139,13 +153,15 @@
         <navigator hover-class="none" class="more" url="/pages/recommend/index?type=5">更多</navigator>
       </view>
       <view class="cards">
-        <navigator hover-class="none" v-for="item in freshData" :key="item.id"
-          :url="`/pages/goods/index?id=${item.id}`">
+        <navigator
+          hover-class="none"
+          v-for="item in freshData"
+          :key="item.id"
+          :url="`/pages/goods/index?id=${item.id}`"
+        >
           <image mode="aspectFit" :src="item.picture"></image>
           <view class="name">{{ item.name }}</view>
-          <view class="price">
-            <text class="small">¥</text>{{ item.price }}
-          </view>
+          <view class="price"> <text class="small">¥</text>{{ item.price }} </view>
         </navigator>
       </view>
     </view>
