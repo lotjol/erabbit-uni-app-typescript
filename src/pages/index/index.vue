@@ -5,9 +5,8 @@
 
   import { debounce } from "lodash";
 
-  import carousel from "@/components/carousel/index.vue";
-  import guess from "@/components/guess/index.vue";
-  import entries from "./components/entries/index.vue";
+  import EraCarousel from "@/components/carousel/index.vue";
+  import EraGuess from "@/components/guess/index.vue";
 
   import { getBanner } from "@/api/banner";
   import { getEntry } from "@/api/category";
@@ -100,9 +99,7 @@
   <view class="navbar" :style="{ paddingTop: safeArea?.top + 'px' }">
     <!-- 文字logo -->
     <view class="logo">
-      <image
-        src="https://static.botue.com/erabbit/static/images/logo.png"
-      ></image>
+      <image src="https://static.botue.com/erabbit/static/images/logo.png"></image>
       <text>新鲜 · 亲民 · 快捷</text>
     </view>
     <!-- 搜索条 -->
@@ -112,53 +109,25 @@
     </view>
   </view>
 
-  <scroll-view
-    class="viewport"
-    scroll-y
-    refresher-enabled
-    enable-back-to-top
-    enhanced
-    refresher-background="#f7f7f8"
-    :show-scrollbar="false"
-    :refresher-triggered="triggered"
-    @refresherrefresh="refresh"
-    @scrolltolower="getMore"
-  >
+  <scroll-view class="viewport" scroll-y refresher-enabled enable-back-to-top enhanced refresher-background="#f7f7f8"
+    :show-scrollbar="false" :refresher-triggered="triggered" @refresherrefresh="refresh" @scrolltolower="getMore">
     <!-- 焦点图 -->
-    <carousel style="height: 280rpx" :source="bannerData"></carousel>
+    <era-carousel style="height: 280rpx" :source="bannerData"></era-carousel>
     <!-- 前台类目 -->
-    <entries :source="entryData"></entries>
+    <era-entries :source="entryData"></era-entries>
     <!-- 推荐专区 -->
     <view class="panel recommend">
       <template v-for="item in recommendData" :key="item.id">
         <view class="item" v-if="item.type !== 4">
-          <view class="title"
-            >{{ item.title }}<text>{{ item.alt }}</text></view
-          >
-          <navigator
-            hover-class="none"
-            :url="`/pages/recommend/index?type=${item.type}`"
-            class="cards"
-          >
-            <image
-              mode="aspectFit"
-              v-for="picture in item.pictures"
-              :key="picture"
-              :src="picture"
-            ></image>
+          <view class="title">{{ item.title }}<text>{{ item.alt }}</text></view>
+          <navigator hover-class="none" :url="`/pages/recommend/index?type=${item.type}`" class="cards">
+            <image mode="aspectFit" v-for="picture in item.pictures" :key="picture" :src="picture"></image>
           </navigator>
         </view>
         <view class="item" v-else @click="nextVersion">
-          <view class="title"
-            >{{ item.title }}<text>{{ item.alt }}</text></view
-          >
+          <view class="title">{{ item.title }}<text>{{ item.alt }}</text></view>
           <navigator hover-class="none" url=" " class="cards">
-            <image
-              mode="aspectFit"
-              v-for="picture in item.pictures"
-              :key="picture"
-              :src="picture"
-            ></image>
+            <image mode="aspectFit" v-for="picture in item.pictures" :key="picture" :src="picture"></image>
           </navigator>
         </view>
       </template>
@@ -167,20 +136,11 @@
     <view class="panel fresh">
       <view class="title">
         新鲜好物
-        <navigator
-          hover-class="none"
-          class="more"
-          url="/pages/recommend/index?type=5"
-          >更多</navigator
-        >
+        <navigator hover-class="none" class="more" url="/pages/recommend/index?type=5">更多</navigator>
       </view>
       <view class="cards">
-        <navigator
-          hover-class="none"
-          v-for="item in freshData"
-          :key="item.id"
-          :url="`/pages/goods/index?id=${item.id}`"
-        >
+        <navigator hover-class="none" v-for="item in freshData" :key="item.id"
+          :url="`/pages/goods/index?id=${item.id}`">
           <image mode="aspectFit" :src="item.picture"></image>
           <view class="name">{{ item.name }}</view>
           <view class="price">
@@ -197,34 +157,22 @@
       </view>
       <view class="cards">
         <navigator hover-class="none" url=" ">
-          <image
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/brand_logo_1.jpg"
-          ></image>
+          <image mode="aspectFit" src="http://static.botue.com/erabbit/static/uploads/brand_logo_1.jpg"></image>
           <view class="name">小米</view>
           <view class="price">99元起</view>
         </navigator>
         <navigator hover-class="none" url=" ">
-          <image
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/brand_logo_2.jpg"
-          ></image>
+          <image mode="aspectFit" src="http://static.botue.com/erabbit/static/uploads/brand_logo_2.jpg"></image>
           <view class="name">TCL</view>
           <view class="price">199起</view>
         </navigator>
         <navigator hover-class="none" url=" ">
-          <image
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/brand_logo_3.jpg"
-          ></image>
+          <image mode="aspectFit" src="http://static.botue.com/erabbit/static/uploads/brand_logo_3.jpg"></image>
           <view class="name">饭小宝</view>
           <view class="price">9.9起</view>
         </navigator>
         <navigator hover-class="none" url=" ">
-          <image
-            mode="aspectFit"
-            src="http://static.botue.com/erabbit/static/uploads/brand_logo_4.jpg"
-          ></image>
+          <image mode="aspectFit" src="http://static.botue.com/erabbit/static/uploads/brand_logo_4.jpg"></image>
           <view class="name">鳄鱼</view>
           <view class="price">299起</view>
         </navigator>
@@ -238,9 +186,7 @@
       </view>
       <div class="cards">
         <navigator hover-class="none" url=" ">
-          <image
-            src="http://static.botue.com/erabbit/static/uploads/topic_1.jpg"
-          ></image>
+          <image src="http://static.botue.com/erabbit/static/uploads/topic_1.jpg"></image>
           <view class="name">忙里忙外，回家吃饭忙里忙外，回家吃饭</view>
           <view class="price"> <text>19.9元</text>起 </view>
           <view class="extra">
@@ -249,9 +195,7 @@
           </view>
         </navigator>
         <navigator hover-class="none" url=" ">
-          <image
-            src="http://static.botue.com/erabbit/static/uploads/topic_2.jpg"
-          ></image>
+          <image src="http://static.botue.com/erabbit/static/uploads/topic_2.jpg"></image>
           <view class="name">忙里忙外，回家吃饭</view>
           <view class="price"> <text>19.9元</text>起 </view>
           <view class="extra">
@@ -262,7 +206,7 @@
       </div>
     </view>
     <!-- 猜你喜欢 -->
-    <guess :source="guessData.items"></guess>
+    <era-guess v-if="guessData.items" :source="guessData.items"></era-guess>
     <view class="loading" v-if="hasMore">正在加载...</view>
   </scroll-view>
 </template>

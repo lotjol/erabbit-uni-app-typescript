@@ -8,7 +8,10 @@
         "navigationStyle": "custom",
         "navigationBarTextStyle": "white",
         "enablePullDownRefresh": false,
-        "backgroundColorTop": "#28bb9c"
+        "backgroundColorTop": "#28bb9c",
+        "usingComponents": {
+          "era-entries": "/wxcomponents/custom/entries/index"
+        }
       }
     },
     {
@@ -149,7 +152,6 @@
       "van-dialog": "/wxcomponents/@vant/weapp/dialog/index"
     }
   },
-
   "tabBar": {
     "color": "#333",
     "selectedColor": "#27ba9b",

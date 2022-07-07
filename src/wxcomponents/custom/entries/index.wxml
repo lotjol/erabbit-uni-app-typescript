@@ -1,0 +1,42 @@
+<wxs module="wxs" src="./index.wxs"></wxs>
+<view class="entries">
+  <scroll-view
+    class="scroll-view"
+    scroll-x
+    enhanced
+    show-scrollbar="{{ false }}"
+    bind:scroll="{{ wxs.scrolled }}">
+    <div class="navs">
+      <div class="nav">
+        <navigator
+          wx:for="{{ source }}"
+          wx:key="id"
+          hover-class="none"
+          url="/pages/list/index"
+          class="item">
+          <image
+            class="icon"
+            src="{{ item.icon }}"></image>
+          <text class="text">{{ item.name }}</text>
+        </navigator>
+      </div>
+      <div class="nav">
+        <navigator
+          wx:for="{{ source }}"
+          wx:key="id"
+          hover-class="none"
+          url="/pages/list/index"
+          class="item">
+          <image
+            class="icon"
+            src="{{ item.icon }}"></image>
+          <text class="text">{{ item.name }}</text>
+        </navigator>
+      </div>
+    </div>
+  </scroll-view>
+  <!-- 滚动条 -->
+  <view class="scroll-bar">
+    <view class="cursor" style="width: {{ width }}"></view>
+  </view>
+</view>

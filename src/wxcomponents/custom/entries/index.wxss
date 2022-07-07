@@ -1,0 +1,55 @@
+
+.entries {
+  margin: 20rpx 0 0;
+  padding: 10rpx 0;
+}
+
+.entries .navs {
+  display: flex;
+  width: 200%;
+}
+
+.entries .nav {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  text-align: center;
+  min-height: 328rpx;
+  box-sizing: border-box;
+}
+
+.entries .item {
+  width: 150rpx;
+  margin-bottom: 28rpx;
+  float: left;
+}
+
+.entries .item .icon {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.entries .item .text {
+  display: block;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.entries .scroll-bar {
+  width: 100rpx;
+  height: 6rpx;
+  margin: auto;
+  border-radius: 6rpx;
+  background-color: #e2e2e2;
+  position: relative;
+}
+
+.entries .scroll-bar .cursor {
+  width: 0%;
+  height: 100%;
+  background-color: #28bb9c;
+  border-radius: 6rpx;
+
+  position: absolute;
+  left: 0;
+}

@@ -1,0 +1,10 @@
+
+// 监听滚动事件
+module.exports.scrolled = function (ev, ins) {
+  var cursor = ins.selectComponent('.cursor');
+
+  cursor.setStyle({
+    left: ev.detail.scrollLeft / ev.detail.scrollWidth * 100 + '%'
+  })
+    
+}
