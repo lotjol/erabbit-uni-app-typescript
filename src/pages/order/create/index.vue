@@ -1,11 +1,7 @@
 <template>
   <scroll-view scroll-y :show-scrollbar="false" class="viewport">
     <!-- 收货地址 -->
-    <navigator
-      class="shipment"
-      hover-class="none"
-      url="/pages/my/address/index"
-    >
+    <navigator class="shipment" hover-class="none" url="/pages/my/address/index">
       <view class="user">李明 13824686868</view>
       <view class="address">北京市顺义区后沙峪地区安平北街6号院</view>
       <text class="icon icon-right"></text>
@@ -14,14 +10,10 @@
     <!-- 商品信息 -->
     <view class="goods">
       <view class="item">
-        <image
-          class="cover"
-          src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
-        ></image>
+        <image class="cover" src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"></image>
         <view class="meta">
           <view class="name ellipsis"
-            >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝
-            非接触式红外体温仪</view
+            >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝 非接触式红外体温仪</view
           >
           <view class="type">白色 全自动充电</view>
           <view class="price">
@@ -32,14 +24,10 @@
         </view>
       </view>
       <view class="item">
-        <image
-          class="cover"
-          src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
-        ></image>
+        <image class="cover" src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"></image>
         <view class="meta">
           <view class="name ellipsis"
-            >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝
-            非接触式红外体温仪</view
+            >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝 非接触式红外体温仪</view
           >
           <view class="type">白色 全自动充电</view>
           <view class="price">
@@ -53,13 +41,13 @@
 
     <!-- 配送及支付方式 -->
     <view class="related">
-      <view class="item" @click="paymentShow = true">
+      <view class="item" @click="shipment.open()">
         <text class="text">配送时间</text>
-        <text class="picker icon-fonts">{{ payment.text }}</text>
+        <text class="picker icon-fonts">{{ selectedShipment.text }}</text>
       </view>
-      <view class="item" @click="shipmentShow = true">
+      <view class="item" @click="payment.open()">
         <text class="text">支付方式</text>
-        <text class="picker icon-fonts">{{ shipment.text }}</text>
+        <text class="picker icon-fonts">{{ selectedPayment.text }}</text>
       </view>
       <view class="item">
         <text class="text">买家备注</text>
@@ -93,74 +81,90 @@
     </view>
     <view @click="goPayment" class="button">提交订单</view>
   </view>
-  <layer
-    title="配送时间"
-    :source="payments"
-    :show="paymentShow"
-    @confirm="getPaymentInfo"
-  ></layer>
-  <layer
-    title="支付方式"
-    :source="shipments"
-    :show="shipmentShow"
-    @confirm="getShipmentInfo"
-  ></layer>
+
+  <uni-popup ref="shipment" type="bottom" background-color="#fff" safe-area is-mask-click>
+    <view class="popup-root">
+      <view class="title">配送时间</view>
+      <view class="list">
+        <view class="item" @click="shipmentIndex = index" v-for="(item, index) in shipments" :key="item.id">
+          <view class="text">{{ item.text }}</view>
+          <text class="icon" :class="[shipmentIndex === index ? 'icon-checked' : 'icon-ring']"></text>
+        </view>
+      </view>
+      <view class="footer">
+        <view @click="shipment.close()" class="button primary">确认</view>
+      </view>
+    </view>
+  </uni-popup>
+  <uni-popup ref="payment" type="bottom" background-color="#fff" safe-area is-mask-click>
+    <view class="popup-root">
+      <view class="title">支付方式</view>
+      <view class="list">
+        <view class="item" @click="paymentIndex = index" v-for="(item, index) in payments" :key="item.id">
+          <view class="text">{{ item.text }}</view>
+          <text class="icon" :class="[paymentIndex === index ? 'icon-checked' : 'icon-ring']"></text>
+        </view>
+      </view>
+      <view class="footer">
+        <view @click="payment.close()" class="button primary">确认</view>
+      </view>
+    </view>
+  </uni-popup>
 </template>
 
 <script setup lang="ts">
-  import layer from "./layer.vue";
+  import { computed } from 'vue'
 
   const payments = [
     {
       id: 1,
-      text: "时间不限 (周一至周日)",
+      text: '时间不限 (周一至周日)',
     },
     {
       id: 2,
-      text: "工作日送 (周一至周五)",
+      text: '工作日送 (周一至周五)',
     },
     {
       id: 3,
-      text: "周末配送 (周六至周日)",
+      text: '周末配送 (周六至周日)',
     },
-  ];
-
-  let paymentShow = $ref(false);
+  ]
 
   const shipments = [
     {
       id: 1,
-      text: "在线支付",
+      text: '在线支付',
     },
     {
       id: 2,
-      text: "货到付款",
+      text: '货到付款',
     },
-  ];
+  ]
 
-  let shipmentShow = $ref(false);
+  let paymentIndex = $ref(0)
+  const selectedPayment = computed(() => payments[paymentIndex])
 
-  let payment = $ref(payments[0]);
-  let shipment = $ref(shipments[0]);
+  let shipmentIndex = $ref(0)
+  const selectedShipment = computed(() => shipments[shipmentIndex])
 
-  const getPaymentInfo = (info: any) => {
-    paymentShow = false;
-    payment = info;
-  };
+  const payment = $ref<{
+    open(): void
+    close(): void
+  }>()
 
-  const getShipmentInfo = (info: any) => {
-    shipmentShow = false;
-    shipment = info;
-  };
+  const shipment = $ref<{
+    open(): void
+    close(): void
+  }>()
 
   const goPayment = () => {
     // uni.navigateTo({
     //   url: '/pages/order/payment/index',
     // })
-  };
+  }
 </script>
 
-<style>
+<style lang="scss">
   page {
     display: flex;
     flex-direction: column;
@@ -178,8 +182,7 @@
     margin: 0 20rpx;
     font-size: 26rpx;
     border-radius: 10rpx;
-    background: url(http://static.botue.com/erabbit/static/images/locate.png)
-      20rpx center / 50rpx no-repeat #fff;
+    background: url(http://static.botue.com/erabbit/static/images/locate.png) 20rpx center / 50rpx no-repeat #fff;
     position: relative;
   }
 
@@ -209,6 +212,35 @@
     color: #fff;
     border-radius: 72rpx;
     background-color: #27ba9b;
+  }
+
+  .popup-root {
+    .list {
+      padding: 20rpx 0 40rpx 10rpx !important;
+    }
+
+    .list .item {
+      padding: 30rpx 60rpx 30rpx 10rpx;
+      position: relative;
+    }
+
+    .list .item .icon {
+      color: #999;
+      font-size: 40rpx;
+      transform: translateY(-50%);
+      position: absolute;
+      top: 50%;
+      right: 10rpx;
+    }
+
+    .list .item .icon-checked {
+      color: #27ba9b;
+    }
+
+    .list .item .text {
+      font-size: 28rpx;
+      color: #444;
+    }
   }
 
   .goods {
@@ -324,7 +356,7 @@
   }
 
   .related .picker::after {
-    content: "\e6c2";
+    content: '\e6c2';
   }
 
   /* 结算清单 */

@@ -1,226 +1,225 @@
 <script setup lang="ts">
-  import { toRef } from "vue";
-  import { onLoad } from "@dcloudio/uni-app";
+  import { toRef } from 'vue'
+  import { onLoad } from '@dcloudio/uni-app'
 
-  import { getRelationGoods } from "@/api/goods";
-  import type { RelationType } from "@/api/goods";
+  import { getRelationGoods } from '@/api/goods'
+  import type { RelationType } from '@/api/goods'
 
-  import useAppStore from "@/store";
-  import { useGoodsStore } from "@/store";
+  import useAppStore from '@/store'
+  import { useGoodsStore } from '@/store'
 
-  const appStore = useAppStore();
-  const goodsStore = useGoodsStore();
+  const popup = $ref<{
+    open(): void
+    close(): void
+  }>()
 
-  const safeArea = toRef(appStore, "safeArea");
-  const goodsDetail = toRef(goodsStore, "goodsDetail");
+  let layerName = $ref('')
+  let buttonType = $ref('')
+
+  const appStore = useAppStore()
+  const goodsStore = useGoodsStore()
+
+  const safeArea = toRef(appStore, 'safeArea')
+  const goodsDetail = toRef(goodsStore, 'goodsDetail')
 
   // 同类商品推荐
-  let relationGoods = $ref<RelationType>([]);
+  let relationGoods = $ref<RelationType>([])
 
   onLoad(async ({ id }) => {
-    if (typeof id !== "string") return;
+    if (typeof id !== 'string') return
     // 获取商品详情
-    goodsStore.getDetail(id).then(() => goodsStore.getSkuLabel());
+    goodsStore.getDetail(id).then(() => goodsStore.getSkuLabel())
 
     // 同类商品推荐
-    relationGoods = await getRelationGoods(id);
-  });
+    relationGoods = await getRelationGoods(id)
+  })
 
   // 返回上一页
   const goBack = () => {
-    uni.navigateBack({});
-  };
+    uni.navigateBack({})
+  }
 
   // 跳转到购物车页面
   const goCart = () => {
-    uni.navigateTo({ url: "/pages/cart/default" });
-  };
+    uni.navigateTo({ url: '/pages/cart/default' })
+  }
+
+  // 显示弹层
+  const showLayer = (ev: WechatMiniprogram.BaseEvent) => {
+    const { layer, button } = ev.currentTarget.dataset
+    // 动态获取 halfDialog 展示的内容
+    layerName = layer
+    // 打开 popup 弹层
+    popup.open()
+
+    // 是否为加入购物车
+    if (button) buttonType = button
+  }
+
+  // 关闭弹层
+  const hideLayer = () => {
+    console.log(popup)
+    // 打开 popup 弹层
+    popup.close()
+  }
 </script>
 
 <script lang="ts">
-  import { getCurrentInstance } from "vue";
+  import { getCurrentInstance } from 'vue'
 
-  import clause from "./components/clause/index.vue";
-  import help from "./components/help/index.vue";
-  import shipment from "./components/shipment/index.vue";
-  import sku from "./components/sku/index.vue";
+  import clause from './components/clause/index.vue'
+  import help from './components/help/index.vue'
+  import shipment from './components/shipment/index.vue'
+  import sku from './components/sku/index.vue'
 
-  let observer: WechatMiniprogram.IntersectionObserver;
-  let navBarHeight = 0;
-  let imageCount = 0;
+  let observer: WechatMiniprogram.IntersectionObserver
+  let navBarHeight = 0
+  let imageCount = 0
 
   export default {
     data() {
       return {
         tabs: [
-          { text: "商品", offset: 0 },
-          { text: "评价", offset: 0 },
-          { text: "详情", offset: 0 },
-          { text: "推荐", offset: 0 },
+          { text: '商品', offset: 0 },
+          { text: '评价', offset: 0 },
+          { text: '详情', offset: 0 },
+          { text: '推荐', offset: 0 },
         ],
         tabIndex: 0,
         anchorIndex: 0,
         scrollTop: 0,
-        layer: "",
-        halfDialogVisible: false,
         swiperCurrentIndex: 0,
-        buttonType: "",
-      };
+      }
     },
 
     onReady: function () {
       // 获取页面实例
-      const pageInstance: any = getCurrentInstance();
+      const pageInstance: any = getCurrentInstance()
 
       // 页面相交状态监听器
       observer = pageInstance.ctx.$scope.createIntersectionObserver({
         observeAll: true,
-      });
+      })
 
       // 监听元素间相关状态
-      this.intersectionObserver();
+      this.intersectionObserver()
 
       // 动画时间线
       const scrollTimeline = {
-        scrollSource: "#scrollView",
+        scrollSource: '#scrollView',
         timeRange: 500,
         startScrollOffset: 0,
         endScrollOffset: 85,
-      };
+      }
 
       // 创建帧动画
       pageInstance.ctx.$scope.animate(
-        ".navbar",
-        [{ backgroundColor: "#fff0" }, { backgroundColor: "#fff" }],
+        '.navbar',
+        [{ backgroundColor: '#fff0' }, { backgroundColor: '#fff' }],
         500,
         scrollTimeline
-      );
+      )
 
       pageInstance.ctx.$scope.animate(
-        ".back",
+        '.back',
         [
           {
-            backgroundColor: "rgba(0, 0, 0, 0.4)",
-            left: "10px",
-            color: "#fff",
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            left: '10px',
+            color: '#fff',
             offset: 0,
           },
           {
-            backgroundColor: "rgba(0, 0, 0, 0.12)",
-            left: "7px",
-            color: "#fff",
+            backgroundColor: 'rgba(0, 0, 0, 0.12)',
+            left: '7px',
+            color: '#fff',
             offset: 0.7,
           },
           {
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            left: "6px",
-            color: "#191919",
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            left: '6px',
+            color: '#191919',
             offset: 1,
           },
         ],
         500,
         scrollTimeline
-      );
+      )
 
-      pageInstance.ctx.$scope.animate(
-        ".tabs, .search",
-        [{ opacity: 0 }, { opacity: 1 }],
-        500,
-        scrollTimeline
-      );
+      pageInstance.ctx.$scope.animate('.tabs, .search', [{ opacity: 0 }, { opacity: 1 }], 500, scrollTimeline)
     },
 
     // 页面卸载停止相交状态监听
     onUnload: function () {
-      observer.disconnect();
+      observer.disconnect()
     },
 
     methods: {
       // 快速返回顶部更新状态
       scrollToUpper() {
-        this.anchorIndex = 0;
+        this.anchorIndex = 0
       },
 
       swiperChanged(ev: WechatMiniprogram.SwiperChange) {
-        this.swiperCurrentIndex = ev.detail.current;
+        this.swiperCurrentIndex = ev.detail.current
       },
 
       // 点击 Tab 切换实现页内跳转
       scrollTo(ev: WechatMiniprogram.BaseEvent) {
         // 停止监听相交状态
-        observer.disconnect();
+        observer.disconnect()
         // // 获取滚动位置及索引值
-        let { anchorOffset, anchorIndex } = ev.target.dataset;
+        let { anchorOffset, anchorIndex } = ev.target.dataset
         // 调整滚动距离
-        this.scrollTop = anchorOffset - navBarHeight;
+        this.scrollTop = anchorOffset - navBarHeight
         // 更新 Tab 的状态
-        this.anchorIndex = anchorIndex;
-      },
-
-      // 显示弹层
-      showHalfDialog(ev: WechatMiniprogram.BaseEvent) {
-        const { layer, buttonType } = ev.currentTarget.dataset;
-        // 动态获取 halfDialog 展示的内容
-        this.layer = layer;
-        this.halfDialogVisible = true;
-        // console.log(this.halfDialogVisible);
-
-        // 是否为加入购物车
-        if (buttonType) this.buttonType = buttonType;
-      },
-
-      // 关闭弹层
-      hideHalfDialog() {
-        this.halfDialogVisible = false;
+        this.anchorIndex = anchorIndex
       },
 
       // 用户滑动手势
       dragEnd() {
-        observer.disconnect();
-        this.intersectionObserver();
+        observer.disconnect()
+        this.intersectionObserver()
       },
 
       // 监测元素相交状态
       intersectionObserver() {
         observer
-          .relativeTo(".navbar")
-          .observe(
-            ".anchor",
-            ({ dataset: { anchorIndex }, boundingClientRect: { top } }) => {
-              if (top < 0) return;
-              if (anchorIndex) this.anchorIndex = parseInt(anchorIndex);
-            }
-          );
+          .relativeTo('.navbar')
+          .observe('.anchor', ({ dataset: { anchorIndex }, boundingClientRect: { top } }) => {
+            if (top < 0) return
+            if (anchorIndex) this.anchorIndex = parseInt(anchorIndex)
+          })
       },
 
       imageLoad(size: number) {
-        if (++imageCount >= size) this.selectWXML();
+        if (++imageCount >= size) this.selectWXML()
       },
 
       //
       selectWXML() {
         // 页面节点查询器
-        const query = uni.createSelectorQuery();
+        const query = uni.createSelectorQuery()
         // 计算节点相对于窗口的位置
         query
-          .selectAll(".anchor")
+          .selectAll('.anchor')
           .boundingClientRect((rects) => {
-            (rects as { top: number }[]).forEach((rect, index) => {
-              this.tabs[index].offset = rect.top;
-            });
+            ;(rects as { top: number }[]).forEach((rect, index) => {
+              this.tabs[index].offset = rect.top
+            })
           })
-          .exec();
+          .exec()
 
         // 计算自定义导航栏的高度
         query
-          .select(".navbar")
+          .select('.navbar')
           .boundingClientRect((rect) => {
-            if (rect.height) navBarHeight = rect.height;
+            if (rect.height) navBarHeight = rect.height
           })
-          .exec();
+          .exec()
       },
     },
-  };
+  }
 </script>
 
 <template>
@@ -263,10 +262,7 @@
     <view class="goods anchor" data-anchor-index="0">
       <view class="preview">
         <swiper circular :current="swiperCurrentIndex" @change="swiperChanged">
-          <swiper-item
-            v-for="picture in goodsDetail.mainPictures"
-            :key="picture"
-          >
+          <swiper-item v-for="picture in goodsDetail.mainPictures" :key="picture">
             <image :src="picture" />
           </swiper-item>
         </swiper>
@@ -292,15 +288,15 @@
         <view class="remarks">{{ goodsDetail.desc }}</view>
       </view>
       <view class="related">
-        <view @tap="showHalfDialog" data-layer="sku" class="item arrow">
+        <view @tap="showLayer" data-layer="sku" class="item arrow">
           <text class="label">选择</text>
           <text class="text ellipsis">{{ goodsStore.skuLabel }}</text>
         </view>
-        <view @tap="showHalfDialog" data-layer="shipment" class="item arrow">
+        <view @tap="showLayer" data-layer="shipment" class="item arrow">
           <text class="label">送至</text>
           <text class="text ellipsis">北京市顺义区京顺路9号黑马程序员</text>
         </view>
-        <view @tap="showHalfDialog" data-layer="clause" class="item arrow">
+        <view @tap="showLayer" data-layer="clause" class="item arrow">
           <text class="label">服务</text>
           <text class="text ellipsis">无忧退 快速退款 免费包邮</text>
         </view>
@@ -310,17 +306,12 @@
     <view class="comments panel anchor" data-anchor-index="1">
       <view class="title arrow">
         <text>评价</text>
-        <navigator url="/pages/comments/index" hover-class="none" class="more"
-          >好评度 70%</navigator
-        >
+        <navigator url="/pages/comments/index" hover-class="none" class="more">好评度 70%</navigator>
       </view>
       <view class="comment">
         <view class="caption">
           <view class="user">
-            <image
-              class="avatar"
-              src="http://static.botue.com/erabbit/static/uploads/avatar_2.jpg"
-            />
+            <image class="avatar" src="http://static.botue.com/erabbit/static/uploads/avatar_2.jpg" />
             <text>白月初</text>
           </view>
           <view class="rating">
@@ -331,19 +322,13 @@
           <view class="text"> 质量不错，灵敏度高，结构巧妙，款式也好看 </view>
           <view class="pictures">
             <view class="picture">
-              <image
-                src="http://static.botue.com/erabbit/static/uploads/comment_1.jpg"
-              />
+              <image src="http://static.botue.com/erabbit/static/uploads/comment_1.jpg" />
             </view>
             <view class="picture">
-              <image
-                src="http://static.botue.com/erabbit/static/uploads/comment_2.jpg"
-              />
+              <image src="http://static.botue.com/erabbit/static/uploads/comment_2.jpg" />
             </view>
             <view class="picture">
-              <image
-                src="http://static.botue.com/erabbit/static/uploads/comment_2.jpg"
-              />
+              <image src="http://static.botue.com/erabbit/static/uploads/comment_2.jpg" />
             </view>
           </view>
           <view class="extra">
@@ -355,10 +340,7 @@
       <view class="comment">
         <view class="caption">
           <view class="user">
-            <image
-              class="avatar"
-              src="http://static.botue.com/erabbit/static/uploads/avatar_3.jpg"
-            />
+            <image class="avatar" src="http://static.botue.com/erabbit/static/uploads/avatar_3.jpg" />
             <text>白月初</text>
           </view>
           <view class="rating">
@@ -369,24 +351,16 @@
           <view class="text"> 质量不错，灵敏度高，结构巧妙，款式也好看 </view>
           <view class="pictures">
             <view class="picture">
-              <image
-                src="http://static.botue.com/erabbit/static/uploads/comment_1.jpg"
-              />
+              <image src="http://static.botue.com/erabbit/static/uploads/comment_1.jpg" />
             </view>
             <view class="picture">
-              <image
-                src="http://static.botue.com/erabbit/static/uploads/comment_2.jpg"
-              />
+              <image src="http://static.botue.com/erabbit/static/uploads/comment_2.jpg" />
             </view>
             <view class="picture">
-              <image
-                src="http://static.botue.com/erabbit/static/uploads/comment_2.jpg"
-              />
+              <image src="http://static.botue.com/erabbit/static/uploads/comment_2.jpg" />
             </view>
             <view class="picture">
-              <image
-                src="http://static.botue.com/erabbit/static/uploads/comment_1.jpg"
-              />
+              <image src="http://static.botue.com/erabbit/static/uploads/comment_1.jpg" />
             </view>
           </view>
           <view class="extra">
@@ -399,25 +373,12 @@
     <!-- 同类商品 -->
     <view class="similar">
       <view class="bar">
-        <text @tap="tabIndex = 0" :class="{ active: tabIndex === 0 }"
-          >同类商品</text
-        >
-        <text @tap="tabIndex = 1" :class="{ active: tabIndex === 1 }"
-          >24小时热销</text
-        >
+        <text @tap="tabIndex = 0" :class="{ active: tabIndex === 0 }">同类商品</text>
+        <text @tap="tabIndex = 1" :class="{ active: tabIndex === 1 }">24小时热销</text>
       </view>
-      <scroll-view
-        v-show="tabIndex === 0"
-        scroll-x
-        enhanced
-        :show-scrollbar="false"
-      >
+      <scroll-view v-show="tabIndex === 0" scroll-x enhanced :show-scrollbar="false">
         <view class="content">
-          <navigator
-            hover-class="none"
-            v-for="goods in goodsDetail.similarProducts"
-            :key="goods.id"
-          >
+          <navigator hover-class="none" v-for="goods in goodsDetail.similarProducts" :key="goods.id">
             <image :src="goods.picture" />
             <view class="name ellipsis">{{ goods.name }}</view>
             <view class="price">
@@ -428,18 +389,9 @@
           </navigator>
         </view>
       </scroll-view>
-      <scroll-view
-        v-show="tabIndex === 1"
-        scroll-x
-        enhanced
-        :show-scrollbar="false"
-      >
+      <scroll-view v-show="tabIndex === 1" scroll-x enhanced :show-scrollbar="false">
         <view class="content">
-          <navigator
-            hover-class="none"
-            v-for="goods in goodsDetail.hotByDay"
-            :key="goods.id"
-          >
+          <navigator hover-class="none" v-for="goods in goodsDetail.hotByDay" :key="goods.id">
             <image :src="goods.picture" />
             <view class="name ellipsis">{{ goods.name }}</view>
             <view class="price">
@@ -450,17 +402,10 @@
           </navigator>
         </view>
       </scroll-view>
-      <scroll-view
-        v-show="tabIndex === 1"
-        scroll-x
-        enhanced
-        show-scrollbar="{{false}}"
-      >
+      <scroll-view v-show="tabIndex === 1" scroll-x enhanced show-scrollbar="{{false}}">
         <view class="content">
           <navigator hover-class="none">
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_6.jpg"
-            />
+            <image src="http://static.botue.com/erabbit/static/uploads/goods_preview_6.jpg" />
             <view class="name ellipsis">非接触体外红外仪</view>
             <view class="price">
               <text class="symbol">¥</text>
@@ -469,9 +414,7 @@
             </view>
           </navigator>
           <navigator hover-class="none">
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_2.jpg"
-            />
+            <image src="http://static.botue.com/erabbit/static/uploads/goods_preview_2.jpg" />
             <view class="name ellipsis">非接触体外红外仪</view>
             <view class="price">
               <text class="symbol">¥</text>
@@ -480,9 +423,7 @@
             </view>
           </navigator>
           <navigator hover-class="none">
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_5.jpg"
-            />
+            <image src="http://static.botue.com/erabbit/static/uploads/goods_preview_5.jpg" />
             <view class="name ellipsis">非接触体外红外仪</view>
             <view class="price">
               <text class="symbol">¥</text>
@@ -491,9 +432,7 @@
             </view>
           </navigator>
           <navigator hover-class="none">
-            <image
-              src="http://static.botue.com/erabbit/static/uploads/goods_preview_3.jpg"
-            />
+            <image src="http://static.botue.com/erabbit/static/uploads/goods_preview_3.jpg" />
             <view class="name ellipsis">非接触体外红外仪</view>
             <view class="price">
               <text class="symbol">¥</text>
@@ -511,11 +450,7 @@
       </view>
       <view class="content">
         <view class="properties">
-          <view
-            class="item"
-            v-for="property in goodsDetail.details?.properties"
-            :key="property.name"
-          >
+          <view class="item" v-for="property in goodsDetail.details?.properties" :key="property.name">
             <text class="label">{{ property.name }}</text>
             <text class="value">{{ property.value }}</text>
           </view>
@@ -531,7 +466,7 @@
       </view>
     </view>
     <!-- 常见问题 -->
-    <view class="help arrow" @tap="showHalfDialog" data-layer="help">
+    <view class="help arrow" @tap="showLayer" data-layer="help">
       <text class="icon-help"></text>
       <navigator hover-class="none">常见问题</navigator>
     </view>
@@ -541,12 +476,7 @@
         <text>推荐</text>
       </view>
       <view class="content">
-        <navigator
-          url="/pages/goods/index"
-          hover-class="none"
-          v-for="goods in relationGoods"
-          :key="goods.id"
-        >
+        <navigator url="/pages/goods/index" hover-class="none" v-for="goods in relationGoods" :key="goods.id">
           <image class="image" mode="aspectFit" :src="goods.picture"></image>
           <view class="name ellipsis">{{ goods.name }}</view>
           <view class="price">
@@ -563,49 +493,24 @@
   <view class="toolbar">
     <view class="icons">
       <button class="collect"><text class="icon-heart"></text>收藏</button>
-      <button class="contact" open-type="contact">
-        <text class="icon-handset"></text>客服
-      </button>
-      <button class="cart" @click="goCart">
-        <text class="icon-cart"></text>购物车
-      </button>
+      <button class="contact" open-type="contact"><text class="icon-handset"></text>客服</button>
+      <button class="cart" @click="goCart"><text class="icon-cart"></text>购物车</button>
     </view>
     <view class="buttons">
-      <view
-        @tap="showHalfDialog"
-        data-button-type="cart"
-        data-layer="sku"
-        class="addcart"
-        >加入购物车</view
-      >
-      <view
-        @tap="showHalfDialog"
-        data-button-type="payment"
-        data-layer="sku"
-        class="payment"
-        >立即购买</view
-      >
+      <view @tap="showLayer" data-button="cart" data-layer="sku" class="addcart">加入购物车</view>
+      <view @tap="showLayer" data-button="payment" data-layer="sku" class="payment">立即购买</view>
     </view>
   </view>
 
-  <van-popup
-    :show="halfDialogVisible"
-    position="bottom"
-    close-on-click-overlay
-    @close="hideHalfDialog"
-  >
+  <uni-popup type="bottom" ref="popup" background-color="#fff" safe-area is-mask-click>
     <view class="popup-root">
-      <text @click="hideHalfDialog" class="close icon-close"></text>
-      <sku
-        :buttonType="buttonType"
-        @confirm="halfDialogVisible = false"
-        v-if="layer === 'sku'"
-      ></sku>
-      <shipment v-if="layer === 'shipment'"></shipment>
-      <clause v-if="layer === 'clause'"></clause>
-      <help v-if="layer === 'help'"></help>
+      <text @click="hideLayer" class="close icon-close"></text>
+      <sku v-if="layerName === 'sku'" :buttonType="buttonType" @confirm="popup.close"></sku>
+      <shipment v-if="layerName === 'shipment'"></shipment>
+      <clause v-if="layerName === 'clause'"></clause>
+      <help v-if="layerName === 'help'"></help>
     </view>
-  </van-popup>
+  </uni-popup>
 </template>
 
 <style>
@@ -692,7 +597,7 @@
   }
 
   .navbar .tabs .active::after {
-    content: "";
+    content: '';
     position: absolute;
     left: 18rpx;
     right: 20rpx;
@@ -739,9 +644,9 @@
     top: 50%;
     right: 30rpx;
 
-    content: "\e6c2";
+    content: '\e6c2';
     color: #ccc;
-    font-family: "erabbit" !important;
+    font-family: 'erabbit' !important;
     font-size: 32rpx;
     transform: translateY(-50%);
   }
@@ -952,7 +857,7 @@
   }
 
   .similar .bar .active::after {
-    content: "";
+    content: '';
     display: block;
     width: 60rpx;
     height: 4rpx;

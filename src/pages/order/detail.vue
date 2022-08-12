@@ -6,13 +6,7 @@
     </view>
   </view>
 
-  <scroll-view
-    class="viewport"
-    id="scrollView"
-    enhanced
-    scroll-y
-    :show-scrollbar="false"
-  >
+  <scroll-view class="viewport" id="scrollView" enhanced scroll-y :show-scrollbar="false">
     <!-- 订单状态 -->
     <view class="overview" :style="{ paddingTop: safeArea!.top + 40 + 'px' }">
       <view class="status icon-clock">等待付款</view>
@@ -26,14 +20,8 @@
     <!-- 配送状态 -->
     <view class="shipment">
       <!-- 物流信息 -->
-      <navigator
-        class="logistics"
-        hover-class="none"
-        url="/pages/order/logistics/index"
-      >
-        <view class="message"
-          >您已在北京顺义后沙峪智慧城7号楼店完成取件，感谢使用菜鸟驿站，期待再次为您服务。</view
-        >
+      <navigator class="logistics" hover-class="none" url="/pages/order/logistics/index">
+        <view class="message">您已在北京顺义后沙峪智慧城7号楼店完成取件，感谢使用菜鸟驿站，期待再次为您服务。</view>
         <view class="date">2020-11-21 09:15:09</view>
       </navigator>
       <!-- 收货地址 -->
@@ -47,14 +35,10 @@
     <view class="goods">
       <view class="item">
         <navigator hover-class="none">
-          <image
-            class="cover"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"
-          ></image>
+          <image class="cover" src="http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg"></image>
           <view class="meta">
             <view class="name ellipsis"
-              >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝
-              非接触式红外体温仪</view
+              >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝 非接触式红外体温仪</view
             >
             <view class="type">白色 全自动充电</view>
             <view class="price">
@@ -75,21 +59,15 @@
         </navigator>
         <view class="action">
           <view class="button primary">申请售后</view>
-          <navigator url="/pages/comments/publish/index" class="button"
-            >去评价</navigator
-          >
+          <navigator url="/pages/comments/publish/index" class="button">去评价</navigator>
         </view>
       </view>
       <view class="item">
         <navigator hover-class="none">
-          <image
-            class="cover"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"
-          ></image>
+          <image class="cover" src="http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg"></image>
           <view class="meta">
             <view class="name ellipsis"
-              >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝
-              非接触式红外体温仪</view
+              >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝 非接触式红外体温仪</view
             >
             <view class="type">白色 全自动充电</view>
             <view class="price">
@@ -111,14 +89,10 @@
       </view>
       <view class="item">
         <navigator hover-class="none">
-          <image
-            class="cover"
-            src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"
-          ></image>
+          <image class="cover" src="http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg"></image>
           <view class="meta">
             <view class="name ellipsis"
-              >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝
-              非接触式红外体温仪</view
+              >康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温 康尔贝 非接触式红外体温仪</view
             >
             <view class="type">白色 全自动充电</view>
             <view class="price">
@@ -139,12 +113,7 @@
         </navigator>
         <view class="action">
           <view class="button primary">申请售后</view>
-          <navigator
-            class="button"
-            hover-class="none"
-            url="/pages/comments/publish/index"
-            >去评价</navigator
-          >
+          <navigator class="button" hover-class="none" url="/pages/comments/publish/index">去评价</navigator>
         </view>
       </view>
       <!-- 合计 -->
@@ -184,7 +153,7 @@
     <view class="default" @tap="cancelOrder">取消订单</view>
   </div>
 
-  <van-popup :show="showHalfDialog" @close="cancelHalfDialog" position="bottom">
+  <uni-popup ref="popup" @close="hideLayer" type="bottom" background-color="#fff" safe-area is-mask-click>
     <view class="popup-root">
       <view class="title">订单取消</view>
       <view class="description">
@@ -215,53 +184,51 @@
         </view>
       </view>
       <view class="footer">
-        <view class="button" @tap="cancelHalfDialog">取消</view>
+        <view class="button" @tap="hideLayer">取消</view>
         <view class="button primary">确认</view>
       </view>
     </view>
-  </van-popup>
+  </uni-popup>
 </template>
 
 <script setup lang="ts">
-  import { toRefs, getCurrentInstance } from "vue";
-  import { onReady } from "@dcloudio/uni-app";
+  import { toRefs, getCurrentInstance } from 'vue'
+  import { onReady } from '@dcloudio/uni-app'
 
-  import useAppStore from "@/store";
+  import useAppStore from '@/store'
 
-  import guess from "@/components/guess/index.vue";
+  import guess from '@/components/guess/index.vue'
 
-  const appStore = useAppStore();
-  const { safeArea, platform } = toRefs(appStore);
+  const appStore = useAppStore()
+  const { safeArea, platform } = toRefs(appStore)
 
-  let showHalfDialog = $ref(false);
+  let popup = $ref<{
+    open(): void
+    close(): void
+  }>()
 
-  const pageInstance: any = getCurrentInstance();
+  const pageInstance: any = getCurrentInstance()
 
   const cancelOrder = () => {
-    showHalfDialog = true;
-  };
+    popup.open()
+  }
 
-  const cancelHalfDialog = () => {
-    showHalfDialog = false;
-  };
+  const hideLayer = () => {
+    popup.close()
+  }
 
   const goBack = () => {
-    uni.navigateBack({});
-  };
+    uni.navigateBack({})
+  }
 
   onReady(() => {
-    pageInstance.ctx.$scope.animate(
-      ".navbar .title",
-      [{ opacity: 0 }, { opacity: 1 }],
-      600,
-      {
-        scrollSource: "#scrollView",
-        timeRange: 600,
-        startScrollOffset: 0,
-        endScrollOffset: 120,
-      }
-    );
-  });
+    pageInstance.ctx.$scope.animate('.navbar .title', [{ opacity: 0 }, { opacity: 1 }], 600, {
+      scrollSource: '#scrollView',
+      timeRange: 600,
+      startScrollOffset: 0,
+      endScrollOffset: 120,
+    })
+  })
 </script>
 
 <style>
@@ -400,8 +367,8 @@
     top: 50%;
 
     transform: translateY(-50%);
-    content: "\e6c2";
-    font-family: "erabbit" !important;
+    content: '\e6c2';
+    font-family: 'erabbit' !important;
     font-size: 32rpx;
     color: #666;
   }
@@ -536,7 +503,7 @@
   }
 
   .goods .total .symbol::before {
-    content: "¥";
+    content: '¥';
     font-size: 20rpx;
   }
 

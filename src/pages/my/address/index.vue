@@ -3,13 +3,8 @@
     <!-- 地址列表 -->
     <scroll-view enhanced scroll-y>
       <view class="address">
-        <van-swipe-cell
-          class="swipe-cell"
-          async-close
-          :right-width="50"
-          @close="onClose"
-        >
-          <van-cell-group>
+        <uni-swipe-action>
+          <uni-swipe-action-item class="swipe-cell">
             <view class="item">
               <view class="user">
                 王东
@@ -17,61 +12,39 @@
                 <text class="badge">默认</text>
               </view>
               <view class="locate">北京市顺义区后沙峪地区安平北街6号院</view>
-              <navigator url="./form?id=1" class="edit" hover-class="none"
-                >修改</navigator
-              >
+              <navigator url="./form?id=1" class="edit" hover-class="none">修改</navigator>
             </view>
-          </van-cell-group>
-          <template v-slot:right>
-            <view class="swipe-cell-action">
-              <button class="delete-button">删除</button>
-            </view>
-          </template>
-        </van-swipe-cell>
-        <van-swipe-cell
-          class="swipe-cell"
-          async-close
-          :right-width="50"
-          @close="onClose"
-        >
-          <van-cell-group>
+            <template v-slot:right>
+              <view class="swipe-cell-action">
+                <button class="delete-button">删除</button>
+              </view>
+            </template>
+          </uni-swipe-action-item>
+          <uni-swipe-action-item class="swipe-cell">
             <view class="item">
               <view class="user"> 寒冰 <text>13824686868</text> </view>
               <view class="locate">北京市顺义区后沙峪地区安平北街6号院</view>
-              <navigator url="./form?id=2" class="edit" hover-class="none"
-                >修改</navigator
-              >
+              <navigator url="./form?id=2" class="edit" hover-class="none">修改</navigator>
             </view>
-          </van-cell-group>
-          <template v-slot:right>
-            <view class="swipe-cell-action">
-              <button class="delete-button">删除</button>
-            </view>
-          </template>
-        </van-swipe-cell>
-        <van-swipe-cell
-          class="swipe-cell"
-          async-close
-          :right-width="50"
-          @close="onClose"
-        >
-          <van-cell-group>
+            <template v-slot:right>
+              <view class="swipe-cell-action">
+                <button class="delete-button">删除</button>
+              </view>
+            </template>
+          </uni-swipe-action-item>
+          <uni-swipe-action-item class="swipe-cell">
             <view class="item">
               <view class="user"> 寒冰 <text>13824686868</text> </view>
-              <view class="locate default"
-                >北京市顺义区后沙峪地区安平北街6号院北京市顺义区后沙峪地区安平北街6号院</view
-              >
-              <navigator url="./form?id=3" class="edit" hover-class="none"
-                >修改</navigator
-              >
+              <view class="locate default">北京市顺义区后沙峪地区安平北街6号院北京市顺义区后沙峪地区安平北街6号院</view>
+              <navigator url="./form?id=3" class="edit" hover-class="none">修改</navigator>
             </view>
-          </van-cell-group>
-          <template v-slot:right>
-            <view class="swipe-cell-action">
-              <button class="delete-button">删除</button>
-            </view>
-          </template>
-        </van-swipe-cell>
+            <template v-slot:right>
+              <view class="swipe-cell-action">
+                <button class="delete-button">删除</button>
+              </view>
+            </template>
+          </uni-swipe-action-item>
+        </uni-swipe-action>
       </view>
       <view v-if="false" class="blank">收货地址为空~</view>
     </scroll-view>
@@ -86,17 +59,17 @@
 </template>
 
 <script setup lang="ts">
-  let dialogShow = $ref(false);
+  let dialogShow = $ref(false)
 
   const onClose = (ev: any) => {
-    const { position, instance } = ev.detail;
+    const { position, instance } = ev.detail
     switch (position) {
-      case "right":
-        dialogShow = true;
-        instance.close();
-        break;
+      case 'right':
+        dialogShow = true
+        instance.close()
+        break
     }
-  };
+  }
 </script>
 
 <style>

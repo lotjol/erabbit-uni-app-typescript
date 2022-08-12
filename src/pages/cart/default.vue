@@ -13,27 +13,17 @@
       <!-- 优惠提示 -->
       <view class="tips">
         <text class="label">满减</text>
-        <text class="desc">满1件, 即可享受9折优惠</text>
+        <text class="desc">满1件, 即可享受9折优惠 </text>
       </view>
 
       <!-- 购物车商品 -->
       <view class="carts">
-        <van-swipe-cell
-          class="swipe-cell"
-          async-close
-          :right-width="100"
-          v-for="(item, index) in carts"
-          :key="index"
-          @close="onClose"
-        >
-          <van-cell-group>
+        <uni-swipe-action>
+          <uni-swipe-action-item class="swipe-cell" v-for="(item, index) in carts" :key="index">
             <view class="card">
               <text
                 @click="checkToggle(index)"
-                :class="[
-                  'checkbox',
-                  `icon-${item.checked ? 'checked' : 'ring'}`,
-                ]"
+                :class="['checkbox', `icon-${item.checked ? 'checked' : 'ring'}`]"
               ></text>
               <!-- 商品缩略图 -->
               <image class="thumb" :src="item.thumb"></image>
@@ -52,14 +42,15 @@
                 </view>
               </view>
             </view>
-          </van-cell-group>
-          <template v-slot:right>
-            <view class="swipe-cell-action">
-              <button class="collect-button">移入收藏</button>
-              <button class="delete-button">删除</button>
-            </view>
-          </template>
-        </van-swipe-cell>
+
+            <template v-slot:right>
+              <view class="swipe-cell-action">
+                <button class="collect-button">移入收藏</button>
+                <button class="delete-button">删除</button>
+              </view>
+            </template>
+          </uni-swipe-action-item>
+        </uni-swipe-action>
       </view>
     </block>
 
@@ -72,9 +63,6 @@
     <!-- 猜你喜欢 -->
     <guess :source="[]"></guess>
   </scroll-view>
-  <van-dialog use-slot title="标题" :show="dialogShow" show-cancel-button>
-    <image src="https://img.yzcdn.cn/1.jpg" />
-  </van-dialog>
 
   <!-- 吸底工具栏 -->
   <view class="toolbar" v-if="true">
@@ -91,57 +79,46 @@
 </template>
 
 <script setup lang="ts">
-  import guess from "@/components/guess/index.vue";
+  import guess from '@/components/guess/index.vue'
 
-  let dialogShow = $ref(false);
   let carts = $ref([
     {
-      thumb: "http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg",
-      name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
-      type: "粉色 红外体温计",
+      thumb: 'http://static.botue.com/erabbit/static/uploads/goods_big_5.jpg',
+      name: '康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温',
+      type: '粉色 红外体温计',
       price: 266,
       quantity: 1,
       checked: true,
     },
     {
-      thumb: "http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg",
-      name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
-      type: "粉色 红外体温计",
+      thumb: 'http://static.botue.com/erabbit/static/uploads/goods_big_6.jpg',
+      name: '康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温',
+      type: '粉色 红外体温计',
       price: 266,
       quantity: 1,
       checked: false,
     },
     {
-      thumb: "http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg",
-      name: "康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温",
-      type: "粉色 红外体温计",
+      thumb: 'http://static.botue.com/erabbit/static/uploads/goods_big_7.jpg',
+      name: '康尔贝 非接触式红外体温仪 领券立减30元 婴儿级材质 测温',
+      type: '粉色 红外体温计',
       price: 266,
       quantity: 1,
       checked: true,
     },
-  ]);
+  ])
 
   const goPay = () => {
     uni.navigateTo({
-      url: "/pages/order/index",
-    });
-  };
+      url: '/pages/order/index',
+    })
+  }
 
   const checkToggle = (index: number) => {
-    carts[index].checked = !carts[index].checked;
-  };
+    carts[index].checked = !carts[index].checked
+  }
 
-  const checkAll = () => {};
-
-  const onClose = (ev: any) => {
-    const { position, instance } = ev.detail;
-    switch (position) {
-      case "right":
-        dialogShow = true;
-        instance.close();
-        break;
-    }
-  };
+  const checkAll = () => {}
 </script>
 
 <style>
@@ -196,7 +173,7 @@
     position: absolute;
     top: 50%;
 
-    content: "";
+    content: '';
     width: 6rpx;
     height: 4rpx;
     background-color: #8c8c8c;
@@ -379,15 +356,15 @@
   }
 
   .toolbar .all::before {
-    font-family: "erabbit" !important;
-    content: "\e6cd";
+    font-family: 'erabbit' !important;
+    content: '\e6cd';
     font-size: 36rpx;
     margin-right: 8rpx;
     vertical-align: -4rpx;
   }
 
   .toolbar .checked::before {
-    content: "\e6cc";
+    content: '\e6cc';
     color: #27ba9b;
   }
 
@@ -405,7 +382,7 @@
   }
 
   .toolbar .amount::before {
-    content: "￥";
+    content: '￥';
     font-size: 12px;
   }
 
