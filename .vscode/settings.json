@@ -1,16 +1,19 @@
 {
   "editor.tabSize": 2,
   "editor.fontSize": 18,
-  "editor.fontFamily": "'Fira Code', Menlo, Monaco, 'Courier New', monospace",
   "explorer.compactFolders": false,
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "prettier.vueIndentScriptAndStyle": true,
   "[vue]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "prettier.printWidth": 120,
+  "html.format.wrapAttributes": "auto",
   "editor.foldingStrategy": "auto",
-  "emmet.triggerExpansionOnTab": true
+  "emmet.triggerExpansionOnTab": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
