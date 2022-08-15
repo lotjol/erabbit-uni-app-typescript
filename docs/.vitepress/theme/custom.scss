@@ -1,0 +1,21 @@
+:root {
+  --vp-c-green: #27ba9b;
+  --vp-c-green-light: #4fc08d;
+  --vp-c-green-dark: #24ad90;
+  // #23a589;
+}
+
+.VPHomeFeatures {
+  p.tagline {
+    margin-top: 10px;
+  }
+
+  p.details {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  h2.title {
+    font-size: 20px;
+  }
+}
