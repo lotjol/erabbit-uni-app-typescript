@@ -10,7 +10,7 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: '/favicon.ico',
+        href: '/erabbit-uni-app-typescript/favicon.ico',
       },
     ],
   ],
