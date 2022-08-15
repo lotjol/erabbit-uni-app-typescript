@@ -5,6 +5,15 @@ export default defineConfig({
   titleTemplate: '新鲜、亲民、快捷',
   description: '小兔鲜儿, 电商, 商城,小程序, uni-app',
   base: '/erabbit-uni-app-typescript/',
+  head: [
+    [
+      'link',
+      {
+        rel: 'icon',
+        href: '/favicon.ico',
+      },
+    ],
+  ],
   themeConfig: {
     logo: '/logo.png',
     siteTitle: '小兔鲜儿',
