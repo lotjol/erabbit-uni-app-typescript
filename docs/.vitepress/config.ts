@@ -25,12 +25,32 @@ export default defineConfig({
     sidebar: {
       '/wechat/': [
         {
-          text: '微信小程序',
+          text: '一、小程序基础',
+          collapsible: true,
           items: [
-            { text: '开发准备', link: '/wechat/' },
-            { text: '基础知识', link: '/wechat/development' },
-            { text: '开发调试', link: '/wechat/debug' },
-            { text: '发布上线', link: '/wechat/publish' },
+            { text: '1. 开发准备', link: '/wechat/' },
+            { text: '2. 基础知识', link: '/wechat/development' },
+            { text: '3. 开发调试', link: '/wechat/debug' },
+            { text: '4. 发布上线', link: '/wechat/publish' },
+          ],
+        },
+        {
+          text: '二、小程序进阶',
+          collapsible: true,
+          items: [
+            { text: '1. TypeScript', link: '/wechat/typescript' },
+            { text: '2. 数据渲染', link: '/wechat/render' },
+            { text: '3. 生命周期', link: '/wechat/lifetimes' },
+            { text: '4. 内置API', link: '/wechat/api' },
+            { text: '5. 自定义组件', link: '/wechat/component' },
+            { text: '6. 配置分包', link: '/wechat/subpackage' },
+          ],
+        },
+        {
+          text: '三、每日作业',
+          items: [
+            { text: '查看作业', link: '/wechat/homework' },
+            { text: '参考答案', link: '/wechat/answer' },
           ],
         },
       ],
@@ -52,5 +72,7 @@ export default defineConfig({
       copyright: 'Copyright © 2019-2022 黑马程序员',
     },
   },
-  markdown: {},
+  markdown: {
+    lineNumbers: true,
+  },
 })
