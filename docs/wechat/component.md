@@ -1,4 +1,4 @@
-# 小程序进阶
+# 自定义组件
 
 小程序中提供了许多的[内置组件](https://developers.weixin.qq.com/miniprogram/dev/component/)，比如之前学习过的 `view`、`image`、`scroll-view`、`swiper`等，不仅如此小程序也允许开发者自定义组件。
 
@@ -20,7 +20,7 @@
 
 ```json
 {
-  component: true
+  "component": true
 }
 ```
 
@@ -57,17 +57,17 @@ Component({
 
 Vant 提供了微信小程序的[组件库](https://vant-contrib.gitee.io/vant-weapp/#/home)，它本质上就是自定义的小程序组件，我来给大家介绍一下如何引入 Vant 组件库。
 
-第1步：安装 vant 组件库
+第 1 步：安装 vant 组件库
 
 ```bash
 npm i @vant/weapp -S --production
 ```
 
-第2步：构建 npm 模块，会自动创建 `miniprogram_npm` 目录，存放构建好的代码
+第 2 步：构建 npm 模块，会自动创建 `miniprogram_npm` 目录，存放构建好的代码
 
 ![](./assets/component/picture_3.jpg)
 
-第3步：配置 `usingComponents` 
+第 3 步：配置 `usingComponents`
 
 ```json
 {

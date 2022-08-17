@@ -1,18 +1,17 @@
+# 基础知识
 
-# 小程序开发
-
-小程序开发的模式与Web非常类似，除了使用 Javascript 语言外，还有类似于 html、css 的新技术 wxml 和 wxss，分别用于实现小程序页面的布局及样式。
+小程序开发的模式与 Web 非常类似，除了使用 Javascript 语言外，还有类似于 html、css 的新技术 wxml 和 wxss，分别用于实现小程序页面的布局及样式。
 
 ## 2.1 创建小程序
 
 通过小程序开发者工具创建一个新的项目，步骤如下图所示：
 
 1. 点击 + 号，新建项目
-   
+
    ![创建小程序](./assets/development/picture_1.jpg)
 
 2. 填写项目信息
-   
+
    ![创建小程序](./assets/development/picture_3.jpg)
 
 3. 启动小程序项目
@@ -156,7 +155,7 @@
 }
 
 .navs .active::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 50%;
   bottom: 6px;
@@ -174,7 +173,7 @@
 
 ## 2.5 小程序适配
 
-小程序大部情况下是运行在手机端的它也需要像移动Web一样来处理不同大小屏幕的适配，小程序中适配的方法非常简单，它提供了专门的单位 `rpx` 它会自动的根据屏幕的大小转换成 `px` 。
+小程序大部情况下是运行在手机端的它也需要像移动 Web 一样来处理不同大小屏幕的适配，小程序中适配的方法非常简单，它提供了专门的单位 `rpx` 它会自动的根据屏幕的大小转换成 `px` 。
 
 详细见课堂演示。
 
@@ -225,8 +224,8 @@ Page 函数的配置项及其含义：
 // pages/index/index.ts
 Page({
   data: {
-    msg: '大家好，这是我开发的第一个小程序！'
-  }
+    msg: '大家好，这是我开发的第一个小程序！',
+  },
 })
 ```
 
@@ -239,7 +238,7 @@ Page({
 <view>{{msg}}</view>
 ```
 
-保存代码后就可以在页面中看到 "大家好，这是我开发的第一个小程序！" 这段文字了。 
+保存代码后就可以在页面中看到 "大家好，这是我开发的第一个小程序！" 这段文字了。
 
 大家自行尝试一下数据据型如果是 数组或对象时如何渲染到页面当中？例如：
 
@@ -251,9 +250,9 @@ Page({
     // 初始对象类型的数据
     user: {
       name: '小明',
-      age: 18
-    }
-  }
+      age: 18,
+    },
+  },
 })
 ```
 
@@ -265,7 +264,7 @@ Page({
 
 1. 事件监听
 
-小程序中绑定事件的语法为 【bind事件名="事件回调"】 和 【bind:事件名="事件回调"】 两种形式，小程序中大部分事件类型与网页中一致，有个特殊的事件类型需要指出，小程序中没有 `click` 事件类型，取而代之的是 `tap` 事件。
+小程序中绑定事件的语法为 【bind 事件名="事件回调"】 和 【bind:事件名="事件回调"】 两种形式，小程序中大部分事件类型与网页中一致，有个特殊的事件类型需要指出，小程序中没有 `click` 事件类型，取而代之的是 `tap` 事件。
 
 ```xml
 <!-- page/index/index.wxml -->
@@ -275,17 +274,17 @@ Page({
 
 上述代码中的 `button` 也是小程序中内置组件，通过 `bind:tap="sayHi"` 添加点击事件的监听，sayHi 是一个方法会在点击按钮时被调用，那这个方法我们定义了吗？
 
-在Vue 中是通过 methods 选项来定义方法，然而在小程序的页面中直接定义一个方法就可以了，这一点和 Vue 不一样大家一定要注意，来看具体的用法：
+在 Vue 中是通过 methods 选项来定义方法，然而在小程序的页面中直接定义一个方法就可以了，这一点和 Vue 不一样大家一定要注意，来看具体的用法：
 
 ```javascript
 // pages/index/index.ts
 Page({
   data: {
-    msg: '大家好，这是我开发的第一个小程序！'
+    msg: '大家好，这是我开发的第一个小程序！',
   },
   sayHi() {
     console.log('按钮被点击了...')
-  }
+  },
 })
 ```
 
@@ -293,24 +292,24 @@ Page({
 
 2. 更新数据
 
- 据我们的经验可以知道 data 中的数据应该是可以根据逻辑的需要进行修改的，那我们就来学习一下小程序中如何修改这些数据吧，假如用户在点击的时候我们将 msg 这个数据修改为 "Hello everybody，this is my first miniprogram!"，如何实现呢？
+据我们的经验可以知道 data 中的数据应该是可以根据逻辑的需要进行修改的，那我们就来学习一下小程序中如何修改这些数据吧，假如用户在点击的时候我们将 msg 这个数据修改为 "Hello everybody，this is my first miniprogram!"，如何实现呢？
 
 ```javascript
 // pages/index/index.ts
 Page({
   data: {
-    msg: '大家好，这是我开发的第一个小程序！'
+    msg: '大家好，这是我开发的第一个小程序！',
   },
-  
+
   sayHi() {
     console.log('按钮被点击了...')
     // 错误的写法！
     // this.msg = 'Hello everybody，this is my first miniprogram!'
     // 正确的写法
     this.setData({
-      msg: 'Hello everybody，this is my first miniprogram!'
+      msg: 'Hello everybody，this is my first miniprogram!',
     })
-  }
+  },
 })
 ```
 
@@ -319,7 +318,7 @@ Page({
 好了基础知识铺垫完了，接下来我们就可以实现购物车计数器的功能了：
 
 1. 简单布局一下页面，用到两个按钮组件和一个输入框组件
-2. 监听按钮的点击事件，然后对数值进行加1或减1操作
+2. 监听按钮的点击事件，然后对数值进行加 1 或减 1 操作
 3. 将按钮修改后的结果显示在输入框组件中
 
 ```javascript
@@ -328,7 +327,7 @@ Page({
   data: {
     msg: '大家好，这是我开发的第一个小程序！',
     // 初始值为 1
-    num: 1
+    num: 1,
   },
   sayHi() {
     // 省略...
@@ -336,16 +335,16 @@ Page({
   // 购物车数量加1
   increment() {
     // 数量最小为1
-    if(this.data.number <= 1) return;
+    if (this.data.number <= 1) return
     this.setData({
-      num: this.data.num + 1
+      num: this.data.num + 1,
     })
   },
 
   // 购物车数量减1
   decrement() {
     num: this.data.num - 1
-  }
+  },
 })
 ```
 
@@ -364,7 +363,7 @@ Page({
 
 ## 2.8 小程序配置
 
-前面我们简单介绍了一下 `.json` 类型的文件是用来对小程序进行配置的，如窗口的颜色、标题、自定义组件、底部tab栏等都是通过配置文件来实现的。配置文件又分为全局配置 `app.json` 和页面里的配置，我们先来看全局的配置：
+前面我们简单介绍了一下 `.json` 类型的文件是用来对小程序进行配置的，如窗口的颜色、标题、自定义组件、底部 tab 栏等都是通过配置文件来实现的。配置文件又分为全局配置 `app.json` 和页面里的配置，我们先来看全局的配置：
 
 首先要知道配置文件最外层是一个对象，我们再来看一些常见的配置：
 
@@ -379,10 +378,7 @@ Page({
 
 ```json
 {
-  "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
-  ]
+  "pages": ["pages/index/index", "pages/logs/logs"]
 }
 ```
 
@@ -390,15 +386,13 @@ Page({
 
 ![新建页面](./assets/development/picture_11.jpg)
 
-
-
-在任意文件夹上右键，然后在弹出的菜单中选择【新建Page】，然后输入页面名称（如：demo）然后敲回车，此时便会创建出4个文件来，分别为 `demo.wxml`、`demo.ts`、`demo.wxss`、`demo.json`，这 4 个文件正好是一个完整页面的构成，**不仅如此配置文件 app.json 当中也自动的将这个新建的页面路径**。
+在任意文件夹上右键，然后在弹出的菜单中选择【新建 Page】，然后输入页面名称（如：demo）然后敲回车，此时便会创建出 4 个文件来，分别为 `demo.wxml`、`demo.ts`、`demo.wxss`、`demo.json`，这 4 个文件正好是一个完整页面的构成，**不仅如此配置文件 app.json 当中也自动的将这个新建的页面路径**。
 
 ![新建页面](./assets/development/picture_13.jpg)
 
 那 pages 的作用到底是什么呢？如果没有在 pages 中添加这个页面又会出现什么结果呢？下面我们来通过链接跳转的方式来给大家演示一下效果：
 
-| 组件名    | 作用     | 与 htm对比              |
+| 组件名    | 作用     | 与 htm 对比             |
 | --------- | -------- | ----------------------- |
 | navigator | 地址跳转 | 相当于 html 中的 a 标签 |
 
@@ -418,22 +412,18 @@ Page({
 
 1. window 的值是一个对象，通过它可以全局配置小程序的状态栏、导航条、标题、窗口背景色。
 
-| 属性                                                                                                     | 类型       | 默认值  | 说明                                     |
-| -------------------------------------------------------------------------------------------------------- | ---------- | ------- | ---------------------------------------- |
-| navigationBarTitleText                                                                                   | string     | 空白    | 导航栏标题文字内容                       |
-| navigationBarTextStyle                                                                                   | string     | black   | 导航栏标题颜色，仅支持 `black` / `white` |
-| navigationBarBackgroundColor                                                                             | 16进制颜色 | #00000  | 导航栏背景颜色，如 `#000000`             |
-| navigationStyle                                                                                          | string     | default | 导航栏样式，仅支持 `default` / `custom`  |
-| enablePullDownRefresh                                                                                    | boolean    | false   | 是否开启全局的下拉刷新                   |
-| ... 还有[更多](https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html#window) |            |         |                                          |
+| 属性                                                                                                     | 类型        | 默认值  | 说明                                     |
+| -------------------------------------------------------------------------------------------------------- | ----------- | ------- | ---------------------------------------- |
+| navigationBarTitleText                                                                                   | string      | 空白    | 导航栏标题文字内容                       |
+| navigationBarTextStyle                                                                                   | string      | black   | 导航栏标题颜色，仅支持 `black` / `white` |
+| navigationBarBackgroundColor                                                                             | 16 进制颜色 | #00000  | 导航栏背景颜色，如 `#000000`             |
+| navigationStyle                                                                                          | string      | default | 导航栏样式，仅支持 `default` / `custom`  |
+| enablePullDownRefresh                                                                                    | boolean     | false   | 是否开启全局的下拉刷新                   |
+| ... 还有[更多](https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html#window) |             |         |                                          |
 
 ```json
 {
-  "pages": [
-    "pages/index/index",
-    "pages/logs/logs",
-    "pages/demo/demo"
-  ],
+  "pages": ["pages/index/index", "pages/logs/logs", "pages/demo/demo"],
   "window": {
     "navigationBarTitleText": "小程序示例",
     "navigationBarTextStyle": "white",
@@ -445,37 +435,33 @@ Page({
 
 3. tabBar 定义小程序 tab 栏的表现，如下图即所谓的 tab 栏：
 
- ![](./assets/development/picture_15.png)
+![](./assets/development/picture_15.png)
 
-定义tab 的内容有些多，大家参照着上图和下面的表格来对小程序的 tab 栏进行配置：
+定义 tab 的内容有些多，大家参照着上图和下面的表格来对小程序的 tab 栏进行配置：
 
-| 属性            | 类型       | 默认值 | 是否必须 | 说明                                                       |
-| --------------- | ---------- | ------ | -------- | ---------------------------------------------------------- |
-| list            | array      | 无     | 是       | tab 的列表，详见 `list` 属性说明，最少 2 个、最多 5 个 tab |
-| color           | 16进制颜色 | 无     | 否       | tab 上的文字默认颜色，仅支持十六进制颜色                   |
-| selectedColor   | 16进制颜色 | 无     | 否       | tab 上的文字选中时的颜色，仅支持十六进制颜色               |
-| backgroundColor | 16进制颜色 | 无     | 否       | tab 的背景色，仅只持16进制颜色                             |
-| borderStyle     | string     | black  | 否       | tabbar 上边框的颜色， 仅支持 `black` / `white`             |
-| position        | string     | bottom | 否       | tabBar 的位置，仅支持 `bottom` / `top`                     |
+| 属性            | 类型        | 默认值 | 是否必须 | 说明                                                       |
+| --------------- | ----------- | ------ | -------- | ---------------------------------------------------------- |
+| list            | array       | 无     | 是       | tab 的列表，详见 `list` 属性说明，最少 2 个、最多 5 个 tab |
+| color           | 16 进制颜色 | 无     | 否       | tab 上的文字默认颜色，仅支持十六进制颜色                   |
+| selectedColor   | 16 进制颜色 | 无     | 否       | tab 上的文字选中时的颜色，仅支持十六进制颜色               |
+| backgroundColor | 16 进制颜色 | 无     | 否       | tab 的背景色，仅只持 16 进制颜色                           |
+| borderStyle     | string      | black  | 否       | tabbar 上边框的颜色， 仅支持 `black` / `white`             |
+| position        | string      | bottom | 否       | tabBar 的位置，仅支持 `bottom` / `top`                     |
 
 上述配置中 `list` 具体又包含以下内容：
 
-| 属性             | 类型   | 默认值 | 是否必须 | 说明                                                                                                                   |
-| ---------------- | ------ | ------ | -------- | ---------------------------------------------------------------------------------------------------------------------- |
-| pagePath         | string |        | 是       | 页面路径，必须在 pages 中先定义                                                                                        |
-| text             | string |        | 是       | tab 上按钮文字                                                                                                         |
-| iconPath         | string |        | 否       | 图片路径，icon 大小限制为 40kb，建议尺寸为 81px * 81px，不支持网络图片，当 `position` 为 `top` 时，不显示 icon         |
-| selectedIconPath | string |        | 否       | 选中时的图片路径，icon 大小限制为 40kb，建议尺寸为 81px * 81px，不支持网络图片，当 `position` 为 `top` 时，不显示 icon |
+| 属性             | 类型   | 默认值 | 是否必须 | 说明                                                                                                                    |
+| ---------------- | ------ | ------ | -------- | ----------------------------------------------------------------------------------------------------------------------- |
+| pagePath         | string |        | 是       | 页面路径，必须在 pages 中先定义                                                                                         |
+| text             | string |        | 是       | tab 上按钮文字                                                                                                          |
+| iconPath         | string |        | 否       | 图片路径，icon 大小限制为 40kb，建议尺寸为 81px \* 81px，不支持网络图片，当 `position` 为 `top` 时，不显示 icon         |
+| selectedIconPath | string |        | 否       | 选中时的图片路径，icon 大小限制为 40kb，建议尺寸为 81px \* 81px，不支持网络图片，当 `position` 为 `top` 时，不显示 icon |
 
 以上的配置不用刻意的去背，根据需要随时查询就可以，以下为示例代码：
 
 ```json
 {
-  "pages": [
-    "pages/index/index",
-    "pages/logs/logs",
-    "pages/demo/demo"
-  ],
+  "pages": ["pages/index/index", "pages/logs/logs", "pages/demo/demo"],
   "window": {
     "navigationBarTitleText": "小程序示例",
     "navigationBarTextStyle": "white",
@@ -516,20 +502,20 @@ Page({
 
 那接下来咱们再来学习一下**页面配置**，顾名思义页面配置只针对某个页面生效，如 `index.json` 是针对 index 页面生效，`demo.json` 是针对页面 demo 生效，页面的部分配置可以覆盖全局 `app.json` 中的配置，常见的配置如下表：
 
-| 属性                         | 类型       | 默认值  | 是否必须 | 说明                                     |
-| ---------------------------- | ---------- | ------- | -------- | ---------------------------------------- |
-| navigationBarTitleText       | string     | 空白    | 否       | 导航栏标题文字内容                       |
-| navigationBarTextStyle       | string     | black   | 否       | 导航栏标题颜色，仅支持 `black` / `white` |
-| navigationBarBackgroundColor | 16进制颜色 | #00000  | 否       | 导航栏背景颜色，如 `#000000`             |
-| navigationStyle              | string     | default | 否       | 导航栏样式，仅支持 `default` / `custom`  |
-| enablePullDownRefresh        | boolean    | false   | 否       | 是否开启全局的下拉刷新                   |
+| 属性                         | 类型        | 默认值  | 是否必须 | 说明                                     |
+| ---------------------------- | ----------- | ------- | -------- | ---------------------------------------- |
+| navigationBarTitleText       | string      | 空白    | 否       | 导航栏标题文字内容                       |
+| navigationBarTextStyle       | string      | black   | 否       | 导航栏标题颜色，仅支持 `black` / `white` |
+| navigationBarBackgroundColor | 16 进制颜色 | #00000  | 否       | 导航栏背景颜色，如 `#000000`             |
+| navigationStyle              | string      | default | 否       | 导航栏样式，仅支持 `default` / `custom`  |
+| enablePullDownRefresh        | boolean     | false   | 否       | 是否开启全局的下拉刷新                   |
 
 有没有发现上表中的配置内容其实是全局配置中 `window` 部分的内容，写在 `app.json` 中的属于全局配置对所有的页面都生效，而写在页面中的只对当前页面生效，并且会覆盖全局的同名的配置，下面代码是 demo 页面即 `demo.json` 中的配置：
 
 ```json
 {
-  navigationBarBackgroundColor: '#ff0',
-  enablePullDownRefresh: false
+  "navigationBarBackgroundColor": "#ff0",
+  "enablePullDownRefresh": false
 }
 ```
 

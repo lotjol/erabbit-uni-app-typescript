@@ -1,4 +1,4 @@
-# 小程序进阶
+# 内置 API
 
 小程序 API 是小程序**内置提供**的一系列的方法，通过这些方法能够实现许多的功能，比如网络请求、本地存储、微信支付、拍照、扫码等。
 
@@ -14,12 +14,10 @@ wx.request({
   // 请求的方法
   method: 'GET｜POST|PUT',
   // 请求时的数据
-  data: {
-    
-  },
+  data: {},
   success(res) {
     // 成功响应的回调
-  }
+  },
 })
 ```
 
@@ -27,7 +25,6 @@ wx.request({
 
 ```javascript
 // pages/index/index.ts
-
 // ...前面小节代码省略
 
 // 调用 Page 函数
@@ -44,9 +41,9 @@ Page({
       method: 'GET',
       success: (res) => {
         console.log(res)
-      }
+      },
     })
-  }
+  },
 })
 ```
 
@@ -60,7 +57,9 @@ Page({
 
 ![](./assets/api/picture_3.jpg)
 
+::: warning
 域名有个严格的要求：**必须**是 `https` 协议且已备案！
+:::
 
 当然还有一种**临时**的手段在不设置域名的情况下使用 `wx.request` 只需要在开发者工具中设置就可以了，**但是只适用于开发环境当中**，我们也来了解一下，如下图所示：
 
@@ -72,22 +71,21 @@ Page({
 
 然后将获取到的学生列表数据渲染到页面当中：
 
-```javascript
+```javascript{3-7}
 // pages/index/index.ts
-
 // 响应结果类型定义
 type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
   code: number,
   message: string,
-  result: []
+  result: [],
 }>
-  
+
 // ...省略前面小节的代码
 
 // 调用 Page 函数
 Page({
   // ...省略前面小节的代码
-  
+
   // 获取学生表表
   getStudentList() {
     // 调用小程序 api
@@ -95,14 +93,14 @@ Page({
       url: 'https://mock.boxuegu.com/mock/3293/students',
       method: 'GET',
       // 这里注意因为 this 的原因，推荐使用箭头函数
-      success: (res) => {
+      success: (res: RequestSuccessResult) => {
         this.setData({
           // 更新 students 数组
-          students: res.data.result
+          students: res.data.result,
         })
-      }
+      },
     })
-  }
+  },
 })
 ```
 
@@ -111,11 +109,15 @@ Page({
 ```typescript
 // wx.request 响应结果类型定义
 type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
-  code: number,
-  message: string,
+  code: number
+  message: string
   result: []
 }>
 ```
+
+::: tip
+请求响应结果类型的定义应定义为全局的，为了方便演示暂时先在当前页面进行声明
+:::
 
 好了至此我们就掌握了如何在小程序中调用接口获取数据了，我们再来做一些优化，在网络请求的过程中给用户一个提示信息，小程序提供了另外两个 API 来实现这个功能，分别为`wx.showLoading` 和 `wx.hideLoading` 。
 
@@ -125,13 +127,13 @@ type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
 // 显示提示框
 wx.showLoading({
   title: '正在加载...',
-  mask: true
+  mask: true,
 })
 // 隐藏提示框
 wx.hideLoading()
 ```
 
-我们来把这两个  API 用到接口调用当中：
+我们来把这两个 API 用到接口调用当中：
 
 ```javascript
 // pages/index/index.ts
@@ -140,40 +142,40 @@ wx.hideLoading()
 type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
   code: number,
   message: string,
-  result: []
+  result: [],
 }>
-  
+
 // ...省略前面小节代码
 
 // 调用 Page 函数
 Page({
   // ...省略前面小节代码
-  
+
   // 获取学生表表
   getStudentList() {
     // 显示提示框
     wx.showLoading({
       title: '正在加载...',
-      mask: true
+      mask: true,
     })
-    
+
     // 发起请求
     wx.request({
       url: 'https://mock.boxuegu.com/mock/3293/students',
       method: 'GET',
       // 这里注意因为 this 的原因，推荐使用箭头函数
-      success: (res) => {
+      success: (res: RequestSuccessResult) => {
         this.setData({
           // 更新 students 数组
-          students: res.data.result
+          students: res.data.result,
         })
       },
       complete() {
         // 隐藏提示框
         wx.hideLoading()
-      }
+      },
     })
-  }
+  },
 })
 ```
 
@@ -181,7 +183,7 @@ Page({
 
 小程序中有专门的方法来获取用户头像和昵称，新建 `profile` 页面来演示该功能的实现步骤。
 
-1. 获取用户的头像有2个要求：
+1. 获取用户的头像有 2 个要求：
    - 用户必须要点击 `button` 组件， `open-type` 属性的值设置成 `chooseAvatar`
    - 监听 `button` 组件的 `chooseavatar` 事件
 
@@ -211,17 +213,17 @@ Page({
   data: {
     profile: {
       avatarUrl: '/static/images/avatar.png',
-      nickName: '微信用户'
-    }
+      nickName: '微信用户',
+    },
   },
   // 获取用户头像
   getUserAvatar(ev: { detail: { avatarUrl: string } }) {
     // 获取头像对应的地址
     // console.log(ev.detail.avatarUrl)
     this.setData({
-      'profile.avatarUrl': ev.detail.avatarUrl
+      'profile.avatarUrl': ev.detail.avatarUrl,
     })
-  }
+  },
 })
 ```
 
@@ -230,9 +232,9 @@ Page({
 ```typescript
 this.setData({
   // 这种写法没有上述语法简洁
-	profile: {
-		avatarUrl: ev.detail.avatarUrl
-	}
+  profile: {
+    avatarUrl: ev.detail.avatarUrl,
+  },
 })
 ```
 
@@ -268,22 +270,22 @@ Page({
   data: {
     profile: {
       avatarUrl: '/static/images/avatar.png',
-      nickName: '微信用户'
-    }
+      nickName: '微信用户',
+    },
   },
   // 获取用户头像
   getUserAvatar(ev: { detail: { avatarUrl: string } }) {
     // 获取头像对应的地址
     this.setData({
-      'profile.avatarUrl': ev.detail.avatarUrl
+      'profile.avatarUrl': ev.detail.avatarUrl,
     })
   },
   getUserNickName(ev: WechatMiniprogram.InputBlur) {
     // 获取用户设置的昵称
     this.setData({
-      'profile.nickName': ev.detail.value
+      'profile.nickName': ev.detail.value,
     })
-  }
+  },
 })
 ```
 
@@ -305,7 +307,7 @@ Page({
     wx.setStorageSync('name', '小明')
     // 可以直接存入对象，无需 JSON.stringify 处理
     wx.setStorageSync('user', { name: '小明', age: 18 })
-  }
+  },
 })
 ```
 
@@ -327,7 +329,7 @@ Page({
     const name = wx.getStorageSync('name')
     // 对象类型的数据不必 JSON.parse 处理
     const user = wx.getStorageSync('user')
-  }
+  },
 })
 ```
 
@@ -357,7 +359,7 @@ Page({
   // 清空数据
   clearStorage() {
     wx.clearStorageSync()
-  }
+  },
 })
 ```
 

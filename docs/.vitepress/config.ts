@@ -29,7 +29,7 @@ export default defineConfig({
           collapsible: true,
           items: [
             { text: '1. 开发准备', link: '/wechat/' },
-            { text: '2. 基础知识', link: '/wechat/development' },
+            { text: '2. 基础知识', link: '/wechat/basic' },
             { text: '3. 开发调试', link: '/wechat/debug' },
             { text: '4. 发布上线', link: '/wechat/publish' },
           ],
@@ -39,7 +39,7 @@ export default defineConfig({
           collapsible: true,
           items: [
             { text: '1. TypeScript', link: '/wechat/typescript' },
-            { text: '2. 数据渲染', link: '/wechat/render' },
+            { text: '2. 模板语法', link: '/wechat/template' },
             { text: '3. 生命周期', link: '/wechat/lifetimes' },
             { text: '4. 内置API', link: '/wechat/api' },
             { text: '5. 自定义组件', link: '/wechat/component' },

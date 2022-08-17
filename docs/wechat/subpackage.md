@@ -1,6 +1,6 @@
-# 小程序进阶
+# 配置分包
 
-小程序体积大小限制为2M，如果小程序项目比较大超过2M的情况下，可以通过分包的方式来处理。目前小程序分包大小有以下限制：
+小程序体积大小限制为 2M，如果小程序项目比较大超过 2M 的情况下，可以通过分包的方式来处理。目前小程序分包大小有以下限制：
 
 - 整个小程序所有分包大小不超过 20M
 - 单个分包/主包大小不能超过 2M
@@ -11,11 +11,7 @@
 
 ```json
 {
-  "pages": [
-    "pages/index/index",
-    "pages/logs/logs",
-    "pages/demo/index"
-  ],
+  "pages": ["pages/index/index", "pages/logs/logs", "pages/demo/index"],
   "subPackages": [
     {
       "root": "分包的根路径",
@@ -32,10 +28,7 @@
 
 ```json
 {
-  "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
-  ],
+  "pages": ["pages/index/index", "pages/logs/logs"],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -45,10 +38,7 @@
   "subPackages": [
     {
       "root": "subpackage",
-      "pages": [
-        "pages/goods/index",
-        "pages/goods/detail"
-      ]
+      "pages": ["pages/goods/index", "pages/goods/detail"]
     }
   ],
   "sitemapLocation": "sitemap.json"
