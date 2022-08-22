@@ -51,7 +51,7 @@ Page({
 
 ![错误提示](./assets/api/picture_1.jpg)
 
-这个错误是啥咋回事件呢？小程序规定 `wx.request` 调用的接口的服务器地址（域名）必须在事先在小程序的管理后台进行设置，否则是不允许发起请求的，所以我们在在使用 `wx.request` 之前先要在管理后台设置才行。
+这个错误是啥咋回事件呢？小程序规定 `wx.request` 调用的接口的服务器地址（域名）必须事先在小程序的管理后台进行设置，否则是不允许发起请求的，所以我们在在使用 `wx.request` 之前先要在管理后台设置才行。
 
 设置步骤见下图：
 
@@ -69,9 +69,28 @@ Page({
 
 ![](./assets/api/picture_7.jpg)
 
-然后将获取到的学生列表数据渲染到页面当中：
+成功获取数据后数据就能渲染到页面中显示了。
 
-```javascript{3-7}
+::: tip
+上述演示接口返回的学生列表信息是随机生成的，即每次调用的结果都是不相同的。
+:::
+
+小程序的类型声明中关于 `wx.request` 响应结果的类型允许根据用户自定义，即支持泛型参数，根据接口返回数据的格式定义如下：
+
+```typescript
+// wx.request 响应结果类型定义
+type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
+  code: number
+  message: string
+  result: []
+}>
+```
+
+::: tip
+请求响应结果类型的定义应定义为全局的，为了方便演示暂时先在当前页面进行声明
+:::
+
+```javascript{3-7,22}
 // pages/index/index.ts
 // 响应结果类型定义
 type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
@@ -104,46 +123,24 @@ Page({
 })
 ```
 
-小程序的类型声明中关于 `wx.request` 响应结果的类型允许根据用户自定义，即支持泛型参数，根据接口返回数据的格式定义如下：
-
-```typescript
-// wx.request 响应结果类型定义
-type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
-  code: number
-  message: string
-  result: []
-}>
-```
-
-::: tip
-请求响应结果类型的定义应定义为全局的，为了方便演示暂时先在当前页面进行声明
-:::
-
-好了至此我们就掌握了如何在小程序中调用接口获取数据了，我们再来做一些优化，在网络请求的过程中给用户一个提示信息，小程序提供了另外两个 API 来实现这个功能，分别为`wx.showLoading` 和 `wx.hideLoading` 。
+至此我们就掌握了如何在小程序中调用接口获取数据了，我们再来做一些优化，在网络请求的过程中给用户一个加载提示，小程序提供了另外两个 API 来实现这个功能，分别为`wx.showLoading` 和 `wx.hideLoading` 。
 
 它的语法如下：
 
 ```javascript
-// 显示提示框
+// 显示加载提示
 wx.showLoading({
   title: '正在加载...',
   mask: true,
 })
-// 隐藏提示框
+// 隐藏加载提示
 wx.hideLoading()
 ```
 
 我们来把这两个 API 用到接口调用当中：
 
-```javascript
+```javascript{12-15,28-30}
 // pages/index/index.ts
-
-// wx.request 响应结果类型定义
-type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
-  code: number,
-  message: string,
-  result: [],
-}>
 
 // ...省略前面小节代码
 
@@ -181,27 +178,35 @@ Page({
 
 ## 4.2 头像昵称填写
 
-小程序中有专门的方法来获取用户头像和昵称，新建 `profile` 页面来演示该功能的实现步骤。
+获取用户昵称和头像是小程序中比较常见的功能，为此有专门的方法来获取用户头像和昵称，新建 `profile` 页面来演示该功能的实现步骤。
+
+::: tip
+演示用户头像和昵称的页面样式提前写好了，大家把这些样式拷贝过去即可。
+:::
+
+```css
+
+```
 
 1. 获取用户的头像有 2 个要求：
    - 用户必须要点击 `button` 组件， `open-type` 属性的值设置成 `chooseAvatar`
    - 监听 `button` 组件的 `chooseavatar` 事件
 
-![](./assets/api/picture_9.jpg)
+![获取用户头像](./assets/api/picture_9.jpg)
 
-如上图所示无论是选择微信头像、相册选择还是拍照都会触发事件 `chooseavatar` 并执行事件回调函数 `getUserAvatar`：
+如上图所示无论是选择微信头像、相册选择、还是拍照都会触发事件 `chooseavatar`，`getUserAvatar` 为我们自定义的事件回调函数，在该事件回调函数中通过事件对象来获取用户头像的图片地址：
 
 ```xml
 <!-- pages/profile/index.wxml -->
 <view class="profile">
   <view class="avatar">
     <button open-type="chooseAvatar" bind:chooseavatar="getUserAvatar">
-      <image src="{{profile.avatarUrl}}"></image>
+      <image src="{{ profile.avatarUrl }}"></image>
     </button>
   </view>
   <view class="nickname">
     <label for="">昵称:</label>
-    <input type="text" value="{{profile.nickName}}" />
+    <input type="text" value="{{ profile.nickName }}" />
   </view>
   <button class="save" type="primary">保存</button>
 </view>
@@ -240,12 +245,13 @@ this.setData({
 
 1. 获取用户昵称也需要 2 个要求：
    - 使用 `input` 组件，`type` 属性的值设置成 `nickname`
-   - 监听 `input` 组件的 `input` 、`blur` 等事件
+   - 监听 `input` 组件的 `input` 、`blur` 、`change` 等事件
 
-![](./assets/api/picture_11.jpg)
+![获取用户昵称](./assets/api/picture_11.jpg)
 
-如上图所示当 `input` 组件获得焦点时，页面的底部自动弹出用户默认的昵称，用户选择后会自动填入表单当中，也可以在表单中自定义昵称。
+如上图所示当 `input` 组件获得焦点时，页面的底部自动弹出用户默认的昵称，用户选择后会自动填入表单当中，也可以在表单中填写内容对昵称进行自定义。
 
+那如何获取用户在表单中填写的用户昵称呢？
 用户在表单中填写的内容（昵称）需要事件回调中通过事件对象来获取，事件类型可以是 `input`、`blur` 、`change`等事件：
 
 ```xml
@@ -253,12 +259,12 @@ this.setData({
 <view class="profile">
   <view class="avatar">
     <button open-type="chooseAvatar" bind:chooseavatar="getUserAvatar">
-      <image src="{{profile.avatarUrl}}"></image>
+      <image src="{{ profile.avatarUrl }}"></image>
     </button>
   </view>
   <view class="nickname">
     <label for="">昵称:</label>
-    <input type="text" type="nickname" bind:change="getUserNickName" value="{{profile.nickName}}" />
+    <input type="text" type="nickname" bind:change="getUserNickName" value="{{ profile.nickName }}" />
   </view>
   <button class="save" type="primary">保存</button>
 </view>
