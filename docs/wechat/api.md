@@ -6,7 +6,7 @@
 
 我们要学习第一个 API 是 `wx.request` 这个 API 是用来发起网络请求的，其用法如下所示：
 
-```javascript
+```typescript
 // 小程序发起网络请求（调用接口）的方法
 wx.request({
   // 接口地址
@@ -23,7 +23,7 @@ wx.request({
 
 那我们来编写代码在小程序中调用接口来获取学生列表数据做为演示：
 
-```javascript
+```typescript
 // pages/index/index.ts
 // ...前面小节代码省略
 
@@ -90,7 +90,7 @@ type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
 请求响应结果类型的定义应定义为全局的，为了方便演示暂时先在当前页面进行声明
 :::
 
-```javascript{3-7,22}
+```typescript{3-7,22}
 // pages/index/index.ts
 // 响应结果类型定义
 type RequestSuccessResult = WechatMiniprogram.RequestSuccessCallbackResult<{
@@ -127,7 +127,7 @@ Page({
 
 它的语法如下：
 
-```javascript
+```typescript
 // 显示加载提示
 wx.showLoading({
   title: '正在加载...',
@@ -139,7 +139,7 @@ wx.hideLoading()
 
 我们来把这两个 API 用到接口调用当中：
 
-```javascript{12-15,28-30}
+```typescript{12-15,28-30}
 // pages/index/index.ts
 
 // ...省略前面小节代码
@@ -185,16 +185,50 @@ Page({
 :::
 
 ```css
+.profile {
+  display: flex;
+  flex-direction: column;
+  padding-top: 100rpx;
+}
 
+.profile .avatar button {
+  background-color: transparent;
+}
+
+.profile image {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+}
+
+.profile .nickname {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  margin-top: 100rpx;
+  color: #333;
+  font-size: 30rpx;
+  border-bottom: 1rpx solid #ddd;
+}
+
+.profile .nickname label {
+  width: 100rpx;
+}
+
+.save {
+  width: 100% !important;
+  margin-top: 40rpx;
+}
 ```
 
-1. 获取用户的头像有 2 个要求：
-   - 用户必须要点击 `button` 组件， `open-type` 属性的值设置成 `chooseAvatar`
-   - 监听 `button` 组件的 `chooseavatar` 事件
+### 4.2.1 用户头像
+获取用户的头像有 2 个要求：
+- 用户必须要点击 `button` 组件， `open-type` 属性的值设置成 `chooseAvatar`
+- 监听 `button` 组件的 `chooseavatar` 事件
 
 ![获取用户头像](./assets/api/picture_9.jpg)
 
-如上图所示无论是选择微信头像、相册选择、还是拍照都会触发事件 `chooseavatar`，`getUserAvatar` 为我们自定义的事件回调函数，在该事件回调函数中通过事件对象来获取用户头像的图片地址：
+如上图所示无论是选择微信头像、相册选择、还是拍照都会触发事件 `chooseavatar`，`getUserAvatar` 为我们自定义的事件回调函数，在该事件回调函数中来获取用户头像的图片地址：
 
 ```xml
 <!-- pages/profile/index.wxml -->
@@ -243,16 +277,21 @@ this.setData({
 })
 ```
 
-1. 获取用户昵称也需要 2 个要求：
-   - 使用 `input` 组件，`type` 属性的值设置成 `nickname`
-   - 监听 `input` 组件的 `input` 、`blur` 、`change` 等事件
+### 4.2.2 用户昵称
+获取用户昵称也需要 2 个要求：
+- 使用 `input` 组件，`type` 属性的值设置成 `nickname`
+- 监听 `input` 组件的 `input` 、`blur` 、`change` 等事件
 
 ![获取用户昵称](./assets/api/picture_11.jpg)
 
-如上图所示当 `input` 组件获得焦点时，页面的底部自动弹出用户默认的昵称，用户选择后会自动填入表单当中，也可以在表单中填写内容对昵称进行自定义。
+如上图所示当 `input` 组件获得焦点时，页面的底部自动弹出用户默认的昵称，用户选择后会自动填入表单当中，用户也可以在表单中填写内容对昵称进行自定义。
 
 那如何获取用户在表单中填写的用户昵称呢？
 用户在表单中填写的内容（昵称）需要事件回调中通过事件对象来获取，事件类型可以是 `input`、`blur` 、`change`等事件：
+
+::: warning
+小程序的文档中并没有标明 input 组件能够监听 change 事件，经部分测试后发现能够支持 change 事件的监听，生产环境应用时要注意！
+:::
 
 ```xml
 <!-- pages/profile/index.wxml -->
@@ -264,7 +303,7 @@ this.setData({
   </view>
   <view class="nickname">
     <label for="">昵称:</label>
-    <input type="text" type="nickname" bind:change="getUserNickName" value="{{ profile.nickName }}" />
+    <input type="text" type="nickname" bind:blur="getUserNickName" value="{{ profile.nickName }}" />
   </view>
   <button class="save" type="primary">保存</button>
 </view>
@@ -301,9 +340,11 @@ Page({
 
 小程序中也能够像网页一样支持本地存储数据。
 
-![](./assets/api/picture_13.jpg)
+![本地存储](./assets/api/picture_13.jpg)
 
-1. 存入数据 `wx.setStorageSync`
+### 4.3.1 存入数据
+
+如下代码所示调用 API `wx.setStorageSync` 在小程序本地存入数据
 
 ```typescript
 // pages/storage/index.ts
@@ -317,11 +358,15 @@ Page({
 })
 ```
 
-同学们注意在小程序中本地存储可以直接存入对象或数组类型的数据，无需要 `JSON.stringify` 进行处理。
+::: tip
+注意在小程序中本地存储可以直接存入对象或数组类型的数据，无需要 `JSON.stringify` 进行处理。
+:::
 
-2. 读取数据 `wx.getStorageSync`
+### 4.3.2 读取数据
 
-```typescript
+如下代码所示调用 API `wx.getStorageSync` 读取本地存储中的数据
+
+```typescript{10-14}
 // pages/storage/index.ts
 Page({
   // 存入本地数据
@@ -339,11 +384,15 @@ Page({
 })
 ```
 
-同学们注意由于存入本地的数据并没有进行 `JSON.stringify` 处理，因此取出来的数据也不必进行 `JSON.parase` 处理了。
+::: tip
+注意由于存入本地的数据并没有进行 `JSON.stringify` 处理，因此取出来的数据也不必进行 `JSON.parase` 处理了。
+:::
 
-3. 删除数据 `wx.removeStorageSync`
+### 4.3.3 删除数据
 
-```typescript
+如下代码所示调用 API `wx.removeStorageSync` 删除本地存储的数据
+
+```typescript{16-18}
 // pages/storage/index.ts
 Page({
   // 存入本地数据
@@ -369,6 +418,39 @@ Page({
 })
 ```
 
+### 4.3.4 清空数据
+如下代码所示调用 API `wx.clearStorageSync` 删除本地存储的数据
+
+```typescript{20-22}
+// pages/storage/index.ts
+Page({
+  // 存入本地数据
+  setStorage() {
+    wx.setStorageSync('name', '小明')
+    // 可以直接存入对象，无需 JSON.stringify 处理
+    wx.setStorageSync('user', { name: '小明', age: 18 })
+  },
+  // 读取本地数据
+  getStorage() {
+    const name = wx.getStorageSync('name')
+    // 对象类型的数据不必 JSON.parse 处理
+    const user = wx.getStorageSync('user')
+  },
+  // 删除数据
+  removeStorage() {
+    wx.removeStorageSync('name')
+  },
+  // 清空数据
+  clearStorage() {
+    wx.clearStorageSync()
+  },
+})
+```
+
+::: warning
 注意 `removeStorageSync` 和 `clearStorageSync` 的区别，`removeStorageSync` 是删除某个指定的数据，`clearStorageSync` 是将本地所有的数据都删除（很少用到）。
+:::
 
 ## 4.4 其它
+
+根据项目的需要再补充其它 API 的使用
