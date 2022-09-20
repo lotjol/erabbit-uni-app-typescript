@@ -120,4 +120,10 @@ npm i @vant/weapp -S --production
 }
 ```
 
+在使用 Vant 组件时需要将小程序全局配置中的 `style` 去掉：
+
+```json
+
+```
+
 ![](./assets/component/picture_5.jpg)
