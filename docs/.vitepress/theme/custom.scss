@@ -21,5 +21,10 @@
 }
 
 .VPSidebar .link {
-  padding-left: 0.6em;
+  padding-left: 0.6em !important;
+}
+
+.vp-doc table {
+  width: 100%;
+  display: table;
 }

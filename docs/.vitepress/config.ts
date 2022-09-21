@@ -19,8 +19,9 @@ export default defineConfig({
     siteTitle: '小兔鲜儿',
     nav: [
       { text: '微信小程序', link: '/wechat/' },
+      { text: '享+社区', link: '/enjoy-plus/' },
       { text: 'uni-app', link: '/uni-app/' },
-      { text: '黑马优购', link: '/hm-ugo/' },
+      { text: '小兔鲜儿', link: '/erabbit/' },
     ],
     sidebar: {
       '/wechat/': [
@@ -54,16 +55,22 @@ export default defineConfig({
           ],
         },
       ],
+      '/enjoy-plus/': [
+        {
+          text: '享+社区',
+          items: [{ text: '初始化', link: '/enjoy-plus/' }],
+        },
+      ],
       '/uni-app/': [
         {
           text: 'uni-app',
           items: [{ text: '介绍', link: '/uni-app/' }],
         },
       ],
-      '/hm-ugo/': [
+      '/erabbit/': [
         {
-          text: '黑马优购',
-          items: [{ text: '初始化', link: '/hm-ugo/' }],
+          text: '小兔鲜儿',
+          items: [{ text: '介绍', link: '/erabbit/' }],
         },
       ],
     },

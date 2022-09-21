@@ -72,7 +72,7 @@
     "typescript": "^4.6.3",
     "vite": "^2.9.14",
     "vite-plugin-style-import": "1.4.1",
-    "vitepress": "^1.0.0-alpha.10"
+    "vitepress": "^1.0.0-alpha.15"
   },
   "config": {
     "commitizen": {
