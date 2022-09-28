@@ -1,8 +1,8 @@
 # TypeScript
 
-小程序即支持使用 Javascript 开发，也支持 TypeScript 开发。
+小程序既支持使用 Javascript 开发，也支持使用 TypeScript 开发，有两种方式创建 TypeScript 版本的小程序。
 
-## 1.1 类型声明
+## 1.1 启用 TypeScript
 
 在使用 TypeScript 来开发微信小程序时需要安装声明文件，创建项目时选择 TypeScript 版本，小程序开发者工具会自动安装声明文件并在 `tsconfig.json` 中提供了初始的配置。
 
