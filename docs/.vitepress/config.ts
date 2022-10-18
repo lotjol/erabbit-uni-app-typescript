@@ -59,8 +59,11 @@ export default defineConfig({
       ],
       '/enjoy-plus/': [
         {
-          text: '享+社区',
-          items: [{ text: '初始化', link: '/enjoy-plus/' }],
+          text: '一、开发准备',
+          items: [
+            { text: '1. 介绍', link: '/enjoy-plus/' },
+            { text: '2. 初始化', link: '/enjoy-plus/bootstrap' },
+          ],
         },
       ],
       '/uni-app/': [
