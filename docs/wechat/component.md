@@ -102,7 +102,7 @@ Component({
 
 查看或调试传入组件的数据与页面数据的查看方式不同，具体查看如下图所示：
 
-![创建组件](./assets/component/picture_4.jpg)
+![创建组件](./assets/component/picture_3.jpg)
 
 ### 5.2.2 生命周期和方法
 
@@ -189,7 +189,7 @@ npm i @vant/weapp -S --production
 
 第 2 步：如下图所示构建 Vant 组件库，构建时会去检查 `package.json` 中记录的依赖，因此务必何证 `package.json` 文件的存在。
 
-![构建npm](./assets/component/picture_3.jpg)
+![构建npm](./assets/component/picture_5.jpg)
 
 第 3 步：以按钮组件为例，演示使用 Vant 组件的使用方法，推荐全局注册组件 Vant 组件
 
@@ -203,4 +203,4 @@ npm i @vant/weapp -S --production
 
 在使用 Vant 组件时需要将小程序全局配置中的 `style` 去掉：
 
-![Vant组件](./assets/component/picture_5.jpg)
+![Vant组件](./assets/component/picture_7.jpg)

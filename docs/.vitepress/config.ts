@@ -43,14 +43,14 @@ export default defineConfig({
             { text: '1. 模板语法', link: '/wechat/template' },
             { text: '2. 生命周期', link: '/wechat/lifetimes' },
             { text: '3. 内置API', link: '/wechat/api' },
-            { text: '4. 分包加载', link: '/wechat/subpackage' },
-            { text: '5. npm支持', link: '/wechat/npm' },
-            { text: '6. 自定义组件', link: '/wechat/component' },
+            { text: '4. npm支持', link: '/wechat/npm' },
+            { text: '5. 自定义组件', link: '/wechat/component' },
+            { text: '6. 分包加载', link: '/wechat/subpackage' },
             { text: '7. 框架接口', link: '/wechat/interface' },
           ],
         },
         {
-          text: '四、每日作业',
+          text: '三、每日作业',
           items: [
             { text: '查看作业', link: '/wechat/homework' },
             { text: '参考答案', link: '/wechat/answer' },
