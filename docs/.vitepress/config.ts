@@ -26,7 +26,7 @@ export default defineConfig({
     sidebar: {
       '/wechat/': [
         {
-          text: '一、小程序基础',
+          text: '一、认识环境',
           collapsible: true,
           items: [
             { text: '1. 开发准备', link: '/wechat/' },
@@ -39,16 +39,18 @@ export default defineConfig({
           text: '二、小程序进阶',
           collapsible: true,
           items: [
-            { text: '1. TypeScript', link: '/wechat/typescript' },
-            { text: '2. 模板语法', link: '/wechat/template' },
-            { text: '3. 生命周期', link: '/wechat/lifetimes' },
-            { text: '4. 内置API', link: '/wechat/api' },
-            { text: '5. 自定义组件', link: '/wechat/component' },
-            { text: '6. 配置分包', link: '/wechat/subpackage' },
+            // { text: '1. TypeScript', link: '/wechat/typescript' },
+            { text: '1. 模板语法', link: '/wechat/template' },
+            { text: '2. 生命周期', link: '/wechat/lifetimes' },
+            { text: '3. 内置API', link: '/wechat/api' },
+            { text: '4. 分包加载', link: '/wechat/subpackage' },
+            { text: '5. npm支持', link: '/wechat/npm' },
+            { text: '6. 自定义组件', link: '/wechat/component' },
+            { text: '7. 框架接口', link: '/wechat/interface' },
           ],
         },
         {
-          text: '三、每日作业',
+          text: '四、每日作业',
           items: [
             { text: '查看作业', link: '/wechat/homework' },
             { text: '参考答案', link: '/wechat/answer' },

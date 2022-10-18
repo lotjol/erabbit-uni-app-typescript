@@ -1,17 +1,14 @@
-# 配置分包
+# 分包加载
 
-小程序体积大小限制为 2M，如果小程序项目比较大超过 2M 的情况下，可以通过分包的方式来处理。目前小程序分包大小有以下限制：
+分包加载有点类似 Vue 中的按需加载的功能，将小程序拆分成若干个部分叫做分包，在分包的基础上能够实现自动加载当前所需部分小程序代码，在一定程序能够提升小程序的加载速度，同时也能解决小程序代码包大小不能超过 2M 的限制。
 
-- 整个小程序所有分包大小不超过 20M
-- 单个分包/主包大小不能超过 2M
+## 4.1 使用分包
 
-## 6.1 使用分包
-
-分包功能本质上就是将某些页面和相关逻辑单独加载，首先在 app.json 文件通过 `subPackages` 配置开启分包的功能：
+分包从形式上来看就是将某些功能相关的页面及其依赖的资源放到独立的文件夹中，然后在 app.json 文件通过 `subPackages` 配置要加载的分包：
 
 ```json
 {
-  "pages": ["pages/index/index", "pages/logs/logs", "pages/demo/index"],
+  // 省略部分代码...
   "subPackages": [
     {
       "root": "分包的根路径",
@@ -24,29 +21,64 @@
 }
 ```
 
-下面我来演示一下分包的具体使用方法：
+`subPackages` 的值是数组类型，可以指定多个分包，每个分包含3部分信息，分别为：
+
+- `root` 分包对应的代码根目录，即分包的代码放在哪个文件夹中
+- `name` 分包的名称，可以省略
+- `pages` 分包中所包含的页面路径
+
+
+下面咱们来定义一个分包，要求分包的代码位于 `goods_pkg` 目录中，分包中包含两个页面：
 
 ```json
 {
-  "pages": ["pages/index/index", "pages/logs/logs"],
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "小程序示例",
-    "navigationBarTextStyle": "black"
-  },
   "subPackages": [
     {
-      "root": "subpackage",
-      "pages": ["pages/goods/index", "pages/goods/detail"]
+      "root": "goods_pkg",
+      "pages": [
+        "pages/list/index",
+        "pages/goods/index"
+      ]
     }
-  ],
-  "sitemapLocation": "sitemap.json"
+  ]
 }
 ```
 
-上述代码中定义了一个分包的目录名为 `subpackage` （这个名称可以任意起），这个分包下面包含了两个页面，分别是 `pages/goods/idex` 和 `pages/goods/detail`，如果当前目录中不存在 `subpackage` 目录的情况，小程序会自动创建。
+上述代码中定义了一个分包的目录名为 `goods_pkg` （这个名称可以任意起），这个分包下面包含了两个页面，分别是 `pages/goods/idex` 和 `pages/goods/detail`。
 
-![](./assets/subpackage/picture_1.jpg)
+::: tip 提示:
+如果配置分包的根目录及页面路径不存在，小程序将会自动创建。
+:::
 
-以上便是分包的使用了，只需要对小程序进行配置，当小程序在运行的时候再自动根据需要去加载相应的分包，另外与分对应的一个名词是主包，默认 pages 中的页面就是主包的内容。
+![](./assets/subpackage/picture_2.jpg)
+
+以上便是小程序分包的使用步骤了，分包中的页面只有被访问到时小程序才会去下载相应的代码包。
+
+小程序分包对应的是主包，主包就是除了分包以外的代码，`tabBar` 的页面只能放在主包当中，使用分包也不是对代码体积完全没有限制：
+
+- 整个小程序所有分包大小不超过 20M
+- 单个分包/主包大小不能超过 2M
+
+## 4.2 分包预下载
+
+分包加载在打开小程序启动的时候只下载主包代码，分包并不会下载，因此能够提升小程序启动时的打开速度，分包的代码只有在访问到分包的页面时才去下载，这样用户就需要有一定时间的等待（一般不太影响），通过分包预加载技术可以实现提前去下载分包的代码，这样分包页面的访问速度也会得到提升。
+
+小程序通过 `preloadRule` 配置需要预加载的分包，在 `app.json` 中进行配置：
+
+- 指定某个页面路径做为 `key`，含义是当访问这个页面时会去预下载一个分包
+- `network` 预下载分包的网络条件，可选值为 `all`、`wifi`，默认为 `wifi`
+- `packages` 指定要预下载的分包名或根路径
+
+
+```json
+{
+  "preloadRule": {
+    "pages/index/index": {
+      "network": "wifi",
+      "packages": ["goods_pkg"]
+    }
+  },
+}
+```
+
+上述的代码代表的含义是当用户访问到 `pages/index/index` 时，在 `wifi` 网络前提下预先下载 `goods_pkg` 分包的代码。
