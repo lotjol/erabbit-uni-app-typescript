@@ -61,8 +61,15 @@ export default defineConfig({
         {
           text: '一、开发准备',
           items: [
-            { text: '1. 介绍', link: '/enjoy-plus/' },
-            { text: '2. 初始化', link: '/enjoy-plus/bootstrap' },
+            { text: '1. 项目介绍', link: '/enjoy-plus/' },
+            { text: '2. 启动项目', link: '/enjoy-plus/bootstrap' },
+          ],
+        },
+        {
+          text: '二、工具方法',
+          items: [
+            { text: '1. 消息反馈', link: '/enjoy-plus/toast' },
+            { text: '2. 网络请求', link: '/enjoy-plus/request' },
           ],
         },
       ],
