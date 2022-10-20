@@ -29,7 +29,7 @@ export default defineConfig({
           text: '一、认识环境',
           collapsible: true,
           items: [
-            { text: '1. 开发准备', link: '/wechat/' },
+            { text: '1. 学习准备', link: '/wechat/' },
             { text: '2. 基础知识', link: '/wechat/basic' },
             { text: '3. 开发调试', link: '/wechat/debug' },
             { text: '4. 发布上线', link: '/wechat/publish' },
@@ -70,6 +70,46 @@ export default defineConfig({
           items: [
             { text: '1. 消息反馈', link: '/enjoy-plus/toast' },
             { text: '2. 网络请求', link: '/enjoy-plus/request' },
+          ],
+        },
+        {
+          text: '三、公告管理',
+          items: [
+            { text: '1. 公告列表', link: '/enjoy-plus/notify-list' },
+            { text: '2. 公告详情', link: '/enjoy-plus/notify-detail' },
+          ],
+        },
+        {
+          text: '四、用户管理',
+          items: [
+            { text: '1. 用户登录', link: '/enjoy-plus/user-login' },
+            { text: '2. 个人资料', link: '/enjoy-plus/user-profile' },
+          ],
+        },
+        {
+          text: '五、房屋管理',
+          items: [
+            { text: '1. 添加房屋', link: '' },
+            { text: '2. 房屋列表', link: '' },
+            { text: '3. 删除房屋', link: '' },
+            { text: '4. 编辑房屋', link: '' },
+          ],
+        },
+        {
+          text: '六、报修管理',
+          items: [
+            { text: '1. 在线报修', link: '' },
+            { text: '2. 报修列表', link: '' },
+            { text: '3. 报修详情', link: '' },
+            { text: '4. 报修详情', link: '' },
+          ],
+        },
+        {
+          text: '七、访客管理',
+          items: [
+            { text: '1. 邀请访客', link: '' },
+            { text: '2. 访客通知证', link: '' },
+            { text: '3. 访客列表', link: '' },
           ],
         },
       ],
