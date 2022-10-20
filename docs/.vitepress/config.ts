@@ -60,6 +60,8 @@ export default defineConfig({
       '/enjoy-plus/': [
         {
           text: '一、开发准备',
+          collapsible: true,
+          collapsed: true,
           items: [
             { text: '1. 项目介绍', link: '/enjoy-plus/' },
             { text: '2. 启动项目', link: '/enjoy-plus/bootstrap' },
@@ -67,6 +69,8 @@ export default defineConfig({
         },
         {
           text: '二、工具方法',
+          collapsible: true,
+          collapsed: true,
           items: [
             { text: '1. 消息反馈', link: '/enjoy-plus/toast' },
             { text: '2. 网络请求', link: '/enjoy-plus/request' },
@@ -74,6 +78,8 @@ export default defineConfig({
         },
         {
           text: '三、公告管理',
+          collapsible: true,
+          collapsed: true,
           items: [
             { text: '1. 公告列表', link: '/enjoy-plus/notify-list' },
             { text: '2. 公告详情', link: '/enjoy-plus/notify-detail' },
@@ -81,6 +87,8 @@ export default defineConfig({
         },
         {
           text: '四、用户管理',
+          collapsible: true,
+          collapsed: true,
           items: [
             { text: '1. 用户登录', link: '/enjoy-plus/user-login' },
             { text: '2. 个人资料', link: '/enjoy-plus/user-profile' },
@@ -88,6 +96,8 @@ export default defineConfig({
         },
         {
           text: '五、房屋管理',
+          collapsible: true,
+          collapsed: true,
           items: [
             { text: '1. 添加房屋', link: '' },
             { text: '2. 房屋列表', link: '' },
@@ -97,6 +107,8 @@ export default defineConfig({
         },
         {
           text: '六、报修管理',
+          collapsible: true,
+          collapsed: true,
           items: [
             { text: '1. 在线报修', link: '' },
             { text: '2. 报修列表', link: '' },
@@ -106,6 +118,8 @@ export default defineConfig({
         },
         {
           text: '七、访客管理',
+          collapsible: true,
+          collapsed: true,
           items: [
             { text: '1. 邀请访客', link: '' },
             { text: '2. 访客通知证', link: '' },
