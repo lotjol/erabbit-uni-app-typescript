@@ -173,10 +173,6 @@ Component({
 });
 ```
 
-### 5.2.3 组件通信
-
-### 5.2.4 组件选项
-
 ## 5.3 Vant 组件
 
 Vant 提供了微信小程序版本的[组件库](https://vant-contrib.gitee.io/vant-weapp/#/home)，它本质上就是自定义的小程序组件，我们来学习如何在小程序中引入 Vant 组件库。

@@ -585,3 +585,38 @@ Page({
 有没有发现上表中的配置内容其实是全局配置中 `window` 部分的内容，如果写在 `app.json` 中则属于全局配置，对所有的页面都生效，而如果写在页面中则属于页面配置，只对当前页面生效。
 
 页面配置的内容相对少一些，不过后续在实际的应用中我们还会再学习到其它的配置内容。
+
+
+## 2.9 字体图标
+
+小程序也可以使用字体图标且与网页中应用字体图标的方法一致，然而有一点要注意小程序样式中的静态资源不支持本地路径，只能使用网络路径（http 或 https）或者 base64，因此在引用字体标时不要写本地路径：
+
+```css
+@font-face {
+  font-family: "iconfont";
+  src: 
+    /* base64 */
+    url('data:application/x-font-woff2;charset=utf-8;base64,...省略了很多内容.....GcVBx6Px=') format('woff2'),
+    /* 网络路径 */
+    url('//at.alicdn.com/t/c/font_3632516_mz9ho2m68ee.woff?t=1666346579367') format('woff'),
+    url('//at.alicdn.com/t/c/font_3632516_mz9ho2m68ee.ttf?t=1666346579367') format('truetype');
+}
+```
+
+上述的代码中 base64 部分内容不全不要直接粘贴使用，要自已去 `iconfont` 创建自已的字体文件。
+
+下面给大家演示一下在 `.wxss` 中使用图片资源的:
+
+```css
+.box {
+  width: 200rpx;
+  height: 200rpx;
+  /* 本地路径不支持 */
+  /* background-image: url('/assets/xxx.jpg') */
+  background-image: url('https://xxx.com/uploads/xxx.jpg')
+}
+```
+
+::: warning 注意:
+全局配置 tabBar 中的图片只能使用本地路径不支持网络路径，切记切记！！！
+:::
