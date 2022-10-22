@@ -72,8 +72,8 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
-            { text: '1. 消息反馈', link: '/enjoy-plus/toast' },
-            { text: '2. 网络请求', link: '/enjoy-plus/request' },
+            { text: '1. 消息反馈', link: '/enjoy-plus/utils-toast' },
+            { text: '2. 网络请求', link: '/enjoy-plus/utils-request' },
           ],
         },
         {
@@ -90,8 +90,9 @@ export default defineConfig({
           collapsible: true,
           collapsed: true,
           items: [
-            { text: '1. 用户登录', link: '/enjoy-plus/user-login' },
-            { text: '2. 个人资料', link: '/enjoy-plus/user-profile' },
+            { text: '1. 登录检测', link: '/enjoy-plus/user-check' },
+            { text: '2. 用户登录', link: '/enjoy-plus/user-login' },
+            { text: '3. 个人资料', link: '/enjoy-plus/user-profile' },
           ],
         },
         {
