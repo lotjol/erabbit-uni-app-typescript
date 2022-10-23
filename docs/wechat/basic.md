@@ -568,8 +568,6 @@ Page({
 以上是常用的全局配置项，还有更多[全局配置](https://developers.weixin.qq.com/miniprogram/dev/reference/configuration/app.html)的选项，后续学习当中会根据需要进行讲解。
 :::
 
-**演练：自已添加一个新的 Tab**
-
 接下来学习一下**页面配置**，顾名思义页面配置只针对某个页面生效，如 `index.json` 是针对 `index` 页面生效，`demo.json` 是针对页面 `demo` 生效。
 
 页面的部分配置可以覆盖全局 `app.json` 中的配置，常见的配置如下表：

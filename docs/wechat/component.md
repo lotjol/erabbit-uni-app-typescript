@@ -173,9 +173,69 @@ Component({
 });
 ```
 
+### 5.2.3 组件模板
+
+小程序的组件模板其实就是插槽功能，通过 `<slot>` 在组件内部定义插槽位置，以 `authorization` 组件为例其用法如下所示：
+
+在组件内定定义 `slot` 插槽，插槽其实就是个占位符号
+
+```xml
+<view class="container">
+  <slot wx:if="{{isLogin}}"></slot>
+  <text wx:else>{{message}}</text>
+</view>
+```
+在首页面应用组件并在组件开始和结束位置中间插入内容，被插入的内容就会被渲染到插槽的位置上：
+
+```xml
+<authorization is-login="{{true}}" tips="用户未登录">
+  <view>这里的内容会填充到 slot 插槽的位置</view>
+  <view>这里内容也会填充到 slot 插槽的位置</view>
+</authorization>
+```
+
+默认情况小程序在一个组件中只能支持一个插槽，如果需要多个插槽需要启用多 `slot` 支持，启用方式如下所示：
+
+```javascript
+Component({
+  options: {
+    // 启用多插槽支持
+    multipleSlots: true
+  }
+  // ...
+})
+```
+
+启用了多插槽支持后通过 `name` 为插槽命名：
+
+```html{2,6}
+<view class="container">
+  <slot name="content" wx:if="{{isLogin}}"></slot>
+  <text wx:else>{{message}}</text>
+</view>
+<view class="layout">
+  ￥<slot name="number"></slot>
+</view>
+```
+
+在应用组件时通过 `slot` 属性指定将内容放入哪个插槽的位置：
+
+```xml{2,6}
+<authorization is-login="{{true}}" tips="用户未登录">
+  <view slot="content">
+    <view>这里的内容会填充到 slot 插槽的位置</view>
+    <view>这里内容也会填充到 slot 插槽的位置</view>
+  </view>
+  <text slot="number">1000</text>
+</authorization>
+```
+
+
 ## 5.3 Vant 组件
 
 Vant 提供了微信小程序版本的[组件库](https://vant-contrib.gitee.io/vant-weapp/#/home)，它本质上就是自定义的小程序组件，我们来学习如何在小程序中引入 Vant 组件库。
+
+### 5.3.1 快速上手
 
 第 1 步：安装 vant 组件库
 
@@ -200,3 +260,141 @@ npm i @vant/weapp -S --production
 在使用 Vant 组件时需要将小程序全局配置中的 `style` 去掉：
 
 ![Vant组件](./assets/component/picture_7.jpg)
+
+
+### 5.3.2 Cell 单元格
+
+首先要在 `app.json` 中全局注册组件：
+
+```json
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index"
+  }
+}
+```
+
+`van-cell` 组件可以独立使用，也可以配置 `van-cell-group` 一起使用：
+
+```xml
+<van-cell-group custom-class="cell-group" inset>
+  <van-cell size="large" title="北京富力家园">
+    <text class="tags fail">审核失败</text>
+  </van-cell>
+  <van-cell title="房间号" value="1号楼1单元101室" border="{{ false }}" />
+  <van-cell title="业主" value="内容" border="{{ false }}" />
+</van-cell-group>
+```
+
+### 5.3.3 SwipeCell 滑动单元格
+
+同样的先在 `app.json` 中全局注册组件：
+
+```json{5}
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-swipe-cell": "@vant/weapp/swipe-cell/index"
+  },
+}
+```
+
+然后将需要侧向滑动的盒子用 `van-swipe-cell` 组件包裹起来即可：
+
+```xml{1,9,10}
+<van-swipe-cell right-width="{{ 65 }}">
+  <van-cell-group>
+    <van-cell size="large" title="北京富力家园">
+      <text class="tags fail">审核失败</text>
+    </van-cell>
+    <van-cell title="房间号" value="1号楼1单元101室" border="{{ false }}" />
+    <van-cell title="业主" value="内容" border="{{ false }}" />
+  </van-cell-group>
+  <view slot="right">删除</view>
+</van-swipe-cell>
+```
+
+### 5.3.4 样式覆盖
+
+Vant 组件中的组件提供了非常整齐美观的样式，但是开发中在所难免需要对原有样式进行个修改，官方介绍了3种方式来覆盖原来的样式：
+
+1. 简单粗暴，通过调试工具查找要修改样式的盒子，找到已定义的类名，然后强制覆盖原有的样式
+
+```css
+.van-swipe-cell__right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 65px !important;
+  margin-left: -20px;
+  text-align: center;
+  color: #fff;
+  background-color: #eb5757;
+}
+```
+
+2. 通过外部样式类
+
+Vant 大部分组件都支持 `custom-class` 来指定一个类名，通过这个类名来修改组件根节点的样式，以 `van-cell-group` 为例：
+
+```xml
+<van-cell-group custom-class="cell-group">
+  <van-cell size="large" title="北京富力家园">
+    <text class="tags fail">审核失败</text>
+  </van-cell>
+  <van-cell title="房间号" value="1号楼1单元101室" border="{{ false }}" />
+  <van-cell title="业主" value="内容" border="{{ false }}" />
+</van-cell-group>
+```
+上述代码中 `van-cell-group` 组件使用 `custom-class` 指定了一个类名 `cell-group`，其样式如下所示：
+
+```css
+.cell-group {
+  margin-bottom: 20rpx !important;
+}
+```
+
+::: tip 提示:
+在进行样式覆盖时优先不够的情况下使用 !important
+:::
+
+3. 使用样式变量
+
+新版本的 css 支持定义变量，其语法样式为: `--变量名: 值`，定义的变量通过 `var` 关键字来使用：
+
+举例说明：
+
+```css
+.box {
+  --my-cusotm-color: pink;
+  backgound-color: var(--my-cusotm-color);
+}
+```
+
+上述代码中定义的变量只能用在 `.box` 盒子及后代元素上，如果希望整个页面都能使用这个变量，可以这样定义：
+
+```css
+page {
+  --my-cusotm-color: pink;
+}
+
+.box {
+  backgound-color: var(--my-cusotm-color);
+}
+
+.navs {
+  backgound-color: var(--my-cusotm-color);
+}
+```
+
+了解了 css 变量的基本用法后，咱们修改 vant 中 css 变量覆盖原来样式：
+
+```css
+page {
+  --cell-large-title-font-size: 30rpx;
+  --cell-text-color: #c3c3c5;
+  --cell-value-color: #686868;
+}
+```

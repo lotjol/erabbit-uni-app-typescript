@@ -62,7 +62,7 @@ Page({
 
 ![](./assets/api/picture_3.jpg)
 
-::: warning
+::: warning 注意:
 域名有个严格的要求：**必须**是 `https` 协议且已备案！
 :::
 
@@ -122,11 +122,10 @@ wx.hideLoading()
 
 结合上一节获取学生列表来演示这两个 API 的使用：
 
-```javascript{9-12,27}
+```javascript{6-10,24-25}
 // pages/index/index.js
 Page({
   // ...省略前面小节代码
-
   // 获取学生表表
   getStudentList() {
     // 显示提示框
@@ -140,7 +139,7 @@ Page({
       url: 'https://mock.boxuegu.com/mock/3293/students',
       method: 'GET',
       // 这里注意因为 this 的原因，推荐使用箭头函数
-      success: (res: RequestSuccessResult) => {
+      success: (res) => {
         this.setData({
           // 更新 students 数组
           students: res.data.result,
@@ -171,7 +170,7 @@ Page({
 
 ```javascript
 wx.showToast({
-  title: '姓名只能为汉字!'
+  title: '姓名只能为汉字!',
   duration: 2000,
   mask: true,
   icon: 'success'
@@ -431,7 +430,7 @@ Page({
 - 设置 `button` 的属性 `open-type` 值为 `chooseAvatar`
 - 监听 `button` 的 `chooseavatar` 事件
 
-::: warning 注意
+::: warning 注意:
 open-type 的属性值 chooseAvatar (有大写字母)，事件类型 chooseavatar (全部小写字母)。
 :::
 
@@ -529,7 +528,7 @@ Page({
 那如何获取用户在表单中填写的用户昵称呢？
 用户在表单中填写的内容（昵称）需要事件回调中通过事件对象来获取，事件类型可以是 `input`、`blur` 、`change`等事件：
 
-::: warning
+::: warning 注意:
 小程序的文档中并没有标明 input 组件能够监听 change 事件，经部分测试后发现能够支持 change 事件的监听，生产环境应用时要注意！
 :::
 

@@ -54,5 +54,5 @@ npm install miniprogram-computed
 
 - `packNpmManually` 启用 npm 构建手动配置
 - `packNpmRelationList` 手动构建 npm 配置详情
-- - `miniprogramRoot` 自定义小程序的根目录
+- `miniprogramRoot` 自定义小程序的根目录
 
