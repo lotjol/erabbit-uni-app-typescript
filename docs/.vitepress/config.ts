@@ -4,13 +4,13 @@ export default defineConfig({
   title: '小兔鲜儿',
   titleTemplate: '新鲜、亲民、快捷',
   description: '小兔鲜儿, 电商, 商城,小程序, uni-app',
-  base: '/docs/',
+  base: '/erabbit-uni-app-typescript/',
   head: [
     [
       'link',
       {
         rel: 'icon',
-        href: '/docs/favicon.ico',
+        href: '/erabbit-uni-app-typescript/favicon.ico',
       },
     ],
   ],
