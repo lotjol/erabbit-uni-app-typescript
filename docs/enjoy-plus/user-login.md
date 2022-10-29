@@ -430,11 +430,56 @@ Page({
 })
 ```
 
+后续在 `refresh_token` 小节还会再次处理在本地存储 `token` 的逻辑，为了将来能够复用，咱们可以将存储 `token` 的逻辑封装到 `app.js` 中：
+
+```javascript
+App({
+  // ...
+  setToken(token) {
+    // 拼凑合法token格式
+    token = 'Bearer ' + token
+    // 本地存储 token 和 refresh_token
+    wx.setStorageSync('token', token)
+    // 更新全局 token 和 refresh_token
+    this.token = token
+  },
+})
+```
+
+然后调用封装好的方法来存储 `token`，代码也会变更简洁许多：
+
+```javascript{21-22}
+// 定义变量保存验证码
+let secret_code = ''
+// 获取应用实例
+const app = getApp()
+Page({
+  // ...
+  // 提交数据完成登录
+  submitForm() {
+    // 逐个验证表单数据
+    if(!this.verifyMobile()) return
+    if(!this.verifyCode()) return
+
+    // 用户填写的手机号和验证码
+    const { mobile, code } = this.data
+    
+    // 调用接口登录/注册
+    const res = await wx.http.post('/login', { mobile, code })
+    // 校验数据是否合法
+    if (res.code !== 10000) return wx.utils.toast('请检查验证码是否正确!')
+    
+    // 存储记录token
+    app.setToken(data.token)
+  },
+})
+```
+
 ### 2.3.2 重定向路由
 
 还记得前面我们检测了用户的登录状态，未登录的情况会跳转到登录页面，同时将页面的路径做为参数传到了登录页面，现在我们来获取这个参数然后重定向到这个页面路径，获取地址参数需要在 `onLoad` 生命周期中：
 
-```javascript
+```javascript{12-15,39-42}
 // 定义变量保存验证码
 let secret_code = ''
 // 获取应用实例
@@ -451,29 +496,7 @@ Page({
     this.setData({ redirectURL })
   },
 
-  countDownChange(ev) {
-    // ...
-  },
-
-  // 验证手机号格式
-  verifyMobile() {
-    // ...
-  },
-
-  // 验证验证码
-  verifyCode() {
-    // ...
-  },
-
-  // 获取短信验证码
-  async getCode() {
-    // ...
-  },
-
-  // 复制验证码到粘贴板
-  copyCode() {
-    wx.setClipboardData({ data: secret_code })
-  },
+  // ...
 
   // 提交数据完成登录
   async submitForm() {
@@ -516,4 +539,290 @@ git commit -m 'feat(user): 完成用户登录/注册功能'
 
 ## 2.4 请求拦截器
 
+完成用户登录后需要登录权限的接口必须将登录状态信息（token）发送给服务端，通过配置请求拦截器来进行统一的设置。
+
+我们找到前面封装的 `utils/http.js` 来对它做进一步的完善，即添加请求拦截的功能逻辑。
+
+### 2.4.1 基本用法
+
+```javascript
+/**
+ * 配置响应拦截器
+ */
+http.intercept.request = (params) => {
+  // 这里必须要有返回
+  return params
+}
+```
+
+在 `house_pkg/pages/list` 中调用接口 `/room` 这个接口是要求登录状态才可以正常访问：
+
+```javascript
+Page({
+  onLoad() {
+    // 目前该段代码只用于测试登录
+    wx.http.get('/room')
+  }
+})
+```
+
+在调用上述接口时并未成返回数据，原因在于虽然完成了登录的功能，但是当再次调用接口时未将登录的状态即 `token` 发给服务端。
+
+### 2.4.2 设置头信息
+
+```javascript
+/**
+ * 配置响应拦截器
+ */
+http.intercept.request = (params) => {
+  // 读取全局实例中的 token
+  const { token } = getApp()
+  // 指定一个公共的头信息
+  // 初始为空对象后续可以扩展
+  const defaultHeader = {}
+  // 追加 token 头信息
+  if (token) defaultHeader.Authorization = token
+  // 合并自定义头信息和公共头信息
+  params.header = Object.assign(defaultHeader, params.header)
+  // 处理后的请求参数
+  return params
+}
+```
+
+上述代码中统一处理了 `token` 以头信息的方式传递给后接口 其中 `defaultHeader` 初始为一个空的对象目的是将来可以扩展更多的公共头信息，另外要注意调用 `Object.assigin` 时参数的顺序，我们希望的是用户指定的头信息能够覆盖掉默认的头信息。
+
+提交代码
+
+```bash
+# 查看当前被修改的文件
+git status
+# 暂存文件
+git add .
+# 提交到本地
+git commit -m 'feat(user): 请求拦截器统一处理token'
+```
+
 ## 2.5 refresh_token
+
+从安全角度来看 `token` 必须要具有一定的时效性，享+社区约定了 `token` 的时效为8个小时，失效后的 `token` 不再能标识用是登录状态。
+
+另外也要考虑用户的体验，例如用户在 `token` 失效的前 1 分钟打开小程序，用户浏览小程序 1 分钟后 `token` 失效，用户不得不再次去登录，这样的用户体验是极差的。
+
+为了既能保证安全性又兼顾用户体验，咱们需要能够自动延长 `token` 时效的方法，即 `refresh_token`，它的作工作制是这样的：
+
+1. 用户在首次完成登录时会分别得到 `token` 和 `refresh_token`
+2. 当 `token` 失效后，调用接口会返回 `401` 状态码（这是与后端约定好的规则）
+3. 检测状态码是否为 `401`，如果是则调用延长 `token` 时效的接口并**传递 `refresh_token`**
+4. 调用延长 `token` 时效的接口后会返回新的 `token` 和 `refresh_token`
+
+### 2.5.1 存储 refresh_token
+
+根据上述的步骤咱们先要将 `refresh_token` 存储在本地及全局实例中，方便后续读取，回到登录页面和 `app.js` 逻辑中。
+
+先来完善 `setToken` 的方法，增加 `refresh_token` 的存储：
+
+```javascript{3,6,10,13}
+App({
+  // ...
+  setToken(token, refresh_token) {
+  // 拼凑合法token格式
+  token = 'Bearer ' + token
+  refresh_token = 'Bearer ' + refresh_token
+
+  // 本地存储 token 和 refresh_token
+  wx.setStorageSync('token', token)
+  wx.setStorageSync('refresh_token', refresh_token)
+  // 更新全局 token 和 refresh_token
+  this.token = token
+  this.refresh_token = refresh_token
+  },
+})
+
+```
+
+然后在 `pages/login/index.js` 中调用 `setToken` 并传入 `refresh_token`：
+
+```javascript{17-18}
+// pages/login/index
+Page({
+  // 之前代码省略...
+  // 提交数据完成登录
+  async submitForm() {
+    // 逐个验证表单数据
+    if (!this.verifyMobile()) return
+    if (!this.verifyCode()) return
+    // 用户填写的手机号和验证码
+    const { mobile, code } = this.data
+    
+    // 调用接口登录/注册
+    const res = await wx.http.post('/login', { mobile, code })
+    // 校验数据是否合法
+    if (res.code !== 10000) return wx.utils.toast('请检查验证码是否正确!')
+    
+    // 存储记录token
+    app.setToken(res.data.token, res.data.refreshToken)
+
+    // 重定向至登录前的页面
+    wx.redirectTo({
+      url: this.data.redirectURL,
+    })
+  },
+})
+```
+
+### 2.5.2 调用接口
+
+享+社区 `token` 的时效有 **8 个小时**，在开发调试阶段可以故意修改 `token` 的内容来主动让 `token` 失效。
+
+::: tip 提示:
+在小程序开发者工具的 `Storage` 中去手动修改 `token` 的数据。
+:::
+
+- 接口路径：/refreshToken
+- 请求方法: POST
+- 请求参数：无
+- Headers：
+  - Authorization
+- 响应数据：[见文档](https://www.apifox.cn/apidoc/shared-8d66c345-7a9a-4844-9a5a-1201852f6faa/api-44946311)
+
+人为修改了 `token` 后后端就会认为 `token` 是失效的，因此调用接口时会状态码返回值为 `401`，在响应拦截器中检测 `401` 的情况，代码在 `utils/http.js` 中：
+
+```javascript
+// ...
+http.intercept.response = async ({ statusCode, data }) => {
+  // statusCode 为状态码
+  if (statusCode === 401) {
+    // 获取全局应用实例
+    const app = getApp()
+    // 使用 refreshToken 更新 token
+    const res = await http({
+      url: '/refreshToken',
+      method: 'POST',
+      header: {
+        // 这时要注意使用的是 refresh_token
+        Authorization: app.refresh_token,
+      },
+    })
+    // 更新 token 和 refresh_token
+    app.setToken(res.data.token, res.data.refreshToken)
+  }
+
+  // 过滤接口返回的数据
+  return data
+}
+// ...
+```
+
+在调用刷新 `token` 接口时要注意头信息 `header.Authorization` 使用的是 `refresh_token`。
+
+在对 `token` 刷新时有一个问题大家思考一下，`refresh_token` 有没有可能也会过期？
+其实是会的，用户长期未使用小程序的情况下 `refresh_token` 也会失效，享+社区设置的时间为 **3天**，如果 `refresh_token` 也失效的情况下重定向到登录页面。
+
+再次手动修改 `refresh_token` 让它处于失效状态，然后调用接口后会出现列循环的情况（接口不断的请求），要解决这个问题需要判断当前是否调用的是 `/refreshToken` 接口，如果是且状态码返回的是 `401` 则重定页到登录页面。
+
+```javascript{4-18}
+http.intercept.response = async ({ statusCode, data, config }) => {
+  // statusCode 为状态码
+  if (statusCode === 401) {
+    // config 是调用接口的参数
+    // refreshToken 过期的情形
+    if (config.url.includes('/refreshToken')) {
+      // 读取当前历史栈
+      const pageStack = getCurrentPages()
+      // 取出当前页面路径，登录成功能跳转到该页面
+      const lastPage = pageStack[pageStack.length - 1]
+      // 取出当前页面路径，登录成功能跳转到该页面
+      const redirectURL = lastPage.route
+
+      // 引导用户到登录页面
+      return wx.redirectTo({
+        url: `/pages/login/index?redirectURL=/${redirectURL}`,
+      })
+    }
+
+    // 获取全局应用实例
+    const app = getApp()
+    // 使用 refreshToken 更新 token
+    const res = await http({
+      url: '/refreshToken',
+      method: 'POST',
+      header: {
+        // 这时要注意使用的是 refresh_token
+        Authorization: app.refresh_token,
+      },
+    })
+
+    // 更新 token 和 refresh_token
+    app.setToken(res.data.token, res.data.refreshToken)
+  }
+
+  // 过滤接口返回的数据
+  return data
+}
+```
+
+### 2.5.4 无感请求
+
+用户在请求某个接口是检测 `token` 失效，咱们去刷新了 `token` 当刷新成功后应该要继续去请求原来的接口，给用户的感知是一直处于登录状态的。
+
+```javascript{35-43}
+http.intercept.response = async ({ statusCode, data, config }) => {
+  // statusCode 为状态码
+  if (statusCode === 401) {
+    // config 是调用接口的参数
+    // refreshToken 过期的情形
+    if (config.url.includes('/refreshToken')) {
+      // 读取当前历史栈
+      const pageStack = getCurrentPages()
+      // 取出当前页面路径，登录成功能跳转到该页面
+      const currentPage = pageStack[pageStack.length - 1]
+      // 取出当前页面路径，登录成功能跳转到该页面
+      const redirectURL = currentPage.route
+
+      // 引导用户到登录页面
+      return wx.redirectTo({
+        url: `/pages/login/index?redirectURL=/${redirectURL}`,
+      })
+    }
+
+    // 获取全局应用实例
+    const app = getApp()
+    // 使用 refreshToken 更新 token
+    const res = await http({
+      url: '/refreshToken',
+      method: 'POST',
+      header: {
+        // 这时要注意使用的是 refresh_token
+        Authorization: app.refresh_token,
+      },
+    })
+    // 更新 token 和 refresh_token
+    app.setToken(res.data.token, res.data.refreshToken)
+
+    // 重新发起请求
+    return http(
+      Object.assign(config, {
+        // 传递新的 token
+        header: {
+          Authorization: app.token,
+        },
+      })
+    )
+  }
+
+  // 过滤接口返回的数据
+  return data
+```
+
+上述代码中 `config` 是用户原本要请求的接口的参数，根据这些参数请求发起请求并传入刷新后的 `token`。
+
+提交代码
+
+```bash
+# 查看当前被修改的文件
+git status
+# 暂存文件
+git add .
+# 提交到本地
+git commit -m 'feat(user): 完成refresh_token的功能'
+```

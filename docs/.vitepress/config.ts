@@ -69,7 +69,7 @@ export default defineConfig({
         },
         {
           text: '二、工具方法',
-          collapsible: true,
+          // collapsible: true,
           collapsed: true,
           items: [
             { text: '1. 消息反馈', link: '/enjoy-plus/utils-toast' },
@@ -78,7 +78,7 @@ export default defineConfig({
         },
         {
           text: '三、公告管理',
-          collapsible: true,
+          // collapsible: true,
           collapsed: true,
           items: [
             { text: '1. 公告列表', link: '/enjoy-plus/notify-list' },
@@ -87,7 +87,7 @@ export default defineConfig({
         },
         {
           text: '四、用户管理',
-          collapsible: true,
+          // collapsible: true,
           collapsed: true,
           items: [
             { text: '1. 登录检测', link: '/enjoy-plus/user-check' },
@@ -97,18 +97,18 @@ export default defineConfig({
         },
         {
           text: '五、房屋管理',
-          collapsible: true,
+          // collapsible: true,
           collapsed: true,
           items: [
-            { text: '1. 添加房屋', link: '' },
-            { text: '2. 房屋列表', link: '' },
-            { text: '3. 删除房屋', link: '' },
-            { text: '4. 编辑房屋', link: '' },
+            { text: '1. 添加房屋', link: '/enjoy-plus/house-add' },
+            { text: '2. 房屋列表', link: '/enjoy-plus/house-list' },
+            { text: '3. 删除房屋', link: '/enjoy-plus/house-delete' },
+            { text: '4. 编辑房屋', link: '/enjoy-plus/house-edit' },
           ],
         },
         {
           text: '六、报修管理',
-          collapsible: true,
+          // collapsible: true,
           collapsed: true,
           items: [
             { text: '1. 在线报修', link: '' },
@@ -119,7 +119,7 @@ export default defineConfig({
         },
         {
           text: '七、访客管理',
-          collapsible: true,
+          // collapsible: true,
           collapsed: true,
           items: [
             { text: '1. 邀请访客', link: '' },
