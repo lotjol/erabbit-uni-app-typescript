@@ -112,10 +112,10 @@ export default defineConfig({
           // collapsible: true,
           collapsed: true,
           items: [
-            { text: '1. 在线报修', link: '' },
-            { text: '2. 报修列表', link: '' },
-            { text: '3. 报修详情', link: '' },
-            { text: '4. 报修详情', link: '' },
+            { text: '1. 在线报修', link: '/enjoy-plus/repair-online' },
+            { text: '2. 报修列表', link: '/enjoy-plus/repair-list' },
+            { text: '3. 报修详情', link: '/enjoy-plus/repair-detail' },
+            { text: '4. 修改信息', link: '/enjoy-plus/repair-edit' },
           ],
         },
         {
