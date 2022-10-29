@@ -103,7 +103,8 @@ export default defineConfig({
             { text: '1. 添加房屋', link: '/enjoy-plus/house-add' },
             { text: '2. 房屋列表', link: '/enjoy-plus/house-list' },
             { text: '3. 删除房屋', link: '/enjoy-plus/house-delete' },
-            { text: '4. 编辑房屋', link: '/enjoy-plus/house-edit' },
+            { text: '4. 房屋详情', link: '/enjoy-plus/house-detail' },
+            { text: '5. 编辑房屋', link: '/enjoy-plus/house-edit' },
           ],
         },
         {
