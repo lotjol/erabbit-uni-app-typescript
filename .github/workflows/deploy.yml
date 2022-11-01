@@ -49,5 +49,5 @@ jobs:
           accessKeySecret: ${{ secrets.ACCESS_KEY_SECRET }}
           bucket: enjoy-plus
           endpoint: oss-cn-beijing.aliyuncs.com
-          folder: ./docs/.vitepress/dist/artifact
+          folder: ./docs/.vitepress/dist
           incremental: true
