@@ -33,9 +33,9 @@ jobs:
     if: github.ref=='refs/heads/main'
 
     steps:
-      # - uses: actions/download-artifact@v2
-      #   with:
-      #     path: ./docs/.vitepress/dist
+      - uses: actions/download-artifact@v2
+        with:
+          path: ./docs/.vitepress/dist
 
       # - uses: peaceiris/actions-gh-pages@v3
       #   with:
@@ -50,3 +50,4 @@ jobs:
           bucket: enjoy-plus
           endpoint: oss-cn-beijing.aliyuncs.com
           folder: ./docs/.vitepress/dist/artifact
+          incremental: true
