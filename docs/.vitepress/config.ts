@@ -4,13 +4,13 @@ export default defineConfig({
   title: '小兔鲜儿',
   titleTemplate: '新鲜、亲民、快捷',
   description: '小兔鲜儿, 电商, 商城,小程序, uni-app',
-  base: '/erabbit-uni-app-typescript/',
+  base: '/docs/',
   head: [
     [
       'link',
       {
         rel: 'icon',
-        href: '/erabbit-uni-app-typescript/favicon.ico',
+        href: '/docs/favicon.ico',
       },
     ],
   ],
@@ -115,7 +115,8 @@ export default defineConfig({
             { text: '1. 在线报修', link: '/enjoy-plus/repair-online' },
             { text: '2. 报修列表', link: '/enjoy-plus/repair-list' },
             { text: '3. 报修详情', link: '/enjoy-plus/repair-detail' },
-            { text: '4. 修改信息', link: '/enjoy-plus/repair-edit' },
+            { text: '4. 取消报修', link: '/enjoy-plus/repair-cancel' },
+            { text: '5. 修改信息', link: '/enjoy-plus/repair-edit' },
           ],
         },
         {
@@ -123,9 +124,9 @@ export default defineConfig({
           // collapsible: true,
           collapsed: true,
           items: [
-            { text: '1. 邀请访客', link: '' },
-            { text: '2. 访客通知证', link: '' },
-            { text: '3. 访客列表', link: '' },
+            { text: '1. 邀请访客', link: '/enjoy-plus/visitor-add' },
+            { text: '2. 访客列表', link: '/enjoy-plus/visitor-list' },
+            { text: '3. 访客通知证', link: '/enjoy-plus/visitor-passport' },
           ],
         },
       ],

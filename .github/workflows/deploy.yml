@@ -17,8 +17,8 @@ jobs:
         with:
           node-version: 'v16.13.0'
 
-      - run: yarn install
-      - run: yarn run docs:build
+      - run: pnpm install
+      - run: pnpm docs:build
       #- run: npm run test
 
       - uses: actions/upload-artifact@v2
@@ -41,3 +41,12 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/.vitepress/dist/artifact
+
+      - name: aliyun-oss-website-action
+        uses: fangbinwei/aliyun-oss-website-action@v1.3.0
+        with:
+          accessKeyId: ${{ secrets.ACCESS_KEY_ID }}
+          accessKeySecret: ${{ secrets.ACCESS_KEY_SECRET }}
+          bucket: enjoy-plus
+          endpoint: oss-cn-beijing.aliyuncs.com
+          folder: docs

@@ -800,7 +800,7 @@ Page({
         // 转换 json 数据
         const data = JSON.parse(res.data)
         // 检测接口调用结果
-        if (data.code !== 10000) return wx.showToast({ title: '上传图片失败!', icon: 'none' })
+        if (data.code !== 10000) return wx.utils.toast('上传图片失败!')
 
         // 保存并预览图片地址
         this.setData({

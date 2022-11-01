@@ -10,7 +10,7 @@
 - 响应数据：[见文档](https://www.apifox.cn/apidoc/shared-8d66c345-7a9a-4844-9a5a-1201852f6faa/api-41400750)
 
 ```javascript
-// house_pkg/pages/form/index.wxml
+// house_pkg/pages/list/index.js
 Page({
   data: {
     dialogVisible: false,
@@ -39,7 +39,7 @@ Page({
 在模板中来渲染获取到的房屋列表数据
 
 ```xml{8-19}
-<!-- house_pkg/pages/form/index.wxml -->
+<!-- house_pkg/pages/list/index.wxml -->
 <authorization>
   <block wx:if="{{true}}">
     <scroll-view show-scrollbar="{{false}}" enhanced scroll-y>

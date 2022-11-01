@@ -25,6 +25,7 @@ Page({
 如果页面地址中包含 id 参数则表明当前的操作为编辑房屋信息：
 
 ```javascript
+// house_pkg/pages/form/index.js
 Page({
   // ...
   onLoad({ point, building, room, id }) {
@@ -41,7 +42,7 @@ Page({
 
 ## 5.2 查询房屋详情
 
-- 接口路径：/room/{id}
+- 接口路径：/room/:id
 - 请求方法: GET
 - 请求参数：
   - id 房屋id

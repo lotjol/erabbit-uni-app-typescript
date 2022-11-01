@@ -14,7 +14,7 @@ Page({
 })
 ```
 
-- 接口路径：/room/{id}
+- 接口路径：/room/:id
 - 请求方法: GET
 - 请求参数：
   - id 房屋id
@@ -49,7 +49,7 @@ Page({
 渲染数据到模板中
 
 ```xml
-<!-- house_pkg/pages/detail/index.js -->
+<!-- house_pkg/pages/detail/index.wxml -->
 <scroll-view scroll-y enhanced show-scrollbar="{{false}}">
   <view class="house-detail">
     <van-cell-group border="{{false}}" title="房屋信息">
