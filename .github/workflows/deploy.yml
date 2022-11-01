@@ -33,14 +33,14 @@ jobs:
     if: github.ref=='refs/heads/main'
 
     steps:
-      - uses: actions/download-artifact@v2
-        with:
-          path: ./docs/.vitepress/dist
+      # - uses: actions/download-artifact@v2
+      #   with:
+      #     path: ./docs/.vitepress/dist
 
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/.vitepress/dist/artifact
+      # - uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./docs/.vitepress/dist/artifact
 
       - name: aliyun-oss-website-action
         uses: fangbinwei/aliyun-oss-website-action@v1.3.0
