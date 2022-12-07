@@ -58,7 +58,7 @@ Page({
 :::
 
 ```javascript
-// /pages/index/index.js
+// pages/index/index.js
 Page({
   onLoad() {
     // 获取页面历史栈
@@ -72,6 +72,41 @@ Page({
 获取到页面栈后根据数组的索引值可以获取到页面实例，通过页面实例可以获取页面中的数据或执行页面的某些逻辑。
 
 
-## 7.3 Behavior
+## 7.3 Behavior（视情况扩展）
 
-类似 Vue 的 `mixin` 的功能，视情况拓展。
+类似 Vue 的 `mixin` 的功能，能够将一些公共的逻辑抽离到单独的模块当中。
+
+```javascript
+// pages/index/my-behavior.js
+// 注册一个 behavior
+export default Behavior({
+  // 定义初始数据：与 Page 中定义的 data 含义一致
+  data: {
+    version: 'v1.0.0'
+  },
+  // 定义方法：与 Page 中定义方法含义一致
+  methods: {
+    getVersion() {
+      return this.data.version
+    }
+  }
+})
+```
+上述代码在 `data` 中初始了一个数据 `version`，在 `methods` 中定义了一个方法 `getVersion`，接下来**将这个 `Behavior` 对象注入到页面中**，在页面中就能够调用 `this.getVersion()` 就可以获取 `version` 对应的数据了：
+
+```javascript
+// pages/index/index.js
+import myBehavior from './my-behavior'
+Page({
+  // 将 myBehavior 注入到页面当中
+  behaviors: [myBehavior],
+  onLoad() {    
+    // 该方法来自于 myBehavior 当中
+    this.getVersion()
+    // 可以访问到在 myBehavior 中初始的数据
+    console.log(this.data.version)
+  }
+})
+```
+
+在 `Page` 中通过 `behaviors` 来注入 `Behavior` 对象，这样 `Behavior` 中定义的数据就可以在页面中使用了。
